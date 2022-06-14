@@ -1,12 +1,12 @@
-import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
-import EnterReceipt from "./TabScreens/EnterReceipt";
-import HomeScreen from "./TabScreens/HomeScreen";
-import Logout from "./TabScreens/Logout";
-import Recipes from "./TabScreens/Recipes";
+import EnterReceipt from './TabScreens/EnterReceipt';
+import HomeScreen from './TabScreens/HomeScreen';
+import Logout from './TabScreens/Logout';
+import Recipes from './TabScreens/Recipes';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +17,7 @@ export default function NavbarTabs() {
 				name="Home"
 				component={HomeScreen}
 				options={{
-					tabBarLabel: "Enter Receipt",
+					tabBarLabel: 'Enter Receipt',
 					tabBarIcon: ({ color, size }) => (
 						<Ionicons name="home" size={24} color="black" />
 					),
@@ -27,7 +27,7 @@ export default function NavbarTabs() {
 				name="Enter Receipt"
 				component={EnterReceipt}
 				options={{
-					tabBarLabel: "Enter Receipt",
+					tabBarLabel: 'Enter Receipt',
 					tabBarIcon: ({ color, size }) => (
 						<Ionicons name="receipt" size={24} color="black" />
 					),
@@ -37,7 +37,7 @@ export default function NavbarTabs() {
 				name="Recipes"
 				component={Recipes}
 				options={{
-					tabBarLabel: "Enter Receipt",
+					tabBarLabel: 'Enter Receipt',
 					tabBarIcon: ({ color, size }) => (
 						<MaterialCommunityIcons
 							name="food-turkey"
@@ -51,7 +51,7 @@ export default function NavbarTabs() {
 				name="Logout"
 				component={Logout}
 				options={{
-					tabBarLabel: "Enter Receipt",
+					tabBarLabel: 'Enter Receipt',
 					tabBarIcon: ({ color, size }) => (
 						<MaterialCommunityIcons name="logout" size={24} color="black" />
 					),

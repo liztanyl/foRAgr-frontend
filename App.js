@@ -1,7 +1,7 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { NativeBaseProvider } from "native-base";
+import { NavigationContainer } from '@react-navigation/native';
+import { NativeBaseProvider } from 'native-base';
 
-import NavbarTabs from "./components/NavbarTabs";
+import NavbarTabs from './components/NavbarTabs';
 
 export default function App() {
 	return (
