@@ -17,7 +17,7 @@ export default function NavbarTabs() {
 				name="Home"
 				component={HomeScreen}
 				options={{
-					tabBarLabel: 'Enter Receipt',
+					tabBarLabel: 'Home',
 					tabBarIcon: ({ color, size }) => (
 						<Ionicons name="home" size={24} color="black" />
 					),
@@ -37,7 +37,7 @@ export default function NavbarTabs() {
 				name="Recipes"
 				component={Recipes}
 				options={{
-					tabBarLabel: 'Enter Receipt',
+					tabBarLabel: 'Recipes',
 					tabBarIcon: ({ color, size }) => (
 						<MaterialCommunityIcons
 							name="food-turkey"
@@ -51,7 +51,7 @@ export default function NavbarTabs() {
 				name="Logout"
 				component={Logout}
 				options={{
-					tabBarLabel: 'Enter Receipt',
+					tabBarLabel: 'Logout',
 					tabBarIcon: ({ color, size }) => (
 						<MaterialCommunityIcons name="logout" size={24} color="black" />
 					),
