@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
 function CameraScreen({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(CameraType.back);
-  const [photoData, setPhotoData] = useState('');
 
   //create camera ref
   const cameraRef = useRef(null);
@@ -80,8 +79,16 @@ function CameraScreen({ navigation }) {
 
   const sendPhotoBackend = (data) => {
     console.log('send photo to back end');
-    setPhotoData(data);
-    console.log(data);
+    const sendPhotoData = async () => {
+      const photoDataResponse = await axios.post(
+        `${BACKEND_URL}/photoData`,
+        data
+      );
+      console.log(photoDataResponse);
+      setFoodItems(photoDataResponse.data);
+      setFilteredList(foodItemsResponse.data);
+    };
+    fetchFoodItems();
   };
 
   return (
@@ -106,7 +113,7 @@ function CameraScreen({ navigation }) {
               onPress={async () => {
                 const r = await takePhoto();
                 Alert.alert('DEBUG', JSON.stringify(r));
-                sendPhotoBackend(r);
+                sendPhotoBackend(r.data);
               }}
             >
               <Octicons name='circle' size={50} color='white' />
