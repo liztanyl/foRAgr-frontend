@@ -55,8 +55,14 @@ const retrieveReviewItems = () => {
 
 const addReviewItems = async (newItems) => {
 	const reviewItems = await retrieveItemsLS();
+	let updatedReviewItems = null;
 	// TODO: CHECK FOR DUPLICATES
-	const updatedReviewItems = [...reviewItems, ...newItems];
+	if (!reviewItems){ // << Tabs: Added this because when reviewItems is null, it throws an error below in line 62
+		updatedReviewItems = [...newItems]
+	} else {
+		updatedReviewItems = [...reviewItems, ...newItems];
+	}
+
 	updateItemsLS(updatedReviewItems);
 
 	return {
