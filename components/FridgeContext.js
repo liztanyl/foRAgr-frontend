@@ -1,11 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useReducer, useContext, useEffect } from 'react';
-import { storeData, getData } from '../store';
 
-const reviewItemLSKey = 'fridgeItems';
-
-const initialState = {
-	fridgeItems: [],
-	reviewItemIds: [],
+const STORAGE_KEYS = {
+	REVIEW: 'review item ids',
+	FRIDGE: 'fridge items',
 };
 
 const ACTIONS = {
@@ -18,68 +16,47 @@ const ACTIONS = {
 export function reviewReducer(state, action) {
 	switch (action.type) {
 		case ACTIONS.RETRIEVE:
-			console.log({ ...state, reviewItemIds: action.payload });
-			return { ...state, reviewItemIds: action.payload };
+			const items = action.payload;
+			console.log('reducer-retrieve state', state);
+			if (state) {
+				return [...state, ...items];
+			} else {
+				return items;
+			}
 		case ACTIONS.ADD_ITEMS:
-			console.log(state);
-			return { ...state, reviewItemIds: action.payload };
-		case ACTIONS.REMOVE_ITEM:
-			console.log(state);
-			return { ...state, reviewItemIds: action.payload };
+			console.log('reducer-add state', state);
+			const newItems = state ? [...state, ...action.payload] : action.payload;
+			AsyncStorage.setItem(STORAGE_KEYS.REVIEW, JSON.stringify(newItems));
+			return newItems;
+		// case ACTIONS.REMOVE_ITEM:
+		// 	console.log(state);
+		// 	return { ...state, reviewItemIds: action.payload };
 		// case ACTIONS.EDIT_ITEM:
 		// return { ...state, reviewItemIds: action.payload };
 
 		default:
+			console.log('error', state, action);
 			throw new Error();
 	}
 }
 
-// LOCAL STORAGE HELPERS
-const retrieveItemsLS = async () => {
-	return await getData(reviewItemLSKey);
-};
-
-const updateItemsLS = async (newState) => {
-	return await storeData(reviewItemLSKey, newState);
-};
-
 // DISPATCH HELPERS
-const retrieveReviewItems = () => {
-	const reviewItems = retrieveItemsLS();
-
-	return {
-		type: ACTIONS.RETRIEVE,
-		payload: reviewItems,
-	};
-};
-
-const addReviewItems = async (newItems) => {
-	const reviewItems = await retrieveItemsLS();
-	let updatedReviewItems = null;
-	// TODO: CHECK FOR DUPLICATES
-	if (!reviewItems){ // << Tabs: Added this because when reviewItems is null, it throws an error below in line 62
-		updatedReviewItems = [...newItems]
-	} else {
-		updatedReviewItems = [...reviewItems, ...newItems];
-	}
-
-	updateItemsLS(updatedReviewItems);
-
+const addReviewItems = (newItems) => {
+	console.log(newItems);
 	return {
 		type: ACTIONS.ADD_ITEMS,
-		payload: updatedReviewItems,
+		payload: newItems,
 	};
 };
 
 const removeReviewItems = async (idToRemove) => {
-	const reviewItems = await retrieveItemsLS();
-	const updatedReviewItems = reviewItems.filter((id) => id !== idToRemove);
-	updateItemsLS(updatedReviewItems);
-
-	return {
-		type: ACTIONS.REMOVE_ITEM,
-		payload: updatedReviewItems,
-	};
+	// const reviewItems = await retrieveItemsLS();
+	// const updatedReviewItems = reviewItems.filter((id) => id !== idToRemove);
+	// updateItemsLS(updatedReviewItems);
+	// return {
+	// 	type: ACTIONS.REMOVE_ITEM,
+	// 	payload: updatedReviewItems,
+	// };
 };
 
 export const FridgeContext = React.createContext(null);
@@ -88,29 +65,45 @@ export function useFridgeContext() {
 	return useContext(FridgeContext);
 }
 
+AsyncStorage.setItem(STORAGE_KEYS.REVIEW, JSON.stringify([1, 2, 3]), () =>
+	console.log('done seeding item ids in asyncstorage: [1,2,3]')
+);
+
 export function FridgeContextProvider({ children }) {
-	const [reviewState, reviewDispatch] = useReducer(
-		reviewReducer,
-		initialState.reviewItemIds
-	);
+	const [reviewItemIds, reviewDispatch] = useReducer(reviewReducer, null);
+	// const [fridgeItems, fridgeItemsDispatch] = useReducer(fridgeReducer, []);
 
 	// TODO: REDUCER FOR FRIDGE ITEMS
 
+	const retrieveItemsFromAsyncStorage = () => {
+		AsyncStorage.getItem(STORAGE_KEYS.REVIEW, (err, result) => {
+			if (result) {
+				console.log('<<<<<< retrieveItemsFromAsyncStorage');
+				console.log('result', result);
+				console.log('------------------------- >>>>>>>>>>');
+				reviewDispatch({
+					type: ACTIONS.RETRIEVE,
+					payload: JSON.parse(result),
+				});
+				console.log('<<<<<< retrieveItemsFromAsyncStorage');
+				console.log('reviewItemIds', reviewItemIds);
+				console.log('------------------------- >>>>>>>>>>');
+			}
+		});
+	};
+
 	useEffect(() => {
-		reviewDispatch(retrieveReviewItems());
-		console.log(reviewState);
+		retrieveItemsFromAsyncStorage();
 	}, []);
+
+	useEffect(() => console.log('reviewItemIds', reviewItemIds), [reviewItemIds]);
 
 	return (
 		<FridgeContext.Provider
 			value={{
-				reviewState,
+				reviewItemIds,
 				reviewDispatch,
-				reviewDispatchHelpers: [
-					retrieveReviewItems,
-					addReviewItems,
-					removeReviewItems,
-				],
+				reviewDispatchHelpers: [addReviewItems, removeReviewItems],
 			}}
 		>
 			{children}
