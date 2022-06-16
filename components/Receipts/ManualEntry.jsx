@@ -19,7 +19,6 @@ export default function ManualEntry({navigation}) {
       const foodItemsResponse = await axios.get(
         `${BACKEND_URL}/foodItems/index`
       );
-      console.log(foodItemsResponse);
       setFoodItems(foodItemsResponse.data);
       setFilteredList(foodItemsResponse.data);
     };
