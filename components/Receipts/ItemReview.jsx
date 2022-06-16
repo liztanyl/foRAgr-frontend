@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '../../store';
 import { useFridgeContext } from '../FridgeContext';
@@ -8,20 +8,21 @@ export default function ItemReview() {
 	const { reviewState, reviewDispatch, reviewDispatchHelpers } =
 		useFridgeContext();
 
-	console.log(reviewState.reviewItemIds);
+	const [reviewItems, setReviewItems] = useState([]);
 	// const { reviewItemIds } = reviewState;
-	const reviewItemIds = [1, 2, 3, 4, 5];
+	const reviewItemIds = [31, 2, 3, 4, 5];
 
 	useEffect(() => {
 		axios
 			.get(`${BACKEND_URL}/reviewItems/${reviewItemIds}`)
 			.then((response) => {
-				console.log(response);
+				console.log(response.data);
+				setReviewItems(response.data);
 			})
 			.catch((err) => {
 				console.log(err);
 			});
-	});
+	}, []);
 
 	return <Box>ItemReview</Box>;
 }
