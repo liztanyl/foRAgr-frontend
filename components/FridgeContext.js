@@ -1,29 +1,34 @@
 import React, { useReducer, useContext, useEffect } from 'react';
 import { storeData, getData } from '../store';
 
-const fridgeItemStorageKey = 'fridgeItems';
+const reviewItemLSKey = 'fridgeItems';
 
 const initialState = {
-	fridgeItemIds: [1, 2, 3, 4],
+	fridgeItems: [],
+	reviewItemIds: [],
 };
 
 const ACTIONS = {
 	RETRIEVE: 'retrieve items',
 	ADD_ITEMS: 'add items',
 	REMOVE_ITEM: 'remove item',
-	EDIT_ITEM: 'edit item',
+	EDIT_ITEM: 'edit item', // can remove if not used
 };
 
-export function fridgeReducer(state, action) {
+export function reviewReducer(state, action) {
 	switch (action.type) {
 		case ACTIONS.RETRIEVE:
-			return action.payload;
+			console.log({ ...state, reviewItemIds: action.payload });
+			return { ...state, reviewItemIds: action.payload };
 		case ACTIONS.ADD_ITEMS:
-			return action.payload;
+			console.log(state);
+			return { ...state, reviewItemIds: action.payload };
 		case ACTIONS.REMOVE_ITEM:
-			return action.payload;
+			console.log(state);
+			return { ...state, reviewItemIds: action.payload };
 		// case ACTIONS.EDIT_ITEM:
-		// 	return action.payload;
+		// return { ...state, reviewItemIds: action.payload };
+
 		default:
 			throw new Error();
 	}
@@ -31,43 +36,43 @@ export function fridgeReducer(state, action) {
 
 // LOCAL STORAGE HELPERS
 const retrieveItemsLS = async () => {
-	return await getData(fridgeItemStorageKey);
+	return await getData(reviewItemLSKey);
 };
 
 const updateItemsLS = async (newState) => {
-	return await storeData(fridgeItemStorageKey, newState);
+	return await storeData(reviewItemLSKey, newState);
 };
 
 // DISPATCH HELPERS
-const retrieveFridgeItems = () => {
-	const fridgeItems = retrieveItemsLS();
+const retrieveReviewItems = () => {
+	const reviewItems = retrieveItemsLS();
 
 	return {
 		type: ACTIONS.RETRIEVE,
-		payload: fridgeItems,
+		payload: reviewItems,
 	};
 };
 
-const addFridgeItems = async (newItems) => {
-	const fridgeItems = await retrieveItemsLS();
+const addReviewItems = async (newItems) => {
+	const reviewItems = await retrieveItemsLS();
 	// TODO: CHECK FOR DUPLICATES
-	const updatedFridgeItems = [...fridgeItems, ...newItems];
-	updateItemsLS(updatedFridgeItems);
+	const updatedReviewItems = [...reviewItems, ...newItems];
+	updateItemsLS(updatedReviewItems);
 
 	return {
 		type: ACTIONS.ADD_ITEMS,
-		payload: updatedFridgeItems,
+		payload: updatedReviewItems,
 	};
 };
 
-const removeFridgeItem = async (idToRemove) => {
-	const fridgeItems = await retrieveItemsLS();
-	const updatedFridgeItems = fridgeItems.filter((id) => id !== idToRemove);
-	updateItemsLS(updatedFridgeItems);
+const removeReviewItems = async (idToRemove) => {
+	const reviewItems = await retrieveItemsLS();
+	const updatedReviewItems = reviewItems.filter((id) => id !== idToRemove);
+	updateItemsLS(updatedReviewItems);
 
 	return {
 		type: ACTIONS.REMOVE_ITEM,
-		payload: updatedFridgeItems,
+		payload: updatedReviewItems,
 	};
 };
 
@@ -78,21 +83,27 @@ export function useFridgeContext() {
 }
 
 export function FridgeContextProvider({ children }) {
-	const [fridgeState, fridgeDispatch] = useReducer(fridgeReducer, initialState);
+	const [reviewState, reviewDispatch] = useReducer(
+		reviewReducer,
+		initialState.reviewItemIds
+	);
+
+	// TODO: REDUCER FOR FRIDGE ITEMS
 
 	useEffect(() => {
-		fridgeDispatch(retrieveFridgeItems());
+		reviewDispatch(retrieveReviewItems());
+		console.log(reviewState);
 	}, []);
 
 	return (
 		<FridgeContext.Provider
 			value={{
-				fridgeState,
-				fridgeDispatch,
-				fridgeDispatchHelpers: [
-					retrieveFridgeItems,
-					addFridgeItems,
-					removeFridgeItem,
+				reviewState,
+				reviewDispatch,
+				reviewDispatchHelpers: [
+					retrieveReviewItems,
+					addReviewItems,
+					removeReviewItems,
 				],
 			}}
 		>
