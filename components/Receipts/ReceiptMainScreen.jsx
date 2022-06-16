@@ -1,27 +1,33 @@
-import { Divider, Box, Button } from 'native-base';
+import { VStack, Button } from 'native-base';
 import * as React from 'react';
 import { View } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
 function ReciptMainScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Box>
-        <Button onPress={() => navigation.navigate('Camera Mode')}>
+      <VStack space={3} alignItems='center'>
+        <Button
+          size='lg'
+          padding={10}
+          colorScheme='primary'
+          rightIcon={<FontAwesome name='camera' size={24} color='white' />}
+          onPress={() => navigation.navigate('Camera Mode')}
+        >
           Camera Mode
         </Button>
-      </Box>
-      <Divider
-        my='2'
-        _light={{
-          bg: 'muted.800',
-        }}
-        _dark={{
-          bg: 'muted.50',
-        }}
-      />
-      <Box>
-        <Button onPress={() => console.log('hello')}>Manual Entry</Button>
-      </Box>
+        <Button
+          size='lg'
+          padding={10}
+          colorScheme='secondary'
+          rightIcon={
+            <FontAwesome name='pencil-square-o' size={24} color='white' />
+          }
+          onPress={() => console.log('go to manual entry mode')}
+        >
+          Manual Entry
+        </Button>
+      </VStack>
     </View>
   );
 }
