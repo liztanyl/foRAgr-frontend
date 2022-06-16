@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
+import { Ionicons } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
   container: {
@@ -56,7 +57,7 @@ function CameraScreen({ navigation }) {
               );
             }}
           >
-            <Text style={styles.text}> Flip </Text>
+            <Ionicons name='ios-camera-reverse-sharp' size={30} color='black' />
           </TouchableOpacity>
         </View>
       </Camera>
