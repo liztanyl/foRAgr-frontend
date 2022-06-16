@@ -7,6 +7,7 @@ import EnterReceipt from './TabScreens/EnterReceipt';
 import HomeScreen from './TabScreens/HomeScreen';
 import Logout from './TabScreens/Logout';
 import Recipes from './TabScreens/Recipes';
+import ItemReview from './Receipts/ItemReview';
 
 const Tab = createBottomTabNavigator();
 
@@ -55,6 +56,13 @@ export default function NavbarTabs() {
 					tabBarIcon: ({ color, size }) => (
 						<MaterialCommunityIcons name="logout" size={24} color="black" />
 					),
+				}}
+			/>
+			<Tab.Screen
+				name="Test"
+				component={ItemReview}
+				options={{
+					tabBarLabel: 'Item Review Test',
 				}}
 			/>
 		</Tab.Navigator>
