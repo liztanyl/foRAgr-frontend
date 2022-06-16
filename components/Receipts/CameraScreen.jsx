@@ -1,8 +1,9 @@
 // import { Divider, Box, Button } from 'native-base';
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Octicons } from '@expo/vector-icons';
+import { Box, HStack } from 'native-base';
 
 const styles = StyleSheet.create({
   container: {
@@ -15,22 +16,33 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
     flexDirection: 'row',
-    margin: 20,
-  },
-  button: {
-    flex: 0.1,
-    alignSelf: 'flex-end',
+    display: 'flex',
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  text: {
-    fontSize: 18,
+  borderFocus: {
+    width: '70%',
+    height: '80%',
+    backgroundColor: 'transparent',
+    borderColor: 'red',
+    borderWidth: 2,
+  },
+  controls: {
+    backgroundColor: 'black',
+    height: '12%',
+  },
+  button: {
     color: 'white',
+    justifyContent: 'flex-start',
   },
 });
 
 function CameraScreen({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(CameraType.back);
+
+  //create camera ref
+  const cameraRef = useRef(null);
 
   useEffect(() => {
     (async () => {
@@ -45,21 +57,51 @@ function CameraScreen({ navigation }) {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
+
+  //take photo
+  const takePhoto = async () => {
+    if (cameraRef) {
+      console.log('in take picture');
+    }
+    try {
+      let photo = await cameraRef.current.takePictureAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      return photo;
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={type}>
+      <Camera style={styles.camera} type={type} ref={cameraRef}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            setType(
+              type === CameraType.back ? CameraType.front : CameraType.back
+            );
+          }}
+        >
+          <Ionicons name='ios-camera-reverse-sharp' size={30} color='white' />
+        </TouchableOpacity>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              setType(
-                type === CameraType.back ? CameraType.front : CameraType.back
-              );
-            }}
-          >
-            <Ionicons name='ios-camera-reverse-sharp' size={30} color='black' />
-          </TouchableOpacity>
+          <Box style={styles.borderFocus}></Box>
         </View>
+        <Box style={styles.controls}>
+          <HStack justifyContent='center'>
+            <TouchableOpacity
+              onPress={async () => {
+                const r = await takePhoto();
+                Alert.alert('DEBUG', JSON.stringify(r));
+              }}
+            >
+              <Octicons name='circle' size={50} color='white' />
+            </TouchableOpacity>
+          </HStack>
+        </Box>
       </Camera>
     </View>
   );
