@@ -4,6 +4,8 @@ import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
 import { Ionicons, Octicons } from '@expo/vector-icons';
 import { Box, HStack } from 'native-base';
+import axios from 'axios';
+import { BACKEND_URL } from '../../store.js';
 
 const styles = StyleSheet.create({
   container: {
@@ -40,6 +42,7 @@ const styles = StyleSheet.create({
 function CameraScreen({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(CameraType.back);
+  const [photoData, setPhotoData] = useState('');
 
   //create camera ref
   const cameraRef = useRef(null);
@@ -74,6 +77,13 @@ function CameraScreen({ navigation }) {
       console.log(e);
     }
   };
+
+  const sendPhotoBackend = (data) => {
+    console.log('send photo to back end');
+    setPhotoData(data);
+    console.log(data);
+  };
+
   return (
     <View style={styles.container}>
       <Camera style={styles.camera} type={type} ref={cameraRef}>
@@ -96,6 +106,7 @@ function CameraScreen({ navigation }) {
               onPress={async () => {
                 const r = await takePhoto();
                 Alert.alert('DEBUG', JSON.stringify(r));
+                sendPhotoBackend(r);
               }}
             >
               <Octicons name='circle' size={50} color='white' />
