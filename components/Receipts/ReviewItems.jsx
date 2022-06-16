@@ -1,14 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { View, Box } from "native-base";
-import { useFridgeContext, FridgeContext } from "../FridgeContext.js";
+import { FridgeContext } from "../FridgeContext.js";
 
 export default function ReviewItems() {
   const { reviewState } = useContext(FridgeContext);
-  // const retrieveReviewItems = reviewDispatchHelpers[0];
-  // const { reviewDispatch } = useFridgeContext();
-
-  // const [reviewItemIds, _] = useState(reviewState);
-  console.log(reviewState)
 
 	return (
 		<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
