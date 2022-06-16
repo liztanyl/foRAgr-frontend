@@ -23,7 +23,7 @@ function ReciptMainScreen({ navigation }) {
           rightIcon={
             <FontAwesome name='pencil-square-o' size={24} color='white' />
           }
-          onPress={() => console.log('go to manual entry mode')}
+          onPress={() => navigation.navigate('Manual Entry')}
         >
           Manual Entry
         </Button>
