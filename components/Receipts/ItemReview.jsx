@@ -3,6 +3,7 @@ import axios from 'axios';
 import { BACKEND_URL } from '../../store';
 import { useFridgeContext } from '../FridgeContext';
 import { Box } from 'native-base';
+import ItemForm from './ItemReview/ItemForm';
 
 export default function ItemReview() {
 	const { reviewState, reviewDispatch, reviewDispatchHelpers } =
@@ -24,5 +25,12 @@ export default function ItemReview() {
 			});
 	}, []);
 
-	return <Box>ItemReview</Box>;
+	return (
+		<Box>
+			{reviewItems &&
+				reviewItems.map((item) => {
+					return <ItemForm item={item} key={item.id} />;
+				})}
+		</Box>
+	);
 }
