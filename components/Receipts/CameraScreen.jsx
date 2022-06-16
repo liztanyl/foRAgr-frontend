@@ -5,7 +5,7 @@ import { Camera, CameraType } from 'expo-camera';
 import { Ionicons, Octicons } from '@expo/vector-icons';
 import { Box, HStack } from 'native-base';
 import axios from 'axios';
-import { BACKEND_URL } from '../../store.js';
+import { BACKEND_URL } from '../../store';
 
 const styles = StyleSheet.create({
   container: {
@@ -77,18 +77,17 @@ function CameraScreen({ navigation }) {
     }
   };
 
+  //connection got error
   const sendPhotoBackend = (data) => {
     console.log('send photo to back end');
+    console.log(data.uri, 'data');
     const sendPhotoData = async () => {
-      const photoDataResponse = await axios.post(
-        `${BACKEND_URL}/photoData`,
-        data
-      );
+      const photoDataResponse = await axios.post(`${BACKEND_URL}/photoData`, {
+        imageData: data.uri,
+      });
       console.log(photoDataResponse);
-      setFoodItems(photoDataResponse.data);
-      setFilteredList(foodItemsResponse.data);
     };
-    fetchFoodItems();
+    sendPhotoData();
   };
 
   return (
@@ -113,7 +112,7 @@ function CameraScreen({ navigation }) {
               onPress={async () => {
                 const r = await takePhoto();
                 Alert.alert('DEBUG', JSON.stringify(r));
-                sendPhotoBackend(r.data);
+                sendPhotoBackend(r);
               }}
             >
               <Octicons name='circle' size={50} color='white' />
