@@ -1,7 +1,6 @@
 import { Box } from 'native-base';
 import * as React from 'react';
 import { View } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
 
 function ParsedReceipt({ navigation }) {
   return (
