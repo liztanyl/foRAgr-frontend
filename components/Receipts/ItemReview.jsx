@@ -11,7 +11,7 @@ export default function ItemReview() {
 
 	const [reviewItems, setReviewItems] = useState([]);
 	// const { reviewItemIds } = reviewState;
-	const reviewItemIds = [31, 2, 3, 4, 5];
+	const reviewItemIds = [31, 49, 3, 4, 5];
 
 	useEffect(() => {
 		axios
