@@ -88,9 +88,9 @@ function CameraScreen({ navigation }) {
         imageData: data.uri,
       });
       console.log(photoDataResponse.data);
+      navigation.navigate('See Parsed Receipt', { parsedData: photoDataResponse.data });
     };
     sendPhotoData();
-    navigation.navigate('See Parsed Receipt');
   };
 
   return (
