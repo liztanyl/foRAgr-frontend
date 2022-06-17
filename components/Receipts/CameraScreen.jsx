@@ -85,9 +85,10 @@ function CameraScreen({ navigation }) {
       const photoDataResponse = await axios.post(`${BACKEND_URL}/photoData`, {
         imageData: data.uri,
       });
-      console.log(photoDataResponse);
+      console.log(photoDataResponse.data);
     };
     sendPhotoData();
+    navigation.navigate('See Parsed Receipt');
   };
 
   return (

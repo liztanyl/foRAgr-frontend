@@ -3,6 +3,7 @@ import ReceiptMainScreen from '../Receipts/ReceiptMainScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CameraScreen from '../Receipts/CameraScreen';
 import ManualEntry from '../Receipts/ManualEntry';
+import ParsedReceipt from '../Receipts/ParsedReceipt';
 
 export default function EnterReceipt() {
   const Stack = createNativeStackNavigator();
@@ -11,6 +12,7 @@ export default function EnterReceipt() {
     <Stack.Navigator initialRouteName='Choose Mode'>
       <Stack.Screen name='Choose Mode' component={ReceiptMainScreen} />
       <Stack.Screen name='Camera Mode' component={CameraScreen} />
+      <Stack.Screen name='See Parsed Receipt' component={ParsedReceipt} />
       <Stack.Screen name='Manual Entry' component={ManualEntry} />
     </Stack.Navigator>
   );
