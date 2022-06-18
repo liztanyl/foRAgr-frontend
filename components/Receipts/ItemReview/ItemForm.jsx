@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Select, Center, FormControl } from 'native-base';
 import { StyleSheet } from 'react-native';
-import CategorySelector from './CategorySelector';
-import StorageSelector from './StorageSelector';
+import CategorySelector from './CategorySelector.jsx';
+import StorageSelector from './StorageSelector.jsx';
 
 // export const allSameCategory = (shelfLifeItems) => {
 // 	let areAllSameCategory = true;

@@ -1,11 +1,13 @@
 // import { Divider, Box, Button } from 'native-base';
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import {
+  StyleSheet, Text, View, TouchableOpacity, Alert,
+} from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
 import { Ionicons, Octicons } from '@expo/vector-icons';
 import { Box, HStack } from 'native-base';
 import axios from 'axios';
-import { BACKEND_URL } from '../../store';
+import { BACKEND_URL } from '../../store.js';
 
 const styles = StyleSheet.create({
   container: {
@@ -43,7 +45,7 @@ function CameraScreen({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(CameraType.back);
 
-  //create camera ref
+  // create camera ref
   const cameraRef = useRef(null);
 
   useEffect(() => {
@@ -60,13 +62,13 @@ function CameraScreen({ navigation }) {
     return <Text>No access to camera</Text>;
   }
 
-  //take photo
+  // take photo
   const takePhoto = async () => {
     if (cameraRef) {
       console.log('in take picture');
     }
     try {
-      let photo = await cameraRef.current.takePictureAsync({
+      const photo = await cameraRef.current.takePictureAsync({
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
@@ -77,7 +79,7 @@ function CameraScreen({ navigation }) {
     }
   };
 
-  //connection got error
+  // connection got error
   const sendPhotoBackend = (data) => {
     console.log('send photo to back end');
     console.log(data.uri, 'data');
@@ -86,9 +88,9 @@ function CameraScreen({ navigation }) {
         imageData: data.uri,
       });
       console.log(photoDataResponse.data);
+      navigation.navigate('See Parsed Receipt', { parsedData: photoDataResponse.data });
     };
     sendPhotoData();
-    navigation.navigate('See Parsed Receipt');
   };
 
   return (
@@ -98,17 +100,17 @@ function CameraScreen({ navigation }) {
           style={styles.button}
           onPress={() => {
             setType(
-              type === CameraType.back ? CameraType.front : CameraType.back
+              type === CameraType.back ? CameraType.front : CameraType.back,
             );
           }}
         >
-          <Ionicons name='ios-camera-reverse-sharp' size={30} color='white' />
+          <Ionicons name="ios-camera-reverse-sharp" size={30} color="white" />
         </TouchableOpacity>
         <View style={styles.buttonContainer}>
-          <Box style={styles.borderFocus}></Box>
+          <Box style={styles.borderFocus} />
         </View>
         <Box style={styles.controls}>
-          <HStack justifyContent='center'>
+          <HStack justifyContent="center">
             <TouchableOpacity
               onPress={async () => {
                 const r = await takePhoto();
@@ -116,7 +118,7 @@ function CameraScreen({ navigation }) {
                 sendPhotoBackend(r);
               }}
             >
-              <Octicons name='circle' size={50} color='white' />
+              <Octicons name="circle" size={50} color="white" />
             </TouchableOpacity>
           </HStack>
         </Box>
