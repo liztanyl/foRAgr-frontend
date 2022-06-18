@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Box } from 'native-base';
-import { useFridgeContext } from '../FridgeContext.js';
+import { useFridgeContext } from '../FridgeContext.jsx';
 
 export default function ReviewItems() {
   const { reviewState } = useFridgeContext();
@@ -9,8 +9,7 @@ export default function ReviewItems() {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Box>Review Screen!</Box>
       Current Review Ids:
-      {reviewState
-				&& reviewState.reviewItemIds.map((x) => <Box key={x}>{x}</Box>)}
+      {reviewState && reviewState.reviewItemIds.map((x) => <Box key={x}>{x}</Box>)}
     </View>
   );
 }

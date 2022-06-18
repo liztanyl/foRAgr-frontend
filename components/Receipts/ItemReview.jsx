@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box, ScrollView } from 'native-base';
 import { BACKEND_URL } from '../../store.js';
-import { useFridgeContext } from '../FridgeContext.js';
+import { useFridgeContext } from '../FridgeContext';
 import ItemForm from './ItemReview/ItemForm.jsx';
 
 export default function ItemReview() {
