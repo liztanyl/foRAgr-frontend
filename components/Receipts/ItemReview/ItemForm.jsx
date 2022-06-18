@@ -3,18 +3,9 @@ import { Box, Select, Center, FormControl } from 'native-base';
 import { StyleSheet } from 'react-native';
 import CategorySelector from './CategorySelector.jsx';
 import StorageSelector from './StorageSelector.jsx';
-
-// export const allSameCategory = (shelfLifeItems) => {
-// 	let areAllSameCategory = true;
-// 	const firstCategoryName = shelfLifeItems[0].categoryName;
-// 	shelfLifeItems.forEach((i) => {
-// 		if (firstCategoryName != i.categoryName) {
-// 			areAllSameCategory = false;
-// 		}
-// 	});
-// 	console.log(areAllSameCategory);
-// 	return areAllSameCategory;
-// };
+import ShelfLifeDays from './ShelfLifeDays.jsx';
+import PurchaseDateInput from './PurchaseDateInput.jsx';
+import ExpiryDate from './ExpiryDate.jsx';
 
 export default function ItemForm({ item }) {
   const { name, categories } = item;
@@ -40,9 +31,6 @@ export default function ItemForm({ item }) {
     if (categories.length == 1) {
       setSelectedCategory(categories[0]);
     }
-    if (selectedCategory) {
-      // console.log(selectedCategory);
-    }
   }, [selectedCategory]);
 
   return (
@@ -55,12 +43,14 @@ export default function ItemForm({ item }) {
       />
       {selectedCategory && (
         <StorageSelector
-          categories={categories}
           selectedCategory={selectedCategory}
           selectedStorage={selectedStorage}
           setSelectedStorage={setSelectedStorage}
         />
       )}
+      {selectedStorage && <ShelfLifeDays selectedStorage={selectedStorage} />}
+      <PurchaseDateInput />
+      <ExpiryDate />
     </Box>
   );
 }
