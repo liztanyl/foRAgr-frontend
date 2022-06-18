@@ -99,9 +99,7 @@ function CameraScreen({ navigation }) {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            setType(
-              type === CameraType.back ? CameraType.front : CameraType.back,
-            );
+            setType(type === CameraType.back ? CameraType.front : CameraType.back);
           }}
         >
           <Ionicons name="ios-camera-reverse-sharp" size={30} color="white" />
