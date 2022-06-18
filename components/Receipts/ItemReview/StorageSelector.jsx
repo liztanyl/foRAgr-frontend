@@ -4,7 +4,6 @@ import { Box, Select, Center, FormControl } from 'native-base';
 // import { allSameCategory } from './ItemForm';
 
 export default function StorageSelector({
-  categories,
   selectedCategory,
   selectedStorage,
   setSelectedStorage,
@@ -29,6 +28,9 @@ export default function StorageSelector({
     <Box w="3/4" maxW="300">
       <FormControl isRequired>
         <Select
+          selectedValue={
+            storageMethods.length == 1 ? storageMethods[0].storageName : null
+          }
           minWidth="200"
           placeholder="Choose a storage method"
           _selectedItem={{
