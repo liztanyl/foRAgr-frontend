@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Select, Center } from 'native-base';
 
-import { allSameCategory } from './ItemForm.jsx';
+// import { allSameCategory } from './ItemForm';
 
 export default function CategorySelector({
-  shelfLifeItems,
-  setSelectedShelfLifeItem,
+  categories,
+  selectedCategory,
+  setSelectedCategory,
 }) {
   const handleValueChange = (itemValue) => {
-    const selectedItem = shelfLifeItems.filter(
-      (item) => item.categoryName == itemValue,
+    const selectedItem = categories.filter(
+      (item) => item.categoryName == itemValue
     )[0];
-    setSelectedShelfLifeItem(selectedItem);
     console.log(selectedItem);
+    setSelectedCategory(selectedItem);
   };
 
   useEffect(() => {
-    if (allSameCategory(shelfLifeItems)) {
-      setSelectedShelfLifeItem(shelfLifeItems[0]);
+    if (categories.length == 1) {
+      setSelectedCategory(categories[0]);
     }
   }, []);
 
@@ -26,32 +27,36 @@ export default function CategorySelector({
       <Select
         minWidth="200"
         placeholder="Choose a category"
-        _selectedItem={{ bg: 'teal.600' }}
+        _selectedItem={{
+          bg: 'teal.600',
+        }}
         mt={1}
-        onValueChange={(itemValue) => { handleValueChange(itemValue); }}
+        onValueChange={(itemValue) => {
+          handleValueChange(itemValue);
+        }}
         defaultValue={
-					shelfLifeItems.length == 1 || allSameCategory(shelfLifeItems)
-					  ? shelfLifeItems[0].categoryName
-					  : null
-				}
+          categories.length == 1 ? categories[0].categoryName : null
+        }
       >
-        {allSameCategory(shelfLifeItems) ? (
-        // only render the first category if all categories are same
+        {categories.length == 1 ? (
+          // only render the first category if only 1 category
           <Select.Item
             isDisabled
-            label={shelfLifeItems[0].categoryName}
-            value={shelfLifeItems[0].categoryName}
-            key={shelfLifeItems[0].categoryName + shelfLifeItems[0].id}
+            label={categories[0].categoryName}
+            value={categories[0].categoryName}
+            key={categories[0].categoryName + categories[0].id}
           />
         ) : (
-        // otherwise, render all categories
-				  shelfLifeItems.map((item, index) => (
-  <Select.Item
-    label={item.categoryName}
-    value={item.categoryName}
-    key={item.categoryName + index}
-  />
-          ))
+          // otherwise, render all categories
+          categories.map((item, index) => {
+            return (
+              <Select.Item
+                label={item.categoryName}
+                value={item.categoryName}
+                key={item.categoryName + index}
+              />
+            );
+          })
         )}
       </Select>
     </Box>

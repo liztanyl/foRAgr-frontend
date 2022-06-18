@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box, Select, Center, FormControl,
-} from 'native-base';
+import { Box, Select, Center, FormControl } from 'native-base';
 import { StyleSheet } from 'react-native';
 import CategorySelector from './CategorySelector.jsx';
 import StorageSelector from './StorageSelector.jsx';
 
-export const allSameCategory = (shelfLifeItems) => {
-  let areAllSameCategory = true;
-  const firstCategoryName = shelfLifeItems[0].categoryName;
-  shelfLifeItems.forEach((i) => {
-    if (firstCategoryName != i.categoryName) {
-      areAllSameCategory = false;
-    }
-  });
-  console.log(areAllSameCategory);
-  return areAllSameCategory;
-};
+// export const allSameCategory = (shelfLifeItems) => {
+// 	let areAllSameCategory = true;
+// 	const firstCategoryName = shelfLifeItems[0].categoryName;
+// 	shelfLifeItems.forEach((i) => {
+// 		if (firstCategoryName != i.categoryName) {
+// 			areAllSameCategory = false;
+// 		}
+// 	});
+// 	console.log(areAllSameCategory);
+// 	return areAllSameCategory;
+// };
 
 export default function ItemForm({ item }) {
-  const { name, shelfLifeItems } = item;
-  const [selectedShelfLifeItem, setSelectedShelfLifeItem] = useState();
+  const { name, categories } = item;
+  const [selectedCategory, setSelectedCategory] = useState();
+  const [selectedStorage, setSelectedStorage] = useState();
 
   const styles = StyleSheet.create({
     itemContainer: {
@@ -37,19 +36,30 @@ export default function ItemForm({ item }) {
     },
   });
 
+  useEffect(() => {
+    if (categories.length == 1) {
+      setSelectedCategory(categories[0]);
+    }
+    if (selectedCategory) {
+      // console.log(selectedCategory);
+    }
+  }, [selectedCategory]);
+
   return (
     <Box style={styles.itemContainer}>
       <Box style={styles.itemName}>{name}</Box>
       <CategorySelector
-        shelfLifeItems={shelfLifeItems}
-        selectedShelfLifeItem={selectedShelfLifeItem}
-        setSelectedShelfLifeItem={setSelectedShelfLifeItem}
+        categories={categories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
       />
-      {selectedShelfLifeItem && (
-      <StorageSelector
-        shelfLifeItems={shelfLifeItems}
-        selectedShelfLifeItem={selectedShelfLifeItem}
-      />
+      {selectedCategory && (
+        <StorageSelector
+          categories={categories}
+          selectedCategory={selectedCategory}
+          selectedStorage={selectedStorage}
+          setSelectedStorage={setSelectedStorage}
+        />
       )}
     </Box>
   );
