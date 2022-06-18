@@ -5,21 +5,19 @@ import axios from 'axios';
 import SearchDropDown from '../ManualEntryComponents/SearchDropdown.js';
 import IngredientList from '../ManualEntryComponents/IngredientList.js';
 import { BACKEND_URL } from '../../store.js';
-import { useFridgeContext } from '../FridgeContext.js';
+import { useFridgeContext } from '../FridgeContext.jsx';
 
 export default function ManualEntry({ navigation }) {
   const {
-    reviewDispatch,
-    reviewDispatchHelpers: [addReviewItems],
+    reviewIdsDispatch,
+    dispatchHelpers: { addReviewIds },
   } = useFridgeContext();
   const [filteredList, setFilteredList] = useState(null);
   const [foodItems, setFoodItems] = useState(null);
 
   useEffect(() => {
     const fetchFoodItems = async () => {
-      const foodItemsResponse = await axios.get(
-        `${BACKEND_URL}/foodItems/index`,
-      );
+      const foodItemsResponse = await axios.get(`${BACKEND_URL}/foodItems/index`);
       setFoodItems(foodItemsResponse.data);
       setFilteredList(foodItemsResponse.data);
     };
@@ -43,10 +41,8 @@ export default function ManualEntry({ navigation }) {
       setSearchStatus(true);
       const searchText = e.toLowerCase();
       setSearchInput(searchText);
-      const filteredSearch = foodItems.filter(
-        (x) => x.name.match(searchText)
-					&& !selectedList.map((x) => x.name).includes(x.name),
-      );
+      const filteredSearch = foodItems.filter((x) => x.name.match(searchText)
+        && !selectedList.map((y) => y.name).includes(x.name));
       setFilteredList(filteredSearch);
     } else {
       setSearchStatus(false);
@@ -84,8 +80,8 @@ export default function ManualEntry({ navigation }) {
         {selectedList.length > 0 && (
         <Button
           onPress={() => {
-						  reviewDispatch(addReviewItems(selectedList.map((x) => x.id)));
-						  navigation.navigate('Review Items');
+            reviewIdsDispatch(addReviewIds(selectedList.map((x) => x.id)));
+            navigation.navigate('Review Items');
           }}
         >
           Review Items
