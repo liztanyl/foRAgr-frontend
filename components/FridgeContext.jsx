@@ -71,9 +71,7 @@ const addReviewItems = (newItems) => {
 // --> Takes in index of the review item object to update,
 // the key to update (eg selectedCategory) and its new value
 const editReviewItem = (index, key, value) => {
-  console.log(
-    `review - index to edit (key: value), ${index} (${key}: ${value})`
-  );
+  console.log(`review - index to edit (key: value), ${index} (${key}: ${value})`);
   return {
     type: ACTIONS.REVIEW_ITEMS.EDIT_ITEM,
     payload: {
@@ -172,10 +170,8 @@ const reviewItemsReducer = (state, action) => {
         const { index, key, value } = action.payload;
         const updatedItems = [...state];
         updatedItems[index][key] = value;
-        AsyncStorage.setItem(
-          STORAGE_KEYS.REVIEW_ITEMS,
-          JSON.stringify(updatedItems)
-        );
+        AsyncStorage.setItem(STORAGE_KEYS.REVIEW_ITEMS,
+          JSON.stringify(updatedItems));
         return updatedItems;
       }
       break;
@@ -185,11 +181,10 @@ const reviewItemsReducer = (state, action) => {
       if (state) {
         console.log('reviewItemsReducer-remove state', state);
         const indexToRemove = action.payload;
-        const stateShallowCopy = [...state];
-        const updatedItems = stateShallowCopy.splice(indexToRemove, 1);
-        AsyncStorage.setItem(STORAGE_KEYS.REVIEW_ITEMS, JSON.stringify(state));
-        console.log(stateShallowCopy);
-        return stateShallowCopy;
+        const updatedItems = [...state];
+        updatedItems.splice(indexToRemove, 1);
+        AsyncStorage.setItem(STORAGE_KEYS.REVIEW_ITEMS, JSON.stringify(updatedItems));
+        return updatedItems;
       }
       break;
     }
@@ -224,10 +219,8 @@ const fridgeReducer = (state, action) => {
         console.log('fridge reducer-remove state', state);
         const idToRemove = action.payload;
         const updatedFridge = state.filter((item) => item.id !== idToRemove);
-        AsyncStorage.setItem(
-          STORAGE_KEYS.FRIDGE,
-          JSON.stringify(updatedFridge)
-        );
+        AsyncStorage.setItem(STORAGE_KEYS.FRIDGE,
+          JSON.stringify(updatedFridge));
         return updatedFridge;
       }
       break;
@@ -246,15 +239,28 @@ const fridgeReducer = (state, action) => {
 
 // Seed items in AsyncStorage to test reducer functions
 // ** TODO: remove in deployment
+const seedFridgeItems = [{
+  id: 31,
+  name: 'beef stock',
+  category: 'Soups',
+  storage: 'Fridge',
+  addedOn: '2022-06-19',
+  expiresOn: '2022-06-22',
+}, {
+  id: 49,
+  name: 'broccoli',
+  category: 'Fruits & Vegetables',
+  storage: 'Fridge',
+  addedOn: '2022-06-19',
+  expiresOn: '2022-06-22',
+}];
 AsyncStorage.clear();
-AsyncStorage.setItem(STORAGE_KEYS.REVIEW_IDS, JSON.stringify([1, 2, 3]), () =>
-  console.log('done seeding review ids in asyncstorage: [1,2,3]')
-);
-AsyncStorage.setItem(
-  STORAGE_KEYS.FRIDGE,
-  JSON.stringify([{ id: 12, name: 'apricots' }]),
-  () => console.log('done seeding fridge items in asyncstorage')
-);
+AsyncStorage.setItem(STORAGE_KEYS.REVIEW_IDS,
+  JSON.stringify([1, 2, 3]),
+  () => console.log('done seeding review ids in asyncstorage: [1,2,3]'));
+AsyncStorage.setItem(STORAGE_KEYS.FRIDGE,
+  JSON.stringify(seedFridgeItems),
+  () => console.log('done seeding fridge items in asyncstorage'));
 
 const FridgeContext = React.createContext(null);
 
@@ -270,10 +276,8 @@ export function FridgeContextProvider({ children }) {
   const [reviewIds, reviewIdsDispatch] = useReducer(reviewIdsReducer, null);
 
   // reviewItems is an array of review item objects
-  const [reviewItems, reviewItemsDispatch] = useReducer(
-    reviewItemsReducer,
-    null
-  );
+  const [reviewItems, reviewItemsDispatch] = useReducer(reviewItemsReducer,
+    null);
 
   // fridgeItems is an array of fridge item objects
   const [fridgeItems, fridgeDispatch] = useReducer(fridgeReducer, null);
