@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Select, Center, FormControl } from 'native-base';
+import {
+  Box,
+  Select,
+  Center,
+  FormControl,
+  WarningOutlineIcon,
+} from 'native-base';
 
 import { useFridgeContext } from '../../FridgeContext';
 
@@ -40,7 +46,7 @@ export default function StorageSelector({
 
   return (
     <Box w="3/4" maxW="300">
-      <FormControl isRequired>
+      <FormControl isRequired isInvalid={!selectedStorage}>
         <Select
           selectedValue={
             storageMethods.length == 1 ? storageMethods[0].storageName : null
@@ -68,6 +74,9 @@ export default function StorageSelector({
               })
             : selectedShelfLifeItem.storageName}
         </Select>
+        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+          Please select a storage method
+        </FormControl.ErrorMessage>
       </FormControl>
     </Box>
   );
