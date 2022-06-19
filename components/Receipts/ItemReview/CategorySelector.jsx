@@ -1,24 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Select, Center } from 'native-base';
 
-// import { allSameCategory } from './ItemForm';
+import { useFridgeContext } from '../../FridgeContext';
+
+const CATEGORY = 'category';
 
 export default function CategorySelector({
+  index,
   categories,
-  selectedCategory,
   setSelectedCategory,
 }) {
+  const {
+    reviewItemsDispatch,
+    dispatchHelpers: { editReviewItem },
+  } = useFridgeContext();
+
   const handleValueChange = (itemValue) => {
     const selectedItem = categories.filter(
       (item) => item.categoryName == itemValue
     )[0];
-    console.log(selectedItem);
     setSelectedCategory(selectedItem);
+    reviewItemsDispatch(
+      editReviewItem(index, CATEGORY, selectedItem.categoryName)
+    );
   };
 
   useEffect(() => {
     if (categories.length == 1) {
       setSelectedCategory(categories[0]);
+      reviewItemsDispatch(
+        editReviewItem(index, CATEGORY, categories[0].categoryName)
+      );
     }
   }, []);
 

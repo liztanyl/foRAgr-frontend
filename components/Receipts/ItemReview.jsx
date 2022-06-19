@@ -6,19 +6,20 @@ import { useFridgeContext } from '../FridgeContext';
 import ItemForm from './ItemReview/ItemForm.jsx';
 
 export default function ItemReview() {
-  const { reviewState, reviewDispatch, reviewDispatchHelpers } =
-    useFridgeContext();
+  const reviewItemIds = [31, 49, 3, 4, 5, 58];
 
-  const [reviewItems, setReviewItems] = useState([]);
-  // const { reviewItemIds } = reviewState;
-  const reviewItemIds = [31, 49, 3, 4, 5];
+  const {
+    reviewItems,
+    reviewItemsDispatch,
+    dispatchHelpers: { addReviewItems, editReviewItem, removeReviewItem },
+  } = useFridgeContext();
 
   useEffect(() => {
     axios
       .get(`${BACKEND_URL}/reviewItems/${reviewItemIds}`)
       .then((response) => {
         console.log(response.data);
-        setReviewItems(response.data);
+        reviewItemsDispatch(addReviewItems(response.data));
       })
       .catch((err) => {
         console.log(err);
@@ -37,7 +38,9 @@ export default function ItemReview() {
         }}
       >
         {reviewItems &&
-          reviewItems.map((item) => <ItemForm item={item} key={item.id} />)}
+          reviewItems.map((item, index) => (
+            <ItemForm item={item} key={item.id} index={index} />
+          ))}
       </ScrollView>
     </Box>
   );

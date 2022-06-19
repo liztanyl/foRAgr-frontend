@@ -1,18 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Select, Center, FormControl } from 'native-base';
 
-// import { allSameCategory } from './ItemForm';
+import { useFridgeContext } from '../../FridgeContext';
+
+const STORAGE_METHOD = 'storageMethod';
 
 export default function StorageSelector({
+  index,
   selectedCategory,
   selectedStorage,
   setSelectedStorage,
 }) {
   const { storageMethods } = selectedCategory;
+  const {
+    reviewItemsDispatch,
+    dispatchHelpers: { editReviewItem },
+  } = useFridgeContext();
 
   useEffect(() => {
     if (storageMethods.length == 1) {
       setSelectedStorage(storageMethods[0]);
+      console.log(storageMethods[0].storageName);
+      reviewItemsDispatch(
+        editReviewItem(index, STORAGE_METHOD, storageMethods[0].storageName)
+      );
     }
   }, [selectedCategory]);
 
@@ -21,6 +32,9 @@ export default function StorageSelector({
       (item) => item.storageName == itemValue
     )[0];
     setSelectedStorage(selectedStorage);
+    reviewItemsDispatch(
+      editReviewItem(index, STORAGE_METHOD, selectedStorage.storageName)
+    );
     console.log(selectedStorage);
   };
 
