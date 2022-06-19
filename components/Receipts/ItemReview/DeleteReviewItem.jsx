@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Select, Center } from 'native-base';
+import React from 'react';
+import { Box } from 'native-base';
 import { AntDesign } from '@expo/vector-icons';
 
 import { useFridgeContext } from '../../FridgeContext';
