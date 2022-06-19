@@ -6,7 +6,7 @@ import { useFridgeContext } from '../FridgeContext';
 import ItemForm from './ItemReview/ItemForm.jsx';
 
 export default function ItemReview() {
-  const reviewItemIds = [31, 49, 3, 4, 5, 58];
+  const reviewItemIds = [31, 49, 3, 4, 5, 58, 90, 123];
 
   const {
     reviewItems,
