@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Box, ScrollView } from 'native-base';
+import { Box, Button, ScrollView } from 'native-base';
 import { BACKEND_URL } from '../../store.js';
 import { useFridgeContext } from '../FridgeContext';
 import ItemForm from './ItemReview/ItemForm.jsx';
 
 export default function ItemReview() {
-  const reviewItemIds = [31, 49, 3, 4, 5, 58];
+  const reviewItemIds = [31, 49, 3, 4, 5, 58, 90, 123];
 
   const {
     reviewItems,
     reviewItemsDispatch,
-    dispatchHelpers: { addReviewItems, editReviewItem, removeReviewItem },
+    fridgeDispatch,
+    dispatchHelpers: {
+      addReviewItems,
+      editReviewItem,
+      removeReviewItem,
+      addFridgeItems,
+    },
   } = useFridgeContext();
 
   useEffect(() => {
@@ -25,6 +31,34 @@ export default function ItemReview() {
         console.log(err);
       });
   }, []);
+
+  const allFieldsFilled = (reviewItems) => {
+    let fieldsFilled = true;
+    reviewItems.forEach((item) => {
+      [
+        'category',
+        'storageMethod',
+        'purchaseDate',
+        'expiryDate',
+        'shelfLifeDays',
+      ].forEach((key) => {
+        if (!item[key]) {
+          fieldsFilled = false;
+        }
+      });
+    });
+    return fieldsFilled;
+  };
+
+  const handleAddToFridge = () => {
+    if (allFieldsFilled(reviewItems)) {
+      console.log('all fields filled');
+      fridgeDispatch(addFridgeItems(reviewItems));
+    } else {
+      console.log('fields not filled');
+      // SNACKBAR TO INDICATE EMPTY FIELD?
+    }
+  };
 
   return (
     <Box>
@@ -41,6 +75,7 @@ export default function ItemReview() {
           reviewItems.map((item, index) => (
             <ItemForm item={item} key={item.id} index={index} />
           ))}
+        <Button onPress={handleAddToFridge}>Add to Fridge</Button>
       </ScrollView>
     </Box>
   );
