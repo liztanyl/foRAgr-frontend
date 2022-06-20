@@ -4,10 +4,10 @@ import {
 } from 'native-base';
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { MaterialIcons, AntDesign } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useFridgeContext } from '../FridgeContext.jsx';
 
-function SuccessfulAlert({ navigation }) {
+function SuccessfulAlert() {
   return (
     <Center>
       <Alert w="90%" maxW="400" status="info" colorScheme="info">
@@ -19,11 +19,6 @@ function SuccessfulAlert({ navigation }) {
                 Successfully added to virtual fridge
               </Text>
             </HStack>
-          </HStack>
-          <HStack space={2}>
-            <Button size="xs" onPress={() => navigation.navigate('Camera Mode')}> Add more receipt</Button>
-            <Button size="xs" onPress={() => navigation.navigate('Manual Entry')}> Manual Entry</Button>
-            <Button size="xs" onPress={() => navigation.navigate('Review Items')}> To review items added</Button>
           </HStack>
         </VStack>
       </Alert>
@@ -52,8 +47,8 @@ function ParsedReceipt({ route, navigation }) {
 
   return (
     <View style={{ flex: 1, alignItems: 'center' }}>
+      {show && <SuccessfulAlert />}
       <Box>Possible Food Items detected: </Box>
-
       {foodItemsPhoto.map((data) => (
         <Box>
           <HStack space={2} my="2" justifyContent="space-between">
@@ -72,16 +67,16 @@ function ParsedReceipt({ route, navigation }) {
       {!show
       && (
       <HStack space={2}>
-        <Button onPress={() => navigation.navigate('Manual Entry')}> Manual Entry </Button>
         <Button
-          onPress={saveToVirtualFridge}
-          disabled={show}
+          onPress={() => {
+            saveToVirtualFridge();
+            navigation.navigate('Review Items');
+          }}
         >
           Add to virtual fridge
         </Button>
       </HStack>
       )}
-      {show && <SuccessfulAlert navigation={navigation} />}
     </View>
   );
 }
