@@ -243,16 +243,16 @@ const seedFridgeItems = [{
   id: 31,
   name: 'beef stock',
   category: 'Soups',
-  storage: 'Fridge',
-  addedOn: '2022-06-19',
-  expiresOn: '2022-06-22',
+  storageMethod: 'Fridge',
+  purchaseDate: '19-06-2022',
+  expiryDate: '22-06-2022',
 }, {
   id: 49,
   name: 'broccoli',
   category: 'Fruits & Vegetables',
-  storage: 'Fridge',
-  addedOn: '2022-06-19',
-  expiresOn: '2022-06-22',
+  storageMethod: 'Fridge',
+  purchaseDate: '19-06-2022',
+  expiryDate: '22-06-2022',
 }];
 AsyncStorage.clear();
 AsyncStorage.setItem(STORAGE_KEYS.REVIEW_IDS,
