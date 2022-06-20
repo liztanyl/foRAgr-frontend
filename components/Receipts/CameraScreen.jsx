@@ -8,7 +8,7 @@ import { Ionicons, Octicons, Entypo } from '@expo/vector-icons';
 import { Box, HStack } from 'native-base';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
-import GOOGLE_API_KEY from '../../myGoogleApiKey.js';
+import { GOOGLE_API_KEY } from '../../secret.js';
 import { BACKEND_URL } from '../../store.js';
 
 const styles = StyleSheet.create({
