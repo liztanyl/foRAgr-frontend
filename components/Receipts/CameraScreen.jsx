@@ -129,6 +129,13 @@ function CameraScreen({ navigation }) {
           >
             <Entypo name="upload" size={24} color="white" />
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={async () => {
+              sendPhotoBackend('sample data');
+            }}
+          >
+            <Text style={styles.button}>Skip</Text>
+          </TouchableOpacity>
         </HStack>
         <View style={styles.buttonContainer}>
           <Box style={styles.borderFocus} />
