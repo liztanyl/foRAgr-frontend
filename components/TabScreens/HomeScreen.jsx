@@ -3,11 +3,11 @@ import moment from 'moment';
 import { View } from 'react-native';
 import { Heading } from 'native-base';
 
-import { useFridgeContext } from '../FridgeContext';
-import StorageNavigation from '../HomeScreenComponents/StorageNavigation';
-import ItemDisplay from '../HomeScreenComponents/ItemDisplay';
-import { STORAGE, SORT } from '../HomeScreenComponents/helpers';
-import ExpiryAlert from '../HomeScreenComponents/ExpiryAlert';
+import { useFridgeContext } from '../FridgeContext.jsx';
+import StorageNavigation from '../HomeScreenComponents/StorageNavigation.jsx';
+import ItemDisplay from '../HomeScreenComponents/ItemDisplay.jsx';
+import ExpiryAlert from '../HomeScreenComponents/ExpiryAlert.jsx';
+import { STORAGE, SORT } from '../HomeScreenComponents/helpers.js';
 
 export default function HomeScreen() {
   const [currentStorage, setCurrentStorage] = useState(STORAGE.ALL);

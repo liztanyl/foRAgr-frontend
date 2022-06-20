@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { VStack, Input, Button } from 'native-base';
 import axios from 'axios';
-import SearchDropDown from '../ManualEntryComponents/SearchDropdown.js';
-import IngredientList from '../ManualEntryComponents/IngredientList.js';
+import SearchDropDown from '../ManualEntryComponents/SearchDropdown.jsx';
+import IngredientList from '../ManualEntryComponents/IngredientList.jsx';
 import { BACKEND_URL } from '../../store.js';
 import { useFridgeContext } from '../FridgeContext.jsx';
 
@@ -17,9 +17,7 @@ export default function ManualEntry({ navigation }) {
 
   useEffect(() => {
     const fetchFoodItems = async () => {
-      const foodItemsResponse = await axios.get(
-        `${BACKEND_URL}/foodItems/index`
-      );
+      const foodItemsResponse = await axios.get(`${BACKEND_URL}/foodItems/index`);
       setFoodItems(foodItemsResponse.data);
       setFilteredList(foodItemsResponse.data);
     };
@@ -43,11 +41,8 @@ export default function ManualEntry({ navigation }) {
       setSearchStatus(true);
       const searchText = e.toLowerCase();
       setSearchInput(searchText);
-      const filteredSearch = foodItems.filter(
-        (x) =>
-          x.name.match(searchText) &&
-          !selectedList.map((y) => y.name).includes(x.name)
-      );
+      const filteredSearch = foodItems.filter((x) => x.name.match(searchText)
+          && !selectedList.map((y) => y.name).includes(x.name));
       setFilteredList(filteredSearch);
     } else {
       setSearchStatus(false);
