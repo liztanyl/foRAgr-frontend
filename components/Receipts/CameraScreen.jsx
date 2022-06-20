@@ -9,6 +9,7 @@ import { Box, HStack } from 'native-base';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import GOOGLE_API_KEY from '../../myGoogleApiKey.js';
+import { BACKEND_URL } from '../../store.js';
 
 const styles = StyleSheet.create({
   container: {
@@ -99,8 +100,9 @@ function CameraScreen({ navigation }) {
         ],
       });
       const detection = photoDataResponse.data.responses[0].textAnnotations[0];
-      console.log(detection);
-      navigation.navigate('See Parsed Receipt', { parsedData: detection });
+      const backendResponse = await axios.post(`${BACKEND_URL}/photoData`, { detection });
+      console.log(backendResponse);
+      navigation.navigate('See Parsed Receipt', { parsedData: backendResponse });
     };
     sendPhotoData();
   };
