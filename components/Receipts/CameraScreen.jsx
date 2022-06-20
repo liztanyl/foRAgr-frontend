@@ -1,14 +1,14 @@
 // import { Divider, Box, Button } from 'native-base';
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  StyleSheet, Text, View, TouchableOpacity, Alert, Platform,
+  StyleSheet, Text, View, TouchableOpacity, Alert,
 } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
 import { Ionicons, Octicons, Entypo } from '@expo/vector-icons';
 import { Box, HStack } from 'native-base';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
-import { BACKEND_URL } from '../../store.js';
+import GOOGLE_API_KEY from '../../myGoogleApiKey.js';
 
 const styles = StyleSheet.create({
   container: {
@@ -64,6 +64,7 @@ function CameraScreen({ navigation }) {
     return <Text>No access to camera</Text>;
   }
   // take photo
+  // eslint-disable-next-line consistent-return
   const takePhoto = async () => {
     if (cameraRef) {
       console.log('in take picture');
@@ -73,21 +74,33 @@ function CameraScreen({ navigation }) {
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
+        base64: true,
       });
       return photo;
     } catch (e) {
       console.log(e);
     }
   };
-  const sendPhotoBackend = (data) => {
-    console.log('send photo to back end');
-    console.log(data.uri, 'data');
+  const sendPhotoGCloud = (data) => {
     const sendPhotoData = async () => {
-      const photoDataResponse = await axios.post(`${BACKEND_URL}/photoData`, {
-        imageData: data.uri,
+      const photoDataResponse = await axios.post(`https://vision.googleapis.com/v1/images:annotate?key=${GOOGLE_API_KEY}`, {
+        requests: [
+          {
+            image: {
+              content: data.base64.slice(22),
+            },
+            features: [
+              {
+                type: 'DOCUMENT_TEXT_DETECTION',
+                maxResults: 1,
+              },
+            ],
+          },
+        ],
       });
-      console.log(photoDataResponse.data);
-      navigation.navigate('See Parsed Receipt', { parsedData: photoDataResponse.data });
+      const detection = photoDataResponse.data.responses[0].textAnnotations[0];
+      console.log(detection);
+      navigation.navigate('See Parsed Receipt', { parsedData: detection });
     };
     sendPhotoData();
   };
@@ -105,7 +118,7 @@ function CameraScreen({ navigation }) {
 
     if (!result.cancelled) {
       // setImage(result.uri);
-      sendPhotoBackend(result);
+      sendPhotoGCloud(result);
     }
   };
 
@@ -131,7 +144,7 @@ function CameraScreen({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={async () => {
-              sendPhotoBackend('sample data');
+              sendPhotoGCloud('sample data');
             }}
           >
             <Text style={styles.button}>Skip</Text>
@@ -146,7 +159,7 @@ function CameraScreen({ navigation }) {
               onPress={async () => {
                 const r = await takePhoto();
                 Alert.alert('DEBUG', JSON.stringify(r));
-                sendPhotoBackend(r);
+                sendPhotoGCloud(r);
               }}
             >
               <Octicons name="circle" size={50} color="white" />
