@@ -17,7 +17,9 @@ export default function ManualEntry({ navigation }) {
 
   useEffect(() => {
     const fetchFoodItems = async () => {
-      const foodItemsResponse = await axios.get(`${BACKEND_URL}/foodItems/index`);
+      const foodItemsResponse = await axios.get(
+        `${BACKEND_URL}/foodItems/index`
+      );
       setFoodItems(foodItemsResponse.data);
       setFilteredList(foodItemsResponse.data);
     };
@@ -41,8 +43,11 @@ export default function ManualEntry({ navigation }) {
       setSearchStatus(true);
       const searchText = e.toLowerCase();
       setSearchInput(searchText);
-      const filteredSearch = foodItems.filter((x) => x.name.match(searchText)
-        && !selectedList.map((y) => y.name).includes(x.name));
+      const filteredSearch = foodItems.filter(
+        (x) =>
+          x.name.match(searchText) &&
+          !selectedList.map((y) => y.name).includes(x.name)
+      );
       setFilteredList(filteredSearch);
     } else {
       setSearchStatus(false);
@@ -63,29 +68,30 @@ export default function ManualEntry({ navigation }) {
           style={styles.searchBar}
         />
         {searchStatus && (
-        <SearchDropDown
-          filtered={filteredList}
-          setSelectedList={setSelectedList}
-          setSearchInput={setSearchInput}
-          setFilteredList={setFilteredList}
-          setSearchStatus={setSearchStatus}
-        />
+          <SearchDropDown
+            filtered={filteredList}
+            setSelectedList={setSelectedList}
+            setSearchInput={setSearchInput}
+            setFilteredList={setFilteredList}
+            setSearchStatus={setSearchStatus}
+          />
         )}
         {selectedList && (
-        <IngredientList
-          selected={selectedList}
-          setSelectedList={setSelectedList}
-        />
+          <IngredientList
+            selected={selectedList}
+            setSelectedList={setSelectedList}
+          />
         )}
         {selectedList.length > 0 && (
-        <Button
-          onPress={() => {
-            reviewIdsDispatch(addReviewIds(selectedList.map((x) => x.id)));
-            navigation.navigate('Review Items');
-          }}
-        >
-          Review Items
-        </Button>
+          <Button
+            onPress={() => {
+              reviewIdsDispatch(addReviewIds(selectedList.map((x) => x.id)));
+              setSelectedList([]);
+              navigation.navigate('Review Items');
+            }}
+          >
+            Review Items
+          </Button>
         )}
       </VStack>
     </View>
