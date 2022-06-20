@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box, Button, ScrollView } from 'native-base';
+import moment from 'moment';
 import { BACKEND_URL } from '../../store.js';
 import { useFridgeContext } from '../FridgeContext';
 import ItemForm from './ItemReview/ItemForm.jsx';
@@ -34,13 +35,12 @@ export default function ItemReview({ navigation }) {
           .get(`${BACKEND_URL}/reviewItems/${reviewIds}`)
           .then((response) => {
             console.log(response.data);
-            reviewItemsDispatch(removeReviewItems());
             reviewItemsDispatch(addReviewItems(response.data));
             reviewIdsDispatch(removeReviewIds());
+          })
+          .catch((err) => {
+            console.log(err);
           });
-      // .catch((err) => {
-      //   console.log(err);
-      // });
     } catch (err) {
       console.log(err);
     }
@@ -64,14 +64,38 @@ export default function ItemReview({ navigation }) {
     return fieldsFilled;
   };
 
+  const formatReviewItems = (reviewItems) => {
+    const formattedReviewItems = reviewItems.map((reviewItem) => {
+      return {
+        userId: 1, // TO CHANGE AFTER ADDING USER LOGIN / AUTHENTICATION
+        shelfLifeItemId: reviewItem.id,
+        name: reviewItem.name,
+        addedOn: moment(reviewItem.purchaseDate, 'DD-MM-YYYY').toDate(),
+        expiry: moment(reviewItem.expiryDate, 'DD-MM-YYYY').toDate(),
+        notes: 'add this in later', // TO ADD NOTES INPUT COMPONENT
+        price: 10,
+      };
+    });
+
+    return formattedReviewItems;
+  };
+
   const handleAddToFridge = () => {
     if (allFieldsFilled(reviewItems)) {
       console.log('all fields filled');
       fridgeDispatch(addFridgeItems(reviewItems));
-      reviewItemsDispatch(removeReviewItems());
-      console.log(reviewItems);
-      // RETURN TO MANUAL ENTRY/HOME PAGE
-      // navigation.navigate('Home');
+
+      const dataToBackend = formatReviewItems(reviewItems);
+
+      axios
+        .post(`${BACKEND_URL}/fridgeItems/addItems`, dataToBackend)
+        .then((response) => {
+          console.log(response);
+          reviewItemsDispatch(removeReviewItems());
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       console.log('fields not filled');
       // SNACKBAR TO INDICATE EMPTY FIELD?
@@ -96,7 +120,9 @@ export default function ItemReview({ navigation }) {
         {reviewItems && (
           <Button onPress={handleAddToFridge}>Add to Fridge</Button>
         )}
-        {!reviewItems && <NoItemsToReview navigation={navigation} />}
+        {(!reviewItems || reviewItems.length === 0) && (
+          <NoItemsToReview navigation={navigation} />
+        )}
       </ScrollView>
     </Box>
   );
