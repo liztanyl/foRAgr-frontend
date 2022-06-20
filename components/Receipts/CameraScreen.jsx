@@ -1,12 +1,13 @@
 // import { Divider, Box, Button } from 'native-base';
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  StyleSheet, Text, View, TouchableOpacity, Alert,
+  StyleSheet, Text, View, TouchableOpacity, Alert, Platform,
 } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
-import { Ionicons, Octicons } from '@expo/vector-icons';
+import { Ionicons, Octicons, Entypo } from '@expo/vector-icons';
 import { Box, HStack } from 'native-base';
 import axios from 'axios';
+import * as ImagePicker from 'expo-image-picker';
 import { BACKEND_URL } from '../../store.js';
 
 const styles = StyleSheet.create({
@@ -48,10 +49,11 @@ function CameraScreen({ navigation }) {
   // create camera ref
   const cameraRef = useRef(null);
 
+  // check for camera and camera roll access
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
+      const cameraPermission = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(cameraPermission.status === 'granted');
     })();
   }, []);
 
@@ -61,7 +63,6 @@ function CameraScreen({ navigation }) {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
-
   // take photo
   const takePhoto = async () => {
     if (cameraRef) {
@@ -78,8 +79,6 @@ function CameraScreen({ navigation }) {
       console.log(e);
     }
   };
-
-  // connection got error
   const sendPhotoBackend = (data) => {
     console.log('send photo to back end');
     console.log(data.uri, 'data');
@@ -93,17 +92,44 @@ function CameraScreen({ navigation }) {
     sendPhotoData();
   };
 
+  const uploadPhoto = async () => {
+    // No permissions request is necessary for launching the image library
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      // setImage(result.uri);
+      sendPhotoBackend(result);
+    }
+  };
+
+  // connection got error
+
   return (
     <View style={styles.container}>
       <Camera style={styles.camera} type={type} ref={cameraRef}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            setType(type === CameraType.back ? CameraType.front : CameraType.back);
-          }}
-        >
-          <Ionicons name="ios-camera-reverse-sharp" size={30} color="white" />
-        </TouchableOpacity>
+        <HStack justifyContent="space-between">
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              setType(type === CameraType.back ? CameraType.front : CameraType.back);
+            }}
+          >
+            <Ionicons name="ios-camera-reverse-sharp" size={30} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => uploadPhoto()}
+          >
+            <Entypo name="upload" size={24} color="white" />
+          </TouchableOpacity>
+        </HStack>
         <View style={styles.buttonContainer}>
           <Box style={styles.borderFocus} />
         </View>
