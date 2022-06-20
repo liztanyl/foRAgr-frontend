@@ -4,7 +4,6 @@ import ReceiptMainScreen from '../Receipts/ReceiptMainScreen.jsx';
 import CameraScreen from '../Receipts/CameraScreen.jsx';
 import ManualEntry from '../Receipts/ManualEntry.jsx';
 import ParsedReceipt from '../Receipts/ParsedReceipt.jsx';
-import ReviewItems from '../Receipts/ReviewItems.jsx';
 import ItemReview from '../Receipts/ItemReview.jsx';
 
 export default function EnterReceipt() {
