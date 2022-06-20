@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import {
-  Box, Text, Badge, VStack, HStack, FlatList, Spacer,
+  Box, Text, VStack, HStack, FlatList, Spacer,
 } from 'native-base';
 import { useFridgeContext } from '../FridgeContext';
 import { SORT, sortItems } from './helpers';
+import ExpiryDateBadge from './ExpiryDateBadge';
+import RemoveItemButton from './RemoveItemButton';
 
 export default function ItemDisplay({ currentStorage, sortBy }) {
   const { fridgeItems } = useFridgeContext();
@@ -12,10 +14,10 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
 
   useEffect(() => {
     let newItems = fridgeItems && [...fridgeItems];
-    newItems?.sort((a, b) => sortItems(a, b, 'expiry', 'asc'));
     if (currentStorage !== 'All') {
       newItems = newItems.filter((item) => item.storageMethod === currentStorage);
     }
+    newItems?.sort((a, b) => sortItems(a, b, 'expiry', 'asc'));
     setItems(newItems);
   }, [currentStorage, fridgeItems]);
 
@@ -73,9 +75,7 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
               {item.name}
             </Text>
             <Spacer />
-            <Badge alignSelf="center" colorScheme="warning" variant="solid">
-              {`Expires ${moment(item.expiryDate, 'DD-MM-YYYY').fromNow()}`}
-            </Badge>
+            <ExpiryDateBadge expiryDate={item.expiryDate} />
           </HStack>
           <VStack>
             <Text
@@ -92,6 +92,7 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
               {' '}
               {moment(item.purchaseDate, 'DD-MM-YYYY').fromNow()}
             </Text>
+            <RemoveItemButton />
           </VStack>
         </Box>
       )}
