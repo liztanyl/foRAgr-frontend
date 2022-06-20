@@ -4,32 +4,46 @@ import { Box, Button, ScrollView } from 'native-base';
 import { BACKEND_URL } from '../../store.js';
 import { useFridgeContext } from '../FridgeContext';
 import ItemForm from './ItemReview/ItemForm.jsx';
+import NoItemsToReview from './ItemReview/NoItemsToReview.jsx';
 
-export default function ItemReview() {
-  const reviewItemIds = [31, 49, 3, 4, 5, 58, 90, 123];
+export default function ItemReview({ navigation }) {
+  // const reviewItemIds = [31, 49, 3, 4, 5, 58, 90, 123];
 
   const {
+    reviewIds,
+    reviewIdsDispatch,
     reviewItems,
     reviewItemsDispatch,
     fridgeDispatch,
     dispatchHelpers: {
+      removeReviewIds,
       addReviewItems,
       editReviewItem,
       removeReviewItem,
+      removeReviewItems,
       addFridgeItems,
     },
   } = useFridgeContext();
 
   useEffect(() => {
-    axios
-      .get(`${BACKEND_URL}/reviewItems/${reviewItemIds}`)
-      .then((response) => {
-        console.log(response.data);
-        reviewItemsDispatch(addReviewItems(response.data));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // console.log(reviewIds);
+    try {
+      reviewIds &&
+        reviewIds.length > 0 &&
+        axios
+          .get(`${BACKEND_URL}/reviewItems/${reviewIds}`)
+          .then((response) => {
+            console.log(response.data);
+            reviewItemsDispatch(removeReviewItems());
+            reviewItemsDispatch(addReviewItems(response.data));
+            reviewIdsDispatch(removeReviewIds());
+          });
+      // .catch((err) => {
+      //   console.log(err);
+      // });
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
 
   const allFieldsFilled = (reviewItems) => {
@@ -54,6 +68,10 @@ export default function ItemReview() {
     if (allFieldsFilled(reviewItems)) {
       console.log('all fields filled');
       fridgeDispatch(addFridgeItems(reviewItems));
+      reviewItemsDispatch(removeReviewItems());
+      console.log(reviewItems);
+      // RETURN TO MANUAL ENTRY/HOME PAGE
+      // navigation.navigate('Home');
     } else {
       console.log('fields not filled');
       // SNACKBAR TO INDICATE EMPTY FIELD?
@@ -75,7 +93,10 @@ export default function ItemReview() {
           reviewItems.map((item, index) => (
             <ItemForm item={item} key={item.id} index={index} />
           ))}
-        <Button onPress={handleAddToFridge}>Add to Fridge</Button>
+        {reviewItems && (
+          <Button onPress={handleAddToFridge}>Add to Fridge</Button>
+        )}
+        {!reviewItems && <NoItemsToReview navigation={navigation} />}
       </ScrollView>
     </Box>
   );

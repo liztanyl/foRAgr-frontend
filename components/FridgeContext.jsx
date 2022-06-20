@@ -16,6 +16,7 @@ const ACTIONS = {
     RETRIEVE: 'retrieve item ids for review',
     ADD_IDS: 'add item ids to review',
     REMOVE_ID: 'remove item id from review',
+    REMOVE_IDS: 'remove all item ids from review',
   },
 
   // for review items reducer
@@ -24,6 +25,7 @@ const ACTIONS = {
     ADD_ITEMS: 'add items to review',
     EDIT_ITEM: 'edit item in review',
     REMOVE_ITEM: 'remove item from review',
+    REMOVE_ITEMS: 'remove all items from review',
   },
 
   // for fridge reducer
@@ -57,6 +59,15 @@ const removeReviewId = (idToRemove) => {
   };
 };
 
+// --> Takes in no parameters - mutates entire array
+const removeReviewIds = () => {
+  console.log('review - removes all ids');
+  return {
+    type: ACTIONS.REVIEW_IDS.REMOVE_IDS,
+    payload: null,
+  };
+};
+
 // --------- REVIEW ITEMS -------------
 // --> Takes in an array of review item objects
 // with keys: name, categories, selectedCategory, selectedStorage
@@ -71,7 +82,9 @@ const addReviewItems = (newItems) => {
 // --> Takes in index of the review item object to update,
 // the key to update (eg selectedCategory) and its new value
 const editReviewItem = (index, key, value) => {
-  console.log(`review - index to edit (key: value), ${index} (${key}: ${value})`);
+  console.log(
+    `review - index to edit (key: value), ${index} (${key}: ${value})`
+  );
   return {
     type: ACTIONS.REVIEW_ITEMS.EDIT_ITEM,
     payload: {
@@ -88,6 +101,15 @@ const removeReviewItem = (indexToRemove) => {
   return {
     type: ACTIONS.REVIEW_ITEMS.REMOVE_ITEM,
     payload: indexToRemove,
+  };
+};
+
+// --> Takes in no parameters - mutates entire array
+const removeReviewItems = () => {
+  console.log('review - remove all ids');
+  return {
+    type: ACTIONS.REVIEW_ITEMS.REMOVE_ITEMS,
+    payload: null,
   };
 };
 
@@ -141,6 +163,16 @@ const reviewIdsReducer = (state, action) => {
       break;
     }
 
+    case ACTIONS.REVIEW_IDS.REMOVE_IDS: {
+      if (state) {
+        console.log('reviewIdsReducer-remove-ids state', state);
+        const updatedIds = null;
+        AsyncStorage.setItem(STORAGE_KEYS.REVIEW, updatedIds);
+        return updatedIds;
+      }
+      break;
+    }
+
     default: {
       console.log('error in review reducer', state, action);
       throw new Error();
@@ -170,8 +202,10 @@ const reviewItemsReducer = (state, action) => {
         const { index, key, value } = action.payload;
         const updatedItems = [...state];
         updatedItems[index][key] = value;
-        AsyncStorage.setItem(STORAGE_KEYS.REVIEW_ITEMS,
-          JSON.stringify(updatedItems));
+        AsyncStorage.setItem(
+          STORAGE_KEYS.REVIEW_ITEMS,
+          JSON.stringify(updatedItems)
+        );
         return updatedItems;
       }
       break;
@@ -183,7 +217,20 @@ const reviewItemsReducer = (state, action) => {
         const indexToRemove = action.payload;
         const updatedItems = [...state];
         updatedItems.splice(indexToRemove, 1);
-        AsyncStorage.setItem(STORAGE_KEYS.REVIEW_ITEMS, JSON.stringify(updatedItems));
+        AsyncStorage.setItem(
+          STORAGE_KEYS.REVIEW_ITEMS,
+          JSON.stringify(updatedItems)
+        );
+        return updatedItems;
+      }
+      break;
+    }
+
+    case ACTIONS.REVIEW_ITEMS.REMOVE_ITEMS: {
+      if (state) {
+        console.log('reviewItemsReducer-remove state', state);
+        const updatedItems = null;
+        AsyncStorage.setItem(STORAGE_KEYS.REVIEW_ITEMS, null);
         return updatedItems;
       }
       break;
@@ -219,8 +266,10 @@ const fridgeReducer = (state, action) => {
         console.log('fridge reducer-remove state', state);
         const idToRemove = action.payload;
         const updatedFridge = state.filter((item) => item.id !== idToRemove);
-        AsyncStorage.setItem(STORAGE_KEYS.FRIDGE,
-          JSON.stringify(updatedFridge));
+        AsyncStorage.setItem(
+          STORAGE_KEYS.FRIDGE,
+          JSON.stringify(updatedFridge)
+        );
         return updatedFridge;
       }
       break;
@@ -239,7 +288,7 @@ const fridgeReducer = (state, action) => {
 
 // Seed items in AsyncStorage to test reducer functions
 // ** TODO: remove in deployment
-const seedFridgeItems = [{
+/* const seedFridgeItems = [{
   id: 31,
   name: 'beef stock',
   category: 'Soups',
@@ -261,7 +310,7 @@ AsyncStorage.setItem(STORAGE_KEYS.REVIEW_IDS,
 AsyncStorage.setItem(STORAGE_KEYS.FRIDGE,
   JSON.stringify(seedFridgeItems),
   () => console.log('done seeding fridge items in asyncstorage'));
-
+ */
 const FridgeContext = React.createContext(null);
 
 // Call the below function when you want to use the FridgeContext
@@ -276,8 +325,10 @@ export function FridgeContextProvider({ children }) {
   const [reviewIds, reviewIdsDispatch] = useReducer(reviewIdsReducer, null);
 
   // reviewItems is an array of review item objects
-  const [reviewItems, reviewItemsDispatch] = useReducer(reviewItemsReducer,
-    null);
+  const [reviewItems, reviewItemsDispatch] = useReducer(
+    reviewItemsReducer,
+    null
+  );
 
   // fridgeItems is an array of fridge item objects
   const [fridgeItems, fridgeDispatch] = useReducer(fridgeReducer, null);
@@ -364,9 +415,11 @@ export function FridgeContextProvider({ children }) {
         dispatchHelpers: {
           addReviewIds,
           removeReviewId,
+          removeReviewIds,
           addReviewItems,
           editReviewItem,
           removeReviewItem,
+          removeReviewItems,
           addFridgeItems,
           removeFridgeItem,
         },
