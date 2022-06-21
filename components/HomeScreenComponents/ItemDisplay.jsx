@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import {
-  Box,
-  Text,
-  Badge,
-  VStack,
-  HStack,
-  FlatList,
-  Spacer,
+  Box, Text, VStack, HStack, FlatList, Spacer,
 } from 'native-base';
-import { useFridgeContext } from '../FridgeContext';
-import { SORT, sortItems } from './helpers';
+import { useFridgeContext } from '../FridgeContext.jsx';
+import { SORT, sortItems } from './helpers.js';
+import ExpiryDateBadge from './ExpiryDateBadge.jsx';
+import RemoveItemButton from './RemoveItemButton.jsx';
 
 export default function ItemDisplay({ currentStorage, sortBy }) {
   const { fridgeItems } = useFridgeContext();
@@ -18,12 +14,10 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
 
   useEffect(() => {
     let newItems = fridgeItems && [...fridgeItems];
-    newItems?.sort((a, b) => sortItems(a, b, 'expiry', 'asc'));
     if (currentStorage !== 'All') {
-      newItems = newItems.filter(
-        (item) => item.storageMethod === currentStorage
-      );
+      newItems = newItems.filter((item) => item.storageMethod === currentStorage);
     }
+    newItems?.sort((a, b) => sortItems(a, b, 'expiry', 'asc'));
     setItems(newItems);
   }, [currentStorage, fridgeItems]);
 
@@ -60,7 +54,6 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
 
   return (
     <FlatList
-      // scrollEnabled="true"
       data={items}
       renderItem={({ item }) => (
         <Box
@@ -75,17 +68,21 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
               {item.name}
             </Text>
             <Spacer />
-            <Badge alignSelf="center" colorScheme="warning" variant="solid">
-              {`Expires ${moment(item.expiryDate, 'DD-MM-YYYY').fromNow()}`}
-            </Badge>
+            <ExpiryDateBadge expiryDate={item.expiryDate} />
           </HStack>
           <VStack>
             <Text color="coolGray.800" alignSelf="flex-start">
               {item.category}
             </Text>
-            <Text color="coolGray.800" alignSelf="flex-start">
-              Added: {moment(item.purchaseDate, 'DD-MM-YYYY').fromNow()}
+            <Text
+              color="coolGray.800"
+              alignSelf="flex-start"
+            >
+              Added:
+              {' '}
+              {moment(item.purchaseDate).fromNow()}
             </Text>
+            <RemoveItemButton itemId={item.id} />
           </VStack>
         </Box>
       )}
