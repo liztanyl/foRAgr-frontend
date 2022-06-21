@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useState } from 'react';
-import { Popover, Button, Spinner } from 'native-base';
+import { Popover, Button } from 'native-base';
 import axios from 'axios';
 import { BACKEND_URL } from '../../store.js';
 import { useFridgeContext } from '../FridgeContext.jsx';
