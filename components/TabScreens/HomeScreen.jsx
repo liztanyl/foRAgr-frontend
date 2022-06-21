@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Heading } from 'native-base';
+import { requestPermissionsAsync } from 'expo-notifications';
 import StorageNavigation from '../HomeScreenComponents/StorageNavigation.jsx';
 import ItemDisplay from '../HomeScreenComponents/ItemDisplay.jsx';
 import { STORAGE, SORT } from '../HomeScreenComponents/helpers.js';
@@ -8,7 +9,7 @@ import { STORAGE, SORT } from '../HomeScreenComponents/helpers.js';
 export default function HomeScreen() {
   const [currentStorage, setCurrentStorage] = useState(STORAGE.ALL);
   const [sortBy, setSortBy] = useState(SORT.EXPIRY_ASC);
-
+  requestPermissionsAsync();
   return (
     <View style={{ height: '100%' }}>
       <StorageNavigation
