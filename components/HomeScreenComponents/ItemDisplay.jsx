@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import {
-  Box, Text, Badge, VStack, HStack, FlatList, Spacer,
+  Box,
+  Text,
+  Badge,
+  VStack,
+  HStack,
+  FlatList,
+  Spacer,
 } from 'native-base';
 import { useFridgeContext } from '../FridgeContext';
 import { SORT, sortItems } from './helpers';
@@ -14,7 +20,9 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
     let newItems = fridgeItems && [...fridgeItems];
     newItems?.sort((a, b) => sortItems(a, b, 'expiry', 'asc'));
     if (currentStorage !== 'All') {
-      newItems = newItems.filter((item) => item.storageMethod === currentStorage);
+      newItems = newItems.filter(
+        (item) => item.storageMethod === currentStorage
+      );
     }
     setItems(newItems);
   }, [currentStorage, fridgeItems]);
@@ -52,11 +60,9 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
 
   return (
     <FlatList
-      scrollEnabled="true"
+      // scrollEnabled="true"
       data={items}
-      renderItem={({
-        item,
-      }) => (
+      renderItem={({ item }) => (
         <Box
           borderBottomWidth="1"
           borderColor="coolGray.200"
@@ -65,11 +71,7 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
           py="3"
         >
           <HStack space={3} justifyContent="space-between">
-            <Text
-              color="coolGray.800"
-              bold
-              fontSize="md"
-            >
+            <Text color="coolGray.800" bold fontSize="md">
               {item.name}
             </Text>
             <Spacer />
@@ -78,24 +80,16 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
             </Badge>
           </HStack>
           <VStack>
-            <Text
-              color="coolGray.800"
-              alignSelf="flex-start"
-            >
+            <Text color="coolGray.800" alignSelf="flex-start">
               {item.category}
             </Text>
-            <Text
-              color="coolGray.800"
-              alignSelf="flex-start"
-            >
-              Added:
-              {' '}
-              {moment(item.purchaseDate, 'DD-MM-YYYY').fromNow()}
+            <Text color="coolGray.800" alignSelf="flex-start">
+              Added: {moment(item.purchaseDate, 'DD-MM-YYYY').fromNow()}
             </Text>
           </VStack>
         </Box>
       )}
-      keyExtractor={(item) => (`${item.id}-${item.expiryDate}`)}
+      keyExtractor={(item) => `${item.id}-${item.expiryDate}`}
     />
   );
 }
