@@ -10,10 +10,10 @@ export const STORAGE = {
 export const SORT = {
   EXPIRY_ASC: 'Expiry (Earliest first)',
   EXPIRY_DESC: 'Expiry (Latest first)',
-  ALPHA_ASC: 'Alphabetically (Asc)',
-  ALPHA_DESC: 'Alphabetically (Desc)',
   ADDED_ASC: 'Date added (Earliest first)',
   ADDED_DESC: 'Date added (Latest first)',
+  ALPHA_ASC: 'Alphabetically (Asc)',
+  ALPHA_DESC: 'Alphabetically (Desc)',
 };
 
 export function sortItems(a, b, type, order) {
@@ -32,16 +32,16 @@ export function sortItems(a, b, type, order) {
       return 0;
     }
     case 'added': {
-      const dateA = moment(a.purchaseDate, 'DD-MM-YYYY').toDate();
-      const dateB = moment(b.purchaseDate, 'DD-MM-YYYY').toDate();
-      if (order === ASC) return dateA - dateB;
-      return dateB - dateA;
+      const dateA = a.purchaseDate;
+      const dateB = b.purchaseDate;
+      if (order === ASC) return moment(dateA).diff(dateB);
+      return moment(dateB).diff(dateA);
     }
     case 'expiry': {
-      const dateA = moment(a.expiryDate, 'DD-MM-YYYY').toDate();
-      const dateB = moment(b.expiryDate, 'DD-MM-YYYY').toDate();
-      if (order === ASC) return dateA - dateB;
-      return dateB - dateA;
+      const dateA = a.expiryDate;
+      const dateB = b.expiryDate;
+      if (order === ASC) return moment(dateA).diff(dateB);
+      return moment(dateB).diff(dateA);
     }
     default: {
       return 0;

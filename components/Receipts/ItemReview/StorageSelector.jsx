@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Select,
-  Center,
   FormControl,
   WarningOutlineIcon,
 } from 'native-base';
 
-import { useFridgeContext } from '../../FridgeContext';
+import { useFridgeContext } from '../../FridgeContext.jsx';
 
 const STORAGE_METHOD = 'storageMethod';
+const SHELF_LIFE_ITEM_ID = 'shelfLifeItemId';
 
 export default function StorageSelector({
   index,
@@ -24,23 +24,20 @@ export default function StorageSelector({
   } = useFridgeContext();
 
   useEffect(() => {
-    if (storageMethods.length == 1) {
-      setSelectedStorage(storageMethods[0]);
-      console.log(storageMethods[0].storageName);
-      reviewItemsDispatch(
-        editReviewItem(index, STORAGE_METHOD, storageMethods[0].storageName)
-      );
+    if (storageMethods.length === 1) {
+      const storage = storageMethods[0];
+      setSelectedStorage(storage);
+      console.log(storage.storageName);
+      reviewItemsDispatch(editReviewItem(index, STORAGE_METHOD, storage.storageName));
+      reviewItemsDispatch(editReviewItem(index, SHELF_LIFE_ITEM_ID, storage.shelfLifeItemId));
     }
   }, [selectedCategory]);
 
   const handleValueChange = (itemValue) => {
-    const selectedStorage = storageMethods.filter(
-      (item) => item.storageName == itemValue
-    )[0];
-    setSelectedStorage(selectedStorage);
-    reviewItemsDispatch(
-      editReviewItem(index, STORAGE_METHOD, selectedStorage.storageName)
-    );
+    const chosenStorage = storageMethods.filter((item) => item.storageName === itemValue)[0];
+    setSelectedStorage(chosenStorage);
+    reviewItemsDispatch(editReviewItem(index, STORAGE_METHOD, chosenStorage.storageName));
+    reviewItemsDispatch(editReviewItem(index, SHELF_LIFE_ITEM_ID, chosenStorage.shelfLifeItemId));
     console.log(selectedStorage);
   };
 
@@ -49,7 +46,7 @@ export default function StorageSelector({
       <FormControl isRequired isInvalid={!selectedStorage}>
         <Select
           selectedValue={
-            storageMethods.length == 1 ? storageMethods[0].storageName : null
+            storageMethods.length === 1 ? storageMethods[0].storageName : null
           }
           minWidth="200"
           placeholder="Choose a storage method"
@@ -62,17 +59,13 @@ export default function StorageSelector({
           }}
           defaultValue={selectedStorage ? selectedStorage.storageName : null}
         >
-          {selectedCategory
-            ? selectedCategory.storageMethods.map((storageMethod, index) => {
-                return (
-                  <Select.Item
-                    label={storageMethod.storageName}
-                    value={storageMethod.storageName}
-                    key={storageMethod.storageName + index}
-                  />
-                );
-              })
-            : selectedShelfLifeItem.storageName}
+          {selectedCategory.storageMethods.map((storageMethod, i) => (
+            <Select.Item
+              label={storageMethod.storageName}
+              value={storageMethod.storageName}
+              key={`storage-method-${storageMethod.storageName + i}`}
+            />
+          ))}
         </Select>
         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
           Please select a storage method
