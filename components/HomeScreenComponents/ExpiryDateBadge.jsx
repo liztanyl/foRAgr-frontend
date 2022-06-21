@@ -3,8 +3,7 @@ import moment from 'moment';
 import { Badge } from 'native-base';
 
 export default function ExpiryDateBadge({ expiryDate }) {
-  const date = moment(expiryDate, 'DD-MM-YYYY');
-  const diff = moment(date).diff(new Date(), 'days');
+  const diff = moment(expiryDate).diff(new Date(), 'days');
 
   let color;
   if (diff < 4) color = 'warning';
@@ -15,7 +14,7 @@ export default function ExpiryDateBadge({ expiryDate }) {
 
   return (
     <Badge alignSelf="center" colorScheme={color} variant={variant} borderRadius="sm">
-      {`Expires ${moment(date).fromNow()}`}
+      {`Expires ${moment(expiryDate).fromNow()}`}
     </Badge>
   );
 }

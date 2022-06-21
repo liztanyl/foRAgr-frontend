@@ -1,8 +1,9 @@
 /* eslint-disable consistent-return */
 /* eslint-disable react/jsx-no-constructed-context-values */
-
+import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useReducer, useContext, useEffect } from 'react';
+import { BACKEND_URL } from '../store.js';
 
 const STORAGE_KEYS = {
   REVIEW_IDS: 'review ids',
@@ -82,9 +83,7 @@ const addReviewItems = (newItems) => {
 // --> Takes in index of the review item object to update,
 // the key to update (eg selectedCategory) and its new value
 const editReviewItem = (index, key, value) => {
-  console.log(
-    `review - index to edit (key: value), ${index} (${key}: ${value})`
-  );
+  console.log(`review - index to edit (key: value), ${index} (${key}: ${value})`);
   return {
     type: ACTIONS.REVIEW_ITEMS.EDIT_ITEM,
     payload: {
@@ -202,10 +201,8 @@ const reviewItemsReducer = (state, action) => {
         const { index, key, value } = action.payload;
         const updatedItems = [...state];
         updatedItems[index][key] = value;
-        AsyncStorage.setItem(
-          STORAGE_KEYS.REVIEW_ITEMS,
-          JSON.stringify(updatedItems)
-        );
+        AsyncStorage.setItem(STORAGE_KEYS.REVIEW_ITEMS,
+          JSON.stringify(updatedItems));
         return updatedItems;
       }
       break;
@@ -217,10 +214,8 @@ const reviewItemsReducer = (state, action) => {
         const indexToRemove = action.payload;
         const updatedItems = [...state];
         updatedItems.splice(indexToRemove, 1);
-        AsyncStorage.setItem(
-          STORAGE_KEYS.REVIEW_ITEMS,
-          JSON.stringify(updatedItems)
-        );
+        AsyncStorage.setItem(STORAGE_KEYS.REVIEW_ITEMS,
+          JSON.stringify(updatedItems));
         return updatedItems;
       }
       break;
@@ -266,10 +261,8 @@ const fridgeReducer = (state, action) => {
         console.log('fridge reducer-remove state', state);
         const idToRemove = action.payload;
         const updatedFridge = state.filter((item) => item.id !== idToRemove);
-        AsyncStorage.setItem(
-          STORAGE_KEYS.FRIDGE,
-          JSON.stringify(updatedFridge)
-        );
+        AsyncStorage.setItem(STORAGE_KEYS.FRIDGE,
+          JSON.stringify(updatedFridge));
         return updatedFridge;
       }
       break;
@@ -311,6 +304,7 @@ AsyncStorage.setItem(STORAGE_KEYS.FRIDGE,
   JSON.stringify(seedFridgeItems),
   () => console.log('done seeding fridge items in asyncstorage'));
  */
+
 const FridgeContext = React.createContext(null);
 
 // Call the below function when you want to use the FridgeContext
@@ -325,10 +319,8 @@ export function FridgeContextProvider({ children }) {
   const [reviewIds, reviewIdsDispatch] = useReducer(reviewIdsReducer, null);
 
   // reviewItems is an array of review item objects
-  const [reviewItems, reviewItemsDispatch] = useReducer(
-    reviewItemsReducer,
-    null
-  );
+  const [reviewItems, reviewItemsDispatch] = useReducer(reviewItemsReducer,
+    null);
 
   // fridgeItems is an array of fridge item objects
   const [fridgeItems, fridgeDispatch] = useReducer(fridgeReducer, null);
@@ -381,7 +373,11 @@ export function FridgeContextProvider({ children }) {
   useEffect(() => {
     getReviewIdsFromAsyncStorage();
     getReviewItemsFromAsyncStorage();
-    getFridgeItemsFromAsyncStorage();
+    axios.get(`${BACKEND_URL}/fridgeItems/index`)
+      .then((response) => {
+        fridgeDispatch({ type: ACTIONS.FRIDGE.RETRIEVE, payload: response.data });
+      });
+    // getFridgeItemsFromAsyncStorage();
   }, []);
 
   useEffect(() => {

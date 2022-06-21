@@ -33,7 +33,7 @@ export default function StorageNavigation({
     return (
       <Menu
         trigger={(triggerProps) => (
-          <Button {...triggerProps} w="200" h="7" pt={2}>
+          <Button {...triggerProps} w="200" pt={2}>
             {sortBy}
           </Button>
         )}

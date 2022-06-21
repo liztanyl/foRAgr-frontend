@@ -1,10 +1,25 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useState } from 'react';
-import { Popover, Button } from 'native-base';
+import { Popover, Button, Spinner } from 'native-base';
+import axios from 'axios';
+import { BACKEND_URL } from '../../store.js';
+import { useFridgeContext } from '../FridgeContext.jsx';
 
-export default function RemoveItemButton() {
+export default function RemoveItemButton({ itemId }) {
+  const { fridgeDispatch, dispatchHelpers: { removeFridgeItem } } = useFridgeContext();
   const [isOpen, setIsOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDelete = () => {
+    setIsDeleting(true);
+    axios.post(`${BACKEND_URL}/fridgeItems/destroy/${itemId}`)
+      .then(() => {
+        fridgeDispatch(removeFridgeItem(itemId));
+        setIsOpen(!isOpen);
+      });
+  };
+
   return (
     <Popover
       placement="right"
@@ -44,10 +59,10 @@ export default function RemoveItemButton() {
             <Button
               size="sm"
               colorScheme="danger"
-              onPress={() => setIsOpen(!isOpen)} // TODO: update with Delete route later
+              onPress={handleDelete}
+              isLoading={isDeleting}
             >
               Delete
-
             </Button>
           </Button.Group>
         </Popover.Body>

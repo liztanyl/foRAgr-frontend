@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import { Box, Button, ScrollView } from 'native-base';
 import moment from 'moment';
 import { BACKEND_URL } from '../../store.js';
-import { useFridgeContext } from '../FridgeContext';
+import { useFridgeContext } from '../FridgeContext.jsx';
 import ItemForm from './ItemReview/ItemForm.jsx';
 import NoItemsToReview from './ItemReview/NoItemsToReview.jsx';
 
 export default function ItemReview({ navigation }) {
-  // const reviewItemIds = [31, 49, 3, 4, 5, 58, 90, 123];
-
   const {
     reviewIds,
     reviewIdsDispatch,
@@ -19,18 +17,14 @@ export default function ItemReview({ navigation }) {
     dispatchHelpers: {
       removeReviewIds,
       addReviewItems,
-      editReviewItem,
-      removeReviewItem,
       removeReviewItems,
       addFridgeItems,
     },
   } = useFridgeContext();
 
   useEffect(() => {
-    // console.log(reviewIds);
     try {
-      reviewIds &&
-        reviewIds.length > 0 &&
+      if (reviewIds && reviewIds.length > 0) {
         axios
           .get(`${BACKEND_URL}/reviewItems/${reviewIds}`)
           .then((response) => {
@@ -41,14 +35,15 @@ export default function ItemReview({ navigation }) {
           .catch((err) => {
             console.log(err);
           });
+      }
     } catch (err) {
       console.log(err);
     }
   }, []);
 
-  const allFieldsFilled = (reviewItems) => {
+  const areAllFieldsFilled = (items) => {
     let fieldsFilled = true;
-    reviewItems.forEach((item) => {
+    items.forEach((item) => {
       [
         'category',
         'storageMethod',
@@ -64,34 +59,26 @@ export default function ItemReview({ navigation }) {
     return fieldsFilled;
   };
 
-  const formatReviewItems = (reviewItems) => {
-    const formattedReviewItems = reviewItems.map((reviewItem) => {
-      return {
-        userId: 1, // TO CHANGE AFTER ADDING USER LOGIN / AUTHENTICATION
-        shelfLifeItemId: reviewItem.id,
-        name: reviewItem.name,
-        addedOn: moment(reviewItem.purchaseDate, 'DD-MM-YYYY').toDate(),
-        expiry: moment(reviewItem.expiryDate, 'DD-MM-YYYY').toDate(),
-        notes: 'add this in later', // TO ADD NOTES INPUT COMPONENT
-        price: 10,
-      };
-    });
-
-    return formattedReviewItems;
-  };
+  const formatReviewItems = (items) => items.map((item) => ({
+    userId: 1, // TODO: CHANGE AFTER ADDING USER LOGIN / AUTHENTICATION
+    shelfLifeItemId: item.shelfLifeItemId,
+    addedOn: moment(item.purchaseDate, 'DD-MM-YYYY').toDate(),
+    expiry: moment(item.expiryDate, 'DD-MM-YYYY').toDate(),
+    notes: 'add this in later', // TODO: ADD NOTES INPUT COMPONENT
+  }));
 
   const handleAddToFridge = () => {
-    if (allFieldsFilled(reviewItems)) {
+    if (areAllFieldsFilled(reviewItems)) {
       console.log('all fields filled');
-      fridgeDispatch(addFridgeItems(reviewItems));
 
       const dataToBackend = formatReviewItems(reviewItems);
-
+      console.log(dataToBackend);
       axios
-        .post(`${BACKEND_URL}/fridgeItems/addItems`, dataToBackend)
+        .post(`${BACKEND_URL}/fridgeItems/add`, dataToBackend)
         .then((response) => {
-          console.log(response);
+          const addedItems = response.data;
           reviewItemsDispatch(removeReviewItems());
+          fridgeDispatch(addFridgeItems(addedItems));
         })
         .catch((err) => {
           console.log(err);
@@ -103,21 +90,20 @@ export default function ItemReview({ navigation }) {
   };
 
   return (
-    <Box>
+    <Box style={{ height: '100%' }}>
       <ScrollView
         maxW="500"
-        h="700"
         _contentContainerStyle={{
           px: '20px',
           mb: '4',
           minW: '72',
         }}
       >
-        {reviewItems &&
-          reviewItems.map((item, index) => (
+        {reviewItems
+          && reviewItems.map((item, index) => (
             <ItemForm item={item} key={item.id} index={index} />
           ))}
-        {reviewItems && (
+        {reviewItems && reviewItems.length > 0 && (
           <Button onPress={handleAddToFridge}>Add to Fridge</Button>
         )}
         {(!reviewItems || reviewItems.length === 0) && (

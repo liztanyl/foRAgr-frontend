@@ -17,7 +17,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     if (fridgeItems) {
-      const expiring = fridgeItems.filter((item) => (moment(item.expiryDate, 'DD-MM-YYYY').diff(new Date(), 'days') < 3));
+      const expiring = fridgeItems.filter((item) => (moment(item.expiryDate).diff(new Date(), 'days') < 3));
       console.log(expiring);
       if (expiring.length > 0) setNumExpiringItems(expiring.length);
       else setNumExpiringItems(null);

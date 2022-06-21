@@ -3,10 +3,10 @@ import moment from 'moment';
 import {
   Box, Text, VStack, HStack, FlatList, Spacer,
 } from 'native-base';
-import { useFridgeContext } from '../FridgeContext';
-import { SORT, sortItems } from './helpers';
-import ExpiryDateBadge from './ExpiryDateBadge';
-import RemoveItemButton from './RemoveItemButton';
+import { useFridgeContext } from '../FridgeContext.jsx';
+import { SORT, sortItems } from './helpers.js';
+import ExpiryDateBadge from './ExpiryDateBadge.jsx';
+import RemoveItemButton from './RemoveItemButton.jsx';
 
 export default function ItemDisplay({ currentStorage, sortBy }) {
   const { fridgeItems } = useFridgeContext();
@@ -54,7 +54,6 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
 
   return (
     <FlatList
-      scrollEnabled="true"
       data={items}
       renderItem={({
         item,
@@ -90,9 +89,9 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
             >
               Added:
               {' '}
-              {moment(item.purchaseDate, 'DD-MM-YYYY').fromNow()}
+              {moment(item.purchaseDate).fromNow()}
             </Text>
-            <RemoveItemButton />
+            <RemoveItemButton itemId={item.id} />
           </VStack>
         </Box>
       )}
