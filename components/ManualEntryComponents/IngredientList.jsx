@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Box, Text, Button, CloseIcon, HStack, Center } from 'native-base';
+import {
+  Box, Text, Button, CloseIcon, HStack, Center,
+} from 'native-base';
 
 export default function IngredientList({ selected, setSelectedList }) {
   const styles = StyleSheet.create({

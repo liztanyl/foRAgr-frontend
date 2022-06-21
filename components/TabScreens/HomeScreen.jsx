@@ -16,8 +16,8 @@ export default function HomeScreen() {
   const { fridgeItems } = useFridgeContext();
   allowsNotificationsAsync();
   useEffect(() => {
-    if (fridgeItems) {
-      const expiring = fridgeItems.filter((item) => (moment(item.expiryDate).diff(new Date(), 'days') < 3));
+    if (fridgeItems && fridgeItems.length > 0) {
+      const expiring = fridgeItems?.filter((item) => (moment(item.expiryDate).diff(new Date(), 'days') < 3));
       console.log(expiring);
       if (expiring.length > 0) setNumExpiringItems(expiring.length);
       else setNumExpiringItems(null);

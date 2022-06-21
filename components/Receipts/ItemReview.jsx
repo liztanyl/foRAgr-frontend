@@ -6,6 +6,7 @@ import { BACKEND_URL } from '../../store.js';
 import { useFridgeContext } from '../FridgeContext.jsx';
 import ItemForm from './ItemReview/ItemForm.jsx';
 import NoItemsToReview from './ItemReview/NoItemsToReview.jsx';
+import setNotification from '../NotificationComponent/setNotification.js';
 
 export default function ItemReview({ navigation }) {
   const {
@@ -59,12 +60,13 @@ export default function ItemReview({ navigation }) {
     return fieldsFilled;
   };
 
-  const formatReviewItems = (items) => items.map((item) => ({
+  const formatReviewItems = (items) => items.map(async (item) => ({
     userId: 1, // TODO: CHANGE AFTER ADDING USER LOGIN / AUTHENTICATION
     shelfLifeItemId: item.shelfLifeItemId,
     addedOn: moment(item.purchaseDate, 'DD-MM-YYYY').toDate(),
     expiry: moment(item.expiryDate, 'DD-MM-YYYY').toDate(),
     notes: 'add this in later', // TODO: ADD NOTES INPUT COMPONENT
+    notificationIdentifier: await setNotification(item.name, item.shelfLifeDays, item.expiryDate),
   }));
 
   const handleAddToFridge = () => {

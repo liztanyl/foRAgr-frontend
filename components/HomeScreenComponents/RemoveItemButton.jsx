@@ -5,6 +5,7 @@ import { Popover, Button } from 'native-base';
 import axios from 'axios';
 import { BACKEND_URL } from '../../store.js';
 import { useFridgeContext } from '../FridgeContext.jsx';
+import cancelNotification from '../NotificationComponent/cancelNotification.js';
 
 export default function RemoveItemButton({ itemId }) {
   const { fridgeDispatch, dispatchHelpers: { removeFridgeItem } } = useFridgeContext();
@@ -14,7 +15,8 @@ export default function RemoveItemButton({ itemId }) {
   const handleDelete = () => {
     setIsDeleting(true);
     axios.post(`${BACKEND_URL}/fridgeItems/destroy/${itemId}`)
-      .then(() => {
+      .then(async (notificationIdentifier) => {
+        await cancelNotification(notificationIdentifier);
         fridgeDispatch(removeFridgeItem(itemId));
         setIsOpen(!isOpen);
       });
