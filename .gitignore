@@ -12,5 +12,4 @@ web-build/
 
 # macOS
 .DS_Store
-myIpAddress.js
-myGoogleApiKey.js
+secret.js
