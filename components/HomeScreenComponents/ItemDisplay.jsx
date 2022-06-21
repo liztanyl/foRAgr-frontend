@@ -55,9 +55,7 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
   return (
     <FlatList
       data={items}
-      renderItem={({
-        item,
-      }) => (
+      renderItem={({ item }) => (
         <Box
           borderBottomWidth="1"
           borderColor="coolGray.200"
@@ -66,21 +64,14 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
           py="3"
         >
           <HStack space={3} justifyContent="space-between">
-            <Text
-              color="coolGray.800"
-              bold
-              fontSize="md"
-            >
+            <Text color="coolGray.800" bold fontSize="md">
               {item.name}
             </Text>
             <Spacer />
             <ExpiryDateBadge expiryDate={item.expiryDate} />
           </HStack>
           <VStack>
-            <Text
-              color="coolGray.800"
-              alignSelf="flex-start"
-            >
+            <Text color="coolGray.800" alignSelf="flex-start">
               {item.category}
             </Text>
             <Text
@@ -95,7 +86,7 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
           </VStack>
         </Box>
       )}
-      keyExtractor={(item) => (`${item.id}-${item.expiryDate}`)}
+      keyExtractor={(item) => `${item.id}-${item.expiryDate}`}
     />
   );
 }

@@ -1,7 +1,7 @@
 // import { Divider, Box, Button } from 'native-base';
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  StyleSheet, Text, View, TouchableOpacity, Alert,
+  StyleSheet, Text, View, TouchableOpacity, Platform,
 } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
 import { Ionicons, Octicons, Entypo } from '@expo/vector-icons';
@@ -64,6 +64,39 @@ function CameraScreen({ navigation }) {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
+
+  const sendPhotoGCloud = (data) => {
+    const sendPhotoData = async () => {
+      try {
+        const base64Content = Platform.OS === 'web' ? data.base64.slice(22) : data.base64;
+
+        const photoDataResponse = await axios.post(`https://vision.googleapis.com/v1/images:annotate?key=${GOOGLE_API_KEY}`, {
+          requests: [
+            {
+              image: {
+                content: base64Content,
+              },
+              features: [
+                {
+                  type: 'DOCUMENT_TEXT_DETECTION',
+                  maxResults: 1,
+                },
+              ],
+            },
+          ],
+        });
+        console.log(photoDataResponse.data);
+        const detection = photoDataResponse.data?.responses[0]?.textAnnotations[0];
+        const backendResponse = await axios.post(`${BACKEND_URL}/photoData`, { detection });
+        console.log(backendResponse);
+        navigation.navigate('See Parsed Receipt', { parsedData: backendResponse });
+      }
+      catch (error) {
+        console.log(error);
+      }
+    };
+    sendPhotoData();
+  };
   // take photo
   // eslint-disable-next-line consistent-return
   const takePhoto = async () => {
@@ -77,34 +110,10 @@ function CameraScreen({ navigation }) {
         quality: 1,
         base64: true,
       });
-      return photo;
+      sendPhotoGCloud(photo);
     } catch (e) {
       console.log(e);
     }
-  };
-  const sendPhotoGCloud = (data) => {
-    const sendPhotoData = async () => {
-      const photoDataResponse = await axios.post(`https://vision.googleapis.com/v1/images:annotate?key=${GOOGLE_API_KEY}`, {
-        requests: [
-          {
-            image: {
-              content: data.base64.slice(22),
-            },
-            features: [
-              {
-                type: 'DOCUMENT_TEXT_DETECTION',
-                maxResults: 1,
-              },
-            ],
-          },
-        ],
-      });
-      const detection = photoDataResponse.data.responses[0].textAnnotations[0];
-      const backendResponse = await axios.post(`${BACKEND_URL}/photoData`, { detection });
-      console.log(backendResponse);
-      navigation.navigate('See Parsed Receipt', { parsedData: backendResponse });
-    };
-    sendPhotoData();
   };
 
   const uploadPhoto = async () => {
@@ -144,13 +153,6 @@ function CameraScreen({ navigation }) {
           >
             <Entypo name="upload" size={24} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={async () => {
-              sendPhotoGCloud('sample data');
-            }}
-          >
-            <Text style={styles.button}>Skip</Text>
-          </TouchableOpacity>
         </HStack>
         <View style={styles.buttonContainer}>
           <Box style={styles.borderFocus} />
@@ -160,8 +162,6 @@ function CameraScreen({ navigation }) {
             <TouchableOpacity
               onPress={async () => {
                 const r = await takePhoto();
-                Alert.alert('DEBUG', JSON.stringify(r));
-                sendPhotoGCloud(r);
               }}
             >
               <Octicons name="circle" size={50} color="white" />

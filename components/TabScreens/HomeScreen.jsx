@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+import { requestPermissionsAsync } from 'expo-notifications';
+
 import { View } from 'react-native';
 import { Heading } from 'native-base';
 
@@ -24,6 +26,7 @@ export default function HomeScreen() {
     }
   }, [fridgeItems]);
 
+  requestPermissionsAsync();
   return (
     <View style={{ height: '100%' }}>
       {numExpiringItems && <ExpiryAlert num={numExpiringItems} />}

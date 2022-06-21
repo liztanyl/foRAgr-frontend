@@ -1,8 +1,6 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import {
-  Box, Text, Button, CloseIcon, HStack, Center,
-} from 'native-base';
+import { StyleSheet, View } from 'react-native';
+import { Box, Text, Button, CloseIcon, HStack, Center } from 'native-base';
 
 export default function IngredientList({ selected, setSelectedList }) {
   const styles = StyleSheet.create({
@@ -28,16 +26,13 @@ export default function IngredientList({ selected, setSelectedList }) {
           <Text bold>{x.name}</Text>
         </Center>
         <Center style={styles.deleteButton}>
-          <Button width="50" variant="ghost" onPress={() => handleDelete(x.id)}><CloseIcon color="danger.800" /></Button>
+          <Button width="50" variant="ghost" onPress={() => handleDelete(x.id)}>
+            <CloseIcon color="danger.800" />
+          </Button>
         </Center>
       </HStack>
     </Box>
   ));
 
-  return (
-    <div>
-      { selectedDisplay }
-    </div>
-
-  );
+  return <View>{selectedDisplay}</View>;
 }
