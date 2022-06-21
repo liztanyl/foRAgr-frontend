@@ -103,10 +103,9 @@ export default function ItemReview({ navigation }) {
   };
 
   return (
-    <Box>
+    <Box style={{ height: '100%' }}>
       <ScrollView
         maxW="500"
-        h="700"
         _contentContainerStyle={{
           px: '20px',
           mb: '4',
