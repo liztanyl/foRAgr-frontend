@@ -30,9 +30,9 @@ function ParsedReceipt({ route, navigation }) {
   const { reviewIdsDispatch, dispatchHelpers: { addReviewIds } } = useFridgeContext();
   const { parsedData } = route.params;
 
-  const [foodItemsPhoto, setFoodPhotoItems] = useState(parsedData);
+  const [foodItemsPhoto, setFoodPhotoItems] = useState(parsedData.data);
   const [show, setShow] = useState(false);
-
+  console.log(foodItemsPhoto, 'food items');
   const removeItem = (item) => {
     const remainingItems = foodItemsPhoto.filter((food) => item !== food.match[0].itemName);
     setFoodPhotoItems(remainingItems);
@@ -49,7 +49,8 @@ function ParsedReceipt({ route, navigation }) {
     <View style={{ flex: 1, alignItems: 'center' }}>
       {show && <SuccessfulAlert />}
       <Box>Possible Food Items detected: </Box>
-      {foodItemsPhoto.map((data) => (
+      {foodItemsPhoto.length !== 0
+      && foodItemsPhoto.map((data) => (
         <Box>
           <HStack space={2} my="2" justifyContent="space-between">
             <Box w="30%">{data.parsedName.toUpperCase()}</Box>
@@ -64,7 +65,7 @@ function ParsedReceipt({ route, navigation }) {
           </HStack>
         </Box>
       ))}
-      {!show
+      {(!show && foodItemsPhoto.length > 0)
       && (
       <HStack space={2}>
         <Button
