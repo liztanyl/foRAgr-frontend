@@ -1,6 +1,9 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable import/prefer-default-export */
 import React, { useReducer, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+
 import { BACKEND_URL } from '../store';
 
 const UserContext = React.createContext();
@@ -14,9 +17,8 @@ export function UserContextProvider({ children }) {
 
   useEffect(() => {
     const url = new URL(window.location.href);
-    console.log(url);
-    console.log(url.searchParams.get('code'));
 
+    // Part of google login procedure: checks for authCode sent by google server in url
     if (window.location.pathname === '/auth/google') {
       const authCode = url.searchParams.get('code');
       const dataToServer = {
@@ -25,8 +27,10 @@ export function UserContextProvider({ children }) {
 
       axios
         .post(`${BACKEND_URL}/user/getAccessToken`, dataToServer)
-        .then((response) => {
-          console.log(response.data);
+        .then(() => {
+          console.log('logged in');
+          const userData = JSON.parse(Cookies.get('logged_in_user'));
+          setUserDetails(userData);
         })
         .catch((err) => {
           console.log(err);
