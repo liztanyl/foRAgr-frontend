@@ -17,8 +17,8 @@ export default function RemoveItemButton({ itemId }) {
   const handleDelete = () => {
     setIsDeleting(true);
     axios.post(`${BACKEND_URL}/fridgeItems/destroy/${itemId}`)
-      .then((notificationIdentifier) => {
-        if (Platform.OS !== 'web') cancelNotification(notificationIdentifier);
+      .then((response) => {
+        if (Platform.OS !== 'web') cancelNotification(response.data);
         fridgeDispatch(removeFridgeItem(itemId));
         setIsOpen(!isOpen);
       });
