@@ -1,9 +1,5 @@
 import React, { useEffect } from 'react';
 import { Platform } from 'react-native';
-<<<<<<< HEAD
-import axios from 'axios';
-=======
->>>>>>> 411bb0e1d6d58f5b0b8095e02ad6a1e76d33889d
 import { Box, Button, ScrollView } from 'native-base';
 import axios from 'axios';
 import moment from 'moment';
