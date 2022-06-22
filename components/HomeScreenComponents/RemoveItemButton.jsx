@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { Popover, Button } from 'native-base';
 import axios from 'axios';
+import { Platform } from 'react-native';
+
 import { BACKEND_URL } from '../../store.js';
 import { useFridgeContext } from '../FridgeContext.jsx';
 import cancelNotification from '../NotificationComponent/cancelNotification.js';
@@ -15,8 +17,8 @@ export default function RemoveItemButton({ itemId }) {
   const handleDelete = () => {
     setIsDeleting(true);
     axios.post(`${BACKEND_URL}/fridgeItems/destroy/${itemId}`)
-      .then(async (notificationIdentifier) => {
-        await cancelNotification(notificationIdentifier);
+      .then((notificationIdentifier) => {
+        if (Platform.OS !== 'web') cancelNotification(notificationIdentifier);
         fridgeDispatch(removeFridgeItem(itemId));
         setIsOpen(!isOpen);
       });
