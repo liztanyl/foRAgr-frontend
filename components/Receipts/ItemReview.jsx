@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
-import axios from 'axios';
+import { Platform } from 'react-native';
 import { Box, Button, ScrollView } from 'native-base';
+import axios from 'axios';
 import moment from 'moment';
+
 import { BACKEND_URL } from '../../store.js';
 import { useFridgeContext } from '../FridgeContext.jsx';
 import ItemForm from './ItemReview/ItemForm.jsx';
@@ -60,13 +62,12 @@ export default function ItemReview({ navigation }) {
     return fieldsFilled;
   };
 
-  const formatReviewItems = (items) => items.map(async (item) => ({
+  const formatReviewItems = (items) => items.map((item) => ({
     userId: 1, // TODO: CHANGE AFTER ADDING USER LOGIN / AUTHENTICATION
     shelfLifeItemId: item.shelfLifeItemId,
     addedOn: moment(item.purchaseDate, 'DD-MM-YYYY').toDate(),
     expiry: moment(item.expiryDate, 'DD-MM-YYYY').toDate(),
     notes: 'add this in later', // TODO: ADD NOTES INPUT COMPONENT
-    notificationIdentifier: await setNotification(item.name, item.shelfLifeDays, item.expiryDate),
   }));
 
   const handleAddToFridge = () => {
@@ -74,13 +75,14 @@ export default function ItemReview({ navigation }) {
       console.log('all fields filled');
 
       const dataToBackend = formatReviewItems(reviewItems);
-      console.log(dataToBackend);
+      console.log('data to backend', dataToBackend);
       axios
         .post(`${BACKEND_URL}/fridgeItems/add`, dataToBackend)
         .then((response) => {
           const addedItems = response.data;
           reviewItemsDispatch(removeReviewItems());
           fridgeDispatch(addFridgeItems(addedItems));
+          if (Platform.OS !== 'web') addedItems.forEach((item) => setNotification(item));
         })
         .catch((err) => {
           console.log(err);
