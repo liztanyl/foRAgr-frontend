@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
-import axios from 'axios';
+import { Platform } from 'react-native';
 import { Box, Button, ScrollView } from 'native-base';
+import axios from 'axios';
 import moment from 'moment';
+
 import { BACKEND_URL } from '../../store.js';
 import { useFridgeContext } from '../FridgeContext.jsx';
 import ItemForm from './ItemReview/ItemForm.jsx';
 import NoItemsToReview from './ItemReview/NoItemsToReview.jsx';
+import setNotification from '../NotificationComponent/setNotification.js';
 
 export default function ItemReview({ navigation }) {
   const {
@@ -72,13 +75,14 @@ export default function ItemReview({ navigation }) {
       console.log('all fields filled');
 
       const dataToBackend = formatReviewItems(reviewItems);
-      console.log(dataToBackend);
+      console.log('data to backend', dataToBackend);
       axios
         .post(`${BACKEND_URL}/fridgeItems/add`, dataToBackend)
         .then((response) => {
           const addedItems = response.data;
           reviewItemsDispatch(removeReviewItems());
           fridgeDispatch(addFridgeItems(addedItems));
+          if (Platform.OS !== 'web') addedItems.forEach((item) => setNotification(item));
         })
         .catch((err) => {
           console.log(err);

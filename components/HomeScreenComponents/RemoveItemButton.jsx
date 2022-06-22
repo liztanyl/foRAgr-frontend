@@ -1,10 +1,13 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useState } from 'react';
-import { Popover, Button, Spinner } from 'native-base';
+import { Popover, Button } from 'native-base';
 import axios from 'axios';
+import { Platform } from 'react-native';
+
 import { BACKEND_URL } from '../../store.js';
 import { useFridgeContext } from '../FridgeContext.jsx';
+import cancelNotification from '../NotificationComponent/cancelNotification.js';
 
 export default function RemoveItemButton({ itemId }) {
   const { fridgeDispatch, dispatchHelpers: { removeFridgeItem } } = useFridgeContext();
@@ -14,7 +17,8 @@ export default function RemoveItemButton({ itemId }) {
   const handleDelete = () => {
     setIsDeleting(true);
     axios.post(`${BACKEND_URL}/fridgeItems/destroy/${itemId}`)
-      .then(() => {
+      .then((notificationIdentifier) => {
+        if (Platform.OS !== 'web') cancelNotification(notificationIdentifier);
         fridgeDispatch(removeFridgeItem(itemId));
         setIsOpen(!isOpen);
       });

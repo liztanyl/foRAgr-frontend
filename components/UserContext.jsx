@@ -1,6 +1,10 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable import/prefer-default-export */
-import React, { useReducer, useContext, useEffect, useState } from 'react';
+import React, {
+  useReducer, useContext, useEffect, useState,
+} from 'react';
+import { Platform } from 'react-native';
+
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -16,10 +20,11 @@ export function UserContextProvider({ children }) {
   const [userDetails, setUserDetails] = useState({});
 
   useEffect(() => {
-    const url = new URL(window.location.href);
+    if (Platform.OS === 'web' && window.location.pathname === '/auth/google') {
+      const url = new URL(window.location.href);
+      console.log(url);
+      console.log(url.searchParams.get('code'));
 
-    // Part of google login procedure: checks for authCode sent by google server in url
-    if (window.location.pathname === '/auth/google') {
       const authCode = url.searchParams.get('code');
       const dataToServer = {
         authCode,
