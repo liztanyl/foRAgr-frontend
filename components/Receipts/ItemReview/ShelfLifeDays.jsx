@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Input, FormControl } from 'native-base';
-import { useFridgeContext } from '../../FridgeContext';
+import { useFridgeContext } from '../../FridgeContext.jsx';
 
 const SHELF_LIFE_DAYS = 'shelfLifeDays';
 
@@ -24,10 +24,8 @@ export default function ShelfLifeDays({
 
   const handleUpdatedShelfLifeDays = (itemValue) => {
     if (itemValue.match(/^[0-9]+$/)) {
-      setUpdatedShelfLifeDays(itemValue);
-      reviewItemsDispatch(
-        editReviewItem(index, SHELF_LIFE_DAYS, Number(itemValue))
-      );
+      setUpdatedShelfLifeDays(Number(itemValue));
+      reviewItemsDispatch(editReviewItem(index, SHELF_LIFE_DAYS, Number(itemValue)));
     } else if (!itemValue) {
       setUpdatedShelfLifeDays(null);
       reviewItemsDispatch(editReviewItem(index, SHELF_LIFE_DAYS, null));
@@ -40,7 +38,7 @@ export default function ShelfLifeDays({
         type="text"
         variant="outline"
         placeholder="Enter shelf life length in days"
-        value={updatedShelfLifeDays}
+        value={updatedShelfLifeDays?.toString()}
         onChangeText={handleUpdatedShelfLifeDays}
       />
     </FormControl>
