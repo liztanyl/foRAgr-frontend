@@ -65,7 +65,6 @@ const removeReviewIds = () => {
   console.log('review - removes all ids');
   return {
     type: ACTIONS.REVIEW_IDS.REMOVE_IDS,
-    payload: null,
   };
 };
 
@@ -108,7 +107,6 @@ const removeReviewItems = () => {
   console.log('review - remove all ids');
   return {
     type: ACTIONS.REVIEW_ITEMS.REMOVE_ITEMS,
-    payload: null,
   };
 };
 
@@ -147,7 +145,7 @@ const reviewIdsReducer = (state, action) => {
     case ACTIONS.REVIEW_IDS.ADD_IDS: {
       console.log('reviewIdsReducer-add state', state);
       const newIds = state ? [...state, ...action.payload] : action.payload;
-      AsyncStorage.setItem(STORAGE_KEYS.REVIEW, JSON.stringify(newIds));
+      AsyncStorage.setItem(STORAGE_KEYS.REVIEW_IDS, JSON.stringify(newIds));
       return newIds;
     }
 
@@ -156,7 +154,7 @@ const reviewIdsReducer = (state, action) => {
         console.log('reviewIdsReducer-remove state', state);
         const idToRemove = action.payload;
         const updatedIds = state.filter((id) => id !== idToRemove);
-        AsyncStorage.setItem(STORAGE_KEYS.REVIEW, JSON.stringify(updatedIds));
+        AsyncStorage.setItem(STORAGE_KEYS.REVIEW_IDS, JSON.stringify(updatedIds));
         return updatedIds;
       }
       break;
@@ -165,9 +163,8 @@ const reviewIdsReducer = (state, action) => {
     case ACTIONS.REVIEW_IDS.REMOVE_IDS: {
       if (state) {
         console.log('reviewIdsReducer-remove-ids state', state);
-        const updatedIds = null;
-        AsyncStorage.setItem(STORAGE_KEYS.REVIEW, updatedIds);
-        return updatedIds;
+        AsyncStorage.removeItem(STORAGE_KEYS.REVIEW_IDS);
+        return null;
       }
       break;
     }
@@ -224,9 +221,8 @@ const reviewItemsReducer = (state, action) => {
     case ACTIONS.REVIEW_ITEMS.REMOVE_ITEMS: {
       if (state) {
         console.log('reviewItemsReducer-remove state', state);
-        const updatedItems = null;
-        AsyncStorage.setItem(STORAGE_KEYS.REVIEW_ITEMS, null);
-        return updatedItems;
+        AsyncStorage.removeItem(STORAGE_KEYS.REVIEW_ITEMS);
+        return null;
       }
       break;
     }
@@ -349,21 +345,6 @@ export function FridgeContextProvider({ children }) {
         console.log('------------------------- >>>>>>>>>>');
         reviewItemsDispatch({
           type: ACTIONS.REVIEW_ITEMS.RETRIEVE,
-          payload: JSON.parse(result),
-        });
-      }
-    });
-  };
-
-  const getFridgeItemsFromAsyncStorage = () => {
-    AsyncStorage.getItem(STORAGE_KEYS.FRIDGE, (err, result) => {
-      if (err) console.log(err);
-      if (result) {
-        console.log('<<<<<< getFridgeItemsFromAsyncStorage');
-        console.log('    result', result);
-        console.log('------------------------- >>>>>>>>>>');
-        fridgeDispatch({
-          type: ACTIONS.FRIDGE.RETRIEVE,
           payload: JSON.parse(result),
         });
       }
