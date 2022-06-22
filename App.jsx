@@ -5,7 +5,7 @@ import { NativeBaseProvider } from 'native-base';
 import { FridgeContextProvider } from './components/FridgeContext.jsx';
 import { UserContextProvider } from './components/UserContext.jsx';
 
-import NavbarTabs from './components/NavbarTabs.js';
+import NavbarTabs from './components/NavbarTabs.jsx';
 
 axios.defaults.withCredentials = true;
 

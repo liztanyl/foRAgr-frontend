@@ -1,17 +1,15 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
-  MaterialCommunityIcons,
+  // MaterialCommunityIcons,
   Ionicons,
   FontAwesome,
 } from '@expo/vector-icons';
 
-import EnterReceipt from './TabScreens/EnterReceipt';
-import HomeScreen from './TabScreens/HomeScreen';
-import Logout from './TabScreens/Logout';
-import Profile from './TabScreens/Profile';
-import Recipes from './TabScreens/Recipes';
-import ItemReview from './Receipts/ItemReview';
+import EnterReceipt from './TabScreens/EnterReceipt.jsx';
+import HomeScreen from './TabScreens/HomeScreen.jsx';
+import Profile from './TabScreens/Profile.jsx';
+// import Recipes from './TabScreens/Recipes.jsx';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,16 +27,16 @@ export default function NavbarTabs() {
         }}
       />
       <Tab.Screen
-        name="Enter Receipt"
+        name="Add Items"
         component={EnterReceipt}
         options={{
-          tabBarLabel: 'Enter Receipt',
+          tabBarLabel: 'Add Items',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="receipt" size={24} color="black" />
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Recipes"
         component={Recipes}
         options={{
@@ -51,7 +49,7 @@ export default function NavbarTabs() {
             />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Profile"
         component={Profile}
@@ -60,13 +58,6 @@ export default function NavbarTabs() {
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="user" size={24} color="black" />
           ),
-        }}
-      />
-      <Tab.Screen
-        name="Test"
-        component={ItemReview}
-        options={{
-          tabBarLabel: 'Item Review Test',
         }}
       />
     </Tab.Navigator>
