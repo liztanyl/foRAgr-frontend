@@ -1,19 +1,22 @@
 import React from 'react';
 import axios from 'axios';
 import { NavigationContainer } from '@react-navigation/native';
-import { NativeBaseProvider } from 'native-base';
+import { NativeBaseProvider, extendTheme } from 'native-base';
 import { FridgeContextProvider } from './components/FridgeContext.jsx';
 import { UserContextProvider } from './components/UserContext.jsx';
+import getTheme from './components/styles/theme.jsx';
 
 import NavbarTabs from './components/NavbarTabs.js';
 
 axios.defaults.withCredentials = true;
 
 export default function App() {
+  const newTheme = extendTheme(getTheme());
+
   return (
     <UserContextProvider>
       <FridgeContextProvider>
-        <NativeBaseProvider>
+        <NativeBaseProvider theme={newTheme}>
           <NavigationContainer>
             <NavbarTabs />
           </NavigationContainer>
