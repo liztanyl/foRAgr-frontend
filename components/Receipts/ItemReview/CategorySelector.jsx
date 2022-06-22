@@ -23,21 +23,15 @@ export default function CategorySelector({
   } = useFridgeContext();
 
   const handleValueChange = (itemValue) => {
-    const selectedItem = categories.filter(
-      (item) => item.categoryName == itemValue
-    )[0];
+    const selectedItem = categories.filter((item) => item.categoryName == itemValue)[0];
     setSelectedCategory(selectedItem);
-    reviewItemsDispatch(
-      editReviewItem(index, CATEGORY, selectedItem.categoryName)
-    );
+    reviewItemsDispatch(editReviewItem(index, CATEGORY, selectedItem.categoryName));
   };
 
   useEffect(() => {
     if (categories.length == 1) {
       setSelectedCategory(categories[0]);
-      reviewItemsDispatch(
-        editReviewItem(index, CATEGORY, categories[0].categoryName)
-      );
+      reviewItemsDispatch(editReviewItem(index, CATEGORY, categories[0].categoryName));
     }
   }, []);
 
@@ -68,15 +62,13 @@ export default function CategorySelector({
             />
           ) : (
             // otherwise, render all categories
-            categories.map((item, index) => {
-              return (
-                <Select.Item
-                  label={item.categoryName}
-                  value={item.categoryName}
-                  key={item.categoryName + index}
-                />
-              );
-            })
+            categories.map((item, index) => (
+              <Select.Item
+                label={item.categoryName}
+                value={item.categoryName}
+                key={item.categoryName + index}
+              />
+            ))
           )}
         </Select>
         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>

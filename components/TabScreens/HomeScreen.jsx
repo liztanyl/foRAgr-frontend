@@ -33,7 +33,7 @@ export default function HomeScreen() {
         sortBy={sortBy}
         setSortBy={setSortBy}
       />
-      <Heading px="4">{currentStorage}</Heading>
+      <Heading px="4" fontWeight="700" fontSize="2xl">{currentStorage}</Heading>
       <ItemDisplay
         currentStorage={currentStorage}
         sortBy={sortBy}
