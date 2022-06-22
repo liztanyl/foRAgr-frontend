@@ -73,7 +73,6 @@ export default function ItemReview({ navigation }) {
   const handleAddToFridge = () => {
     if (areAllFieldsFilled(reviewItems)) {
       console.log('all fields filled');
-
       const dataToBackend = formatReviewItems(reviewItems);
       console.log('data to backend', dataToBackend);
       axios

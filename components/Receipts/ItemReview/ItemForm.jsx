@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Select, Center, FormControl } from 'native-base';
+import {
+  Box, Select, Center, FormControl,
+} from 'native-base';
 import { StyleSheet } from 'react-native';
 import moment from 'moment';
 import CategorySelector from './CategorySelector.jsx';
@@ -13,13 +15,10 @@ export default function ItemForm({ item, index }) {
   const { name, categories } = item;
   const [selectedCategory, setSelectedCategory] = useState();
   const [selectedStorage, setSelectedStorage] = useState();
-  const [purchaseDate, setPurchaseDate] = useState(
-    moment(new Date()).format('DD-MM-YYYY')
-  );
-  const [updatedShelfLifeDays, setUpdatedShelfLifeDays] = useState(
-    selectedStorage ? selectedStorage.shelfLifeDays : null
-  );
+  const [purchaseDate, setPurchaseDate] = useState(moment(new Date()).format('DD-MM-YYYY'));
+  const [updatedShelfLifeDays, setUpdatedShelfLifeDays] = useState(selectedStorage ? selectedStorage.shelfLifeDays : null);
 
+  console.log(item);
   const styles = StyleSheet.create({
     itemContainer: {
       color: 'black',

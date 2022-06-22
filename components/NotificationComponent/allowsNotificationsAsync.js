@@ -7,7 +7,7 @@ async function allowsNotificationsAsync() {
   console.log(settings);
   let finalStatus = settings.status;
   // if not granted permission
-  if (settings.status === 'granted' && settings.canAskAgain) {
+  if (settings.status !== 'granted' && settings.canAskAgain) {
     const { status } = await Notifications.requestPermissionsAsync();
     finalStatus = status;
   }
