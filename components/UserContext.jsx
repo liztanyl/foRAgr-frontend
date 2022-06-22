@@ -1,10 +1,7 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable import/prefer-default-export */
-import React, {
-  useReducer, useContext, useEffect, useState,
-} from 'react';
+import React, { useReducer, useContext, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
-
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -18,6 +15,8 @@ export function useUserContext() {
 
 export function UserContextProvider({ children }) {
   const [userDetails, setUserDetails] = useState({});
+
+  const userDataFromCookies = () => JSON.parse(Cookies.get('logged_in_user'));
 
   useEffect(() => {
     if (Platform.OS === 'web' && window.location.pathname === '/auth/google') {
@@ -34,12 +33,15 @@ export function UserContextProvider({ children }) {
         .post(`${BACKEND_URL}/user/getAccessToken`, dataToServer)
         .then(() => {
           console.log('logged in');
-          const userData = JSON.parse(Cookies.get('logged_in_user'));
-          setUserDetails(userData);
+          setUserDetails(userDataFromCookies());
         })
         .catch((err) => {
           console.log(err);
         });
+    }
+
+    if (Cookies.get('logged_in_user') && Cookies.get('token')) {
+      setUserDetails(userDataFromCookies());
     }
   }, []);
 
