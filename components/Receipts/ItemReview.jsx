@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Platform } from 'react-native';
 import axios from 'axios';
 import { Box, Button, ScrollView } from 'native-base';
 import moment from 'moment';
@@ -66,15 +67,14 @@ export default function ItemReview({ navigation }) {
     addedOn: moment(item.purchaseDate, 'DD-MM-YYYY').toDate(),
     expiry: moment(item.expiryDate, 'DD-MM-YYYY').toDate(),
     notes: 'add this in later', // TODO: ADD NOTES INPUT COMPONENT
-    notificationIdentifier: await setNotification(item.name, item.shelfLifeDays, item.expiryDate),
+    notificationIdentifier: Platform.OS !== 'web' ? await setNotification(item.name, item.shelfLifeDays, item.expiryDate) : null,
   }));
 
   const handleAddToFridge = () => {
     if (areAllFieldsFilled(reviewItems)) {
       console.log('all fields filled');
-
       const dataToBackend = formatReviewItems(reviewItems);
-      console.log(dataToBackend);
+      console.log(dataToBackend, 'DATA TO BACKEND');
       axios
         .post(`${BACKEND_URL}/fridgeItems/add`, dataToBackend)
         .then((response) => {
