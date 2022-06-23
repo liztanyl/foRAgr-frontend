@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import {
   Box, Text, VStack, HStack, FlatList, Spacer,
 } from 'native-base';
+import moment from 'moment';
 import { useFridgeContext } from '../FridgeContext.jsx';
 import { SORT, sortItems } from './helpers.js';
 import ExpiryDateBadge, { setDays } from './ExpiryDateBadge.jsx';
 import RemoveItemButton from './RemoveItemButton.jsx';
+import ExtendExpiry from './ExtendExpiry.jsx';
 
 export default function ItemDisplay({ currentStorage, sortBy }) {
   const { fridgeItems } = useFridgeContext();
   const [items, setItems] = useState(null);
-
   useEffect(() => {
     let newItems = fridgeItems && [...fridgeItems];
     if (currentStorage !== 'All') {
@@ -78,10 +79,10 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
               alignSelf="flex-start"
             >
               Added:
-              {' '}
               {setDays(item.purchaseDate)}
             </Text>
             <RemoveItemButton itemId={item.id} />
+            {(moment(item.expiryDate).diff(new Date(), 'days') < 4) && <ExtendExpiry expiry={item.expiryDate} /> }
           </VStack>
         </Box>
       )}
