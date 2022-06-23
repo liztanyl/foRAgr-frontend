@@ -15,13 +15,17 @@ export default function ItemForm({ item }) {
   const [selectedCategory, setSelectedCategory] = useState();
   const [selectedStorage, setSelectedStorage] = useState();
   const [purchaseDate, setPurchaseDate] = useState(moment(new Date()).format('DD-MM-YYYY'));
-  const [updatedShelfLifeDays, setUpdatedShelfLifeDays] = useState(selectedStorage ? selectedStorage.shelfLifeDays : null);
+  const [updatedShelfLifeDays, setUpdatedShelfLifeDays] = useState(0);
 
   useEffect(() => {
     if (categories.length === 1) {
       setSelectedCategory(categories[0]);
     }
   }, [selectedCategory]);
+
+  useEffect(() => {
+    if (selectedStorage) setUpdatedShelfLifeDays(selectedStorage.shelfLifeDays);
+  }, [selectedStorage]);
 
   return (
     <Box px={4} pt={2} pb={8} borderBottomWidth={0.5} borderBottomColor="primary.100">

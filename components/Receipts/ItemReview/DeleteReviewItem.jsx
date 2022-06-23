@@ -4,13 +4,13 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { useFridgeContext } from '../../FridgeContext.jsx';
 
-export default function DeleteReviewItem({ index }) {
+export default function DeleteReviewItem({ reviewItemId }) {
   const {
     reviewItemsDispatch,
     dispatchHelpers: { removeReviewItem },
   } = useFridgeContext();
 
-  const handleDeleteReviewItem = (reviewItemId) => {
+  const handleDeleteReviewItem = () => {
     reviewItemsDispatch(removeReviewItem(reviewItemId));
   };
 
@@ -18,7 +18,7 @@ export default function DeleteReviewItem({ index }) {
     <IconButton
       size="sm"
       icon={<Icon as={Ionicons} name="trash-sharp" color="danger.700" />}
-      onPress={() => { handleDeleteReviewItem(index); }}
+      onPress={handleDeleteReviewItem}
     />
   );
 }
