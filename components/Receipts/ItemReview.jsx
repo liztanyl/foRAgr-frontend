@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import { BACKEND_URL } from '../../store.js';
 import { useFridgeContext } from '../FridgeContext.jsx';
+import { useUserContext } from '../UserContext.jsx';
 import ItemForm from './ItemReview/ItemForm.jsx';
 import NoItemsToReview from './ItemReview/NoItemsToReview.jsx';
 import setNotification from '../NotificationComponent/setNotification.js';
@@ -24,6 +25,7 @@ export default function ItemReview({ navigation }) {
       addFridgeItems,
     },
   } = useFridgeContext();
+  const { jwtToken } = useUserContext();
 
   useEffect(() => {
     try {
@@ -62,18 +64,23 @@ export default function ItemReview({ navigation }) {
     return fieldsFilled;
   };
 
-  const formatReviewItems = (items) => items.map((item) => ({
-    userId: 1, // TODO: CHANGE AFTER ADDING USER LOGIN / AUTHENTICATION
-    shelfLifeItemId: item.shelfLifeItemId,
-    addedOn: moment(item.purchaseDate, 'DD-MM-YYYY').toDate(),
-    expiry: moment(item.expiryDate, 'DD-MM-YYYY').toDate(),
-    notes: 'add this in later', // TODO: ADD NOTES INPUT COMPONENT
-  }));
+  const formatReviewItems = (items) =>
+    items.map((item) => ({
+      userId: '',
+      shelfLifeItemId: item.shelfLifeItemId,
+      addedOn: moment(item.purchaseDate, 'DD-MM-YYYY').toDate(),
+      expiry: moment(item.expiryDate, 'DD-MM-YYYY').toDate(),
+      notes: 'add this in later', // TODO: ADD NOTES INPUT COMPONENT
+    }));
 
   const handleAddToFridge = () => {
     if (areAllFieldsFilled(reviewItems)) {
       console.log('all fields filled');
-      const dataToBackend = formatReviewItems(reviewItems);
+      const items = formatReviewItems(reviewItems);
+      const dataToBackend = {
+        items,
+        userToken: jwtToken,
+      };
       console.log('data to backend', dataToBackend);
       axios
         .post(`${BACKEND_URL}/fridgeItems/add`, dataToBackend)
@@ -81,7 +88,8 @@ export default function ItemReview({ navigation }) {
           const addedItems = response.data;
           reviewItemsDispatch(removeReviewItems());
           fridgeDispatch(addFridgeItems(addedItems));
-          if (Platform.OS !== 'web') addedItems.forEach((item) => setNotification(item));
+          if (Platform.OS !== 'web')
+            addedItems.forEach((item) => setNotification(item));
         })
         .catch((err) => {
           console.log(err);
@@ -102,8 +110,8 @@ export default function ItemReview({ navigation }) {
           minW: '72',
         }}
       >
-        {reviewItems
-          && reviewItems.map((item, index) => (
+        {reviewItems &&
+          reviewItems.map((item, index) => (
             <ItemForm item={item} key={item.shelfLifeItemId} index={index} />
           ))}
         {reviewItems && reviewItems.length > 0 && (

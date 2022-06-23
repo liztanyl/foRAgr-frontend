@@ -12,7 +12,8 @@ import { oAuthExpoClientId } from '../../secret.js';
 WebBrowser.maybeCompleteAuthSession();
 
 export default function Profile() {
-  const { userDetails, setUserDetails } = useUserContext();
+  const { userDetails, setUserDetails, jwtToken, setJwtToken } =
+    useUserContext();
   const [accessToken, setAccessToken] = useState();
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId: oAuthExpoClientId,
@@ -35,9 +36,18 @@ export default function Profile() {
       axios
         .post(`${BACKEND_URL}/user/loginMobile`, googleResponseData)
         .then((res) => {
-          console.log(res.data.userData);
-          setUserDetails(res.data.userData);
-          if (res.data.newUser) {
+          console.log('test ehre\n\n\n');
+          console.log('\n res.data');
+
+          console.log(res.data);
+          const { userData, token, newUser } = res.data;
+          setUserDetails(userData);
+          console.log('token');
+          console.log(token);
+
+          setJwtToken(token);
+
+          if (newUser) {
             console.log('New user registered');
             // account created message snackbar
           }
@@ -87,21 +97,26 @@ export default function Profile() {
   };
 
   const handleLogout = () => {
+    const initialiseStates = () => {
+      setAccessToken();
+      setUserDetails({});
+      setJwtToken();
+    };
+
     console.log('logging out');
     if (Platform.OS === 'web') {
       axios
         .post(`${BACKEND_URL}/user/logout`)
         .then((res) => {
           console.log(res.data);
-          setUserDetails({});
+          initialiseStates();
           // SUCCESSFUL LOGOUT WEB
         })
         .catch((err) => {
           console.log(err);
         });
     } else {
-      setAccessToken();
-      setUserDetails({});
+      initialiseStates();
       // SUCCESSFUL LOGOUT WEB
     }
   };
@@ -122,6 +137,7 @@ export default function Profile() {
         {!isEmpty(userDetails) && (
           <Text>You are logged into: {userDetails.email}</Text>
         )}
+        {/* {jwtToken && <Text>token: {jwtToken}</Text>} */}
         {!isEmpty(userDetails) && (
           <Button
             size="lg"
