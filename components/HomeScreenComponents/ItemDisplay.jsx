@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import moment from 'moment';
 import {
   Box, Text, VStack, HStack, FlatList, Spacer,
 } from 'native-base';
 import { useFridgeContext } from '../FridgeContext.jsx';
 import { SORT, sortItems } from './helpers.js';
-import ExpiryDateBadge from './ExpiryDateBadge.jsx';
+import ExpiryDateBadge, { setDays } from './ExpiryDateBadge.jsx';
 import RemoveItemButton from './RemoveItemButton.jsx';
 
 export default function ItemDisplay({ currentStorage, sortBy }) {
@@ -80,7 +79,7 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
             >
               Added:
               {' '}
-              {moment(item.purchaseDate).fromNow()}
+              {setDays(item.purchaseDate)}
             </Text>
             <RemoveItemButton itemId={item.id} />
           </VStack>

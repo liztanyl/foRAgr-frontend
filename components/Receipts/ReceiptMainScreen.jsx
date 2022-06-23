@@ -10,7 +10,6 @@ function ReciptMainScreen({ navigation }) {
         <Button
           size="lg"
           padding={10}
-          colorScheme="primary"
           rightIcon={<FontAwesome name="camera" size={24} color="white" />}
           onPress={() => navigation.navigate('Camera Mode')}
         >

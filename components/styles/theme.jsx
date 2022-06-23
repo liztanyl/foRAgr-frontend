@@ -7,6 +7,10 @@ export default function () {
   const [fontsLoaded] = useFonts({
     Jost_400Regular, LexendDeca_300Light, LexendDeca_400Regular, LexendDeca_700Bold,
   });
+
+  if (!fontsLoaded) {
+    return null;
+  }
   const theme = {
     colors: {
       // Add new color
