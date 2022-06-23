@@ -6,27 +6,30 @@ import {
 
 export default function ExpiryAlert({ num }) {
   return (
-    <Alert w="100%" status="warning">
+    <Alert w="100%" status="warning" textAlign="center">
       <VStack space={2} flexShrink={1} w="100%">
-        <HStack flexShrink={1} space={2} justifyContent="space-between">
-          <HStack space={2} flexShrink={1}>
-            <Alert.Icon mt="1" />
-            <Text fontSize="sm" color="coolGray.800">
-              You have
-              {' '}
-              {num}
-              {' '}
-              items about to expire in the next 3 days.
-            </Text>
-          </HStack>
-          {/* <IconButton
+        {/* <HStack flexShrink={1} space={2} justifyContent="space-between"> */}
+        {/* <HStack space={2} flexShrink={1}> */}
+        <HStack space={2} justifyContent="center">
+          <Alert.Icon mt="1" />
+          <Text fontSize="sm" color="coolGray.800">
+            You have
+            {' '}
+            {num}
+            {' '}
+            {num === 1 ? 'item' : 'items'}
+            {' '}
+            about to expire in the next 3 days.
+          </Text>
+        </HStack>
+        {/* <IconButton
             variant="unstyled"
             _focus={{
               borderWidth: 0,
             }}
             icon={<CloseIcon size="3" color="coolGray.600" />}
           /> */}
-        </HStack>
+        {/* </HStack> */}
       </VStack>
     </Alert>
   );
