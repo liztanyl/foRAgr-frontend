@@ -30,6 +30,7 @@ export default function NavbarTabs() {
         name="Add Items"
         component={EnterReceipt}
         options={{
+          headerShown: false,
           tabBarLabel: 'Add Items',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="receipt" size={24} color="black" />

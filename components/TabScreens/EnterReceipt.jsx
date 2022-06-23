@@ -11,7 +11,12 @@ export default function EnterReceipt() {
   const Stack = createNativeStackNavigator();
 
   return (
-    <Stack.Navigator initialRouteName="Choose Mode">
+    <Stack.Navigator
+      initialRouteName="Choose Mode"
+      screenOptions={{
+        animation: 'slide_from_right',
+      }}
+    >
       <Stack.Screen name="Choose Mode" component={ReceiptMainScreen} />
       <Stack.Screen name="Camera Mode" component={CameraScreen} />
       <Stack.Screen name="No data" component={NoData} />
