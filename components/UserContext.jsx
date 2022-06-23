@@ -15,6 +15,7 @@ export function useUserContext() {
 
 export function UserContextProvider({ children }) {
   const [userDetails, setUserDetails] = useState({});
+  const [jwtToken, setJwtToken] = useState();
 
   const userDataFromCookies = () => JSON.parse(Cookies.get('logged_in_user'));
 
@@ -50,6 +51,8 @@ export function UserContextProvider({ children }) {
       value={{
         userDetails,
         setUserDetails,
+        jwtToken,
+        setJwtToken,
       }}
     >
       {children}
