@@ -99,6 +99,8 @@ export default function ItemReview({ navigation }) {
           reviewItemsDispatch(removeReviewItems());
           fridgeDispatch(addFridgeItems(addedItems));
           if (Platform.OS !== 'web') { addedItems.forEach((item) => setNotification(item)); }
+
+          navigation.navigate('Choose Mode');
         })
         .catch((err) => {
           console.log(err);
