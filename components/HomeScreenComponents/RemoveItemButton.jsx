@@ -1,24 +1,30 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useState } from 'react';
-import {
-  Popover, Button, Text, VStack,
-} from 'native-base';
+import { Popover, Button, Text, VStack } from 'native-base';
 import axios from 'axios';
 import { Platform } from 'react-native';
 
 import { BACKEND_URL } from '../../store.js';
 import { useFridgeContext } from '../FridgeContext.jsx';
+import { useUserContext } from '../UserContext.jsx';
 import cancelNotification from '../NotificationComponent/cancelNotification.js';
 
 export default function RemoveItemButton({ itemId }) {
-  const { fridgeDispatch, dispatchHelpers: { removeFridgeItem } } = useFridgeContext();
+  const {
+    fridgeDispatch,
+    dispatchHelpers: { removeFridgeItem },
+  } = useFridgeContext();
+  const { jwtToken } = useUserContext();
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = () => {
     setIsDeleting(true);
-    axios.post(`${BACKEND_URL}/fridgeItems/destroy/${itemId}`)
+
+    const dataToBackend = { itemId, userToken: jwtToken };
+    axios
+      .post(`${BACKEND_URL}/fridgeItems/destroy`, dataToBackend)
       .then((response) => {
         if (Platform.OS !== 'web') cancelNotification(response.data);
         fridgeDispatch(removeFridgeItem(itemId));
