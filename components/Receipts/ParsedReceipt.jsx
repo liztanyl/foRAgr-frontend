@@ -1,6 +1,6 @@
 import {
   Box, HStack, IconButton, Icon, Button,
-  Alert, VStack, Text, Center,
+  Alert, VStack, Text, Center, ScrollView,
 } from 'native-base';
 import React, { useState } from 'react';
 import { View } from 'react-native';
@@ -46,10 +46,26 @@ function ParsedReceipt({ route, navigation }) {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center' }}>
-      {show && <SuccessfulAlert />}
-      <Box>Possible Food Items detected: </Box>
-      {foodItemsPhoto.length !== 0
+    <View
+      style={{
+        height: '100%', alignItems: 'center', justifyContent: 'center', padding: 10,
+      }}
+    >
+      {(foodItemsPhoto.length === 0)
+
+      && (
+      <Button onPress={() => {
+        navigation.replace('Manual Entry');
+      }}
+      >
+        Manual Entry
+      </Button>
+      )}
+      <ScrollView>
+        {show && <SuccessfulAlert />}
+        {(foodItemsPhoto.length !== 0)
+        && <Box>Possible Food Items detected: </Box>}
+        {foodItemsPhoto.length !== 0
       && foodItemsPhoto.map((data) => (
         <Box>
           <HStack space={2} my="2" justifyContent="space-between">
@@ -65,10 +81,11 @@ function ParsedReceipt({ route, navigation }) {
           </HStack>
         </Box>
       ))}
-      {(!show && foodItemsPhoto.length > 0)
+        {(!show && foodItemsPhoto.length > 0)
       && (
       <HStack space={2}>
         <Button
+          mb={30}
           onPress={() => {
             saveToVirtualFridge();
             navigation.navigate('Review Items');
@@ -78,6 +95,7 @@ function ParsedReceipt({ route, navigation }) {
         </Button>
       </HStack>
       )}
+      </ScrollView>
     </View>
   );
 }
