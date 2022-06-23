@@ -1,30 +1,24 @@
 import React from 'react';
-import { Box } from 'native-base';
-import { AntDesign } from '@expo/vector-icons';
+import { IconButton, Icon } from 'native-base';
+import { Ionicons } from '@expo/vector-icons';
 
-import { useFridgeContext } from '../../FridgeContext';
+import { useFridgeContext } from '../../FridgeContext.jsx';
 
 export default function DeleteReviewItem({ index }) {
   const {
-    reviewItems,
     reviewItemsDispatch,
-    dispatchHelpers: { addReviewItems, editReviewItem, removeReviewItem },
+    dispatchHelpers: { removeReviewItem },
   } = useFridgeContext();
 
-  const handleDeleteReviewItem = (index) => {
-    reviewItemsDispatch(removeReviewItem(index));
+  const handleDeleteReviewItem = (reviewItemId) => {
+    reviewItemsDispatch(removeReviewItem(reviewItemId));
   };
 
   return (
-    <Box>
-      <AntDesign.Button
-        name="closesquare"
-        size={24}
-        color="black"
-        onPress={() => {
-          handleDeleteReviewItem(index);
-        }}
-      />
-    </Box>
+    <IconButton
+      size="sm"
+      icon={<Icon as={Ionicons} name="trash-sharp" color="danger.700" />}
+      onPress={() => { handleDeleteReviewItem(index); }}
+    />
   );
 }

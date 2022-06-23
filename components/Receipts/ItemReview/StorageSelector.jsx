@@ -12,7 +12,7 @@ const STORAGE_METHOD = 'storageMethod';
 const SHELF_LIFE_ITEM_ID = 'shelfLifeItemId';
 
 export default function StorageSelector({
-  index,
+  reviewItemId,
   selectedCategory,
   selectedStorage,
   setSelectedStorage,
@@ -28,16 +28,24 @@ export default function StorageSelector({
       const storage = storageMethods[0];
       setSelectedStorage(storage);
       console.log(storage.storageName);
-      reviewItemsDispatch(editReviewItem(index, STORAGE_METHOD, storage.storageName));
-      reviewItemsDispatch(editReviewItem(index, SHELF_LIFE_ITEM_ID, storage.shelfLifeItemId));
+      reviewItemsDispatch(editReviewItem(reviewItemId,
+        STORAGE_METHOD,
+        storage.storageName));
+      reviewItemsDispatch(editReviewItem(reviewItemId,
+        SHELF_LIFE_ITEM_ID,
+        storage.shelfLifeItemId));
     }
   }, [selectedCategory]);
 
   const handleValueChange = (itemValue) => {
     const chosenStorage = storageMethods.filter((item) => item.storageName === itemValue)[0];
     setSelectedStorage(chosenStorage);
-    reviewItemsDispatch(editReviewItem(index, STORAGE_METHOD, chosenStorage.storageName));
-    reviewItemsDispatch(editReviewItem(index, SHELF_LIFE_ITEM_ID, chosenStorage.shelfLifeItemId));
+    reviewItemsDispatch(editReviewItem(reviewItemId,
+      STORAGE_METHOD,
+      chosenStorage.storageName));
+    reviewItemsDispatch(editReviewItem(reviewItemId,
+      SHELF_LIFE_ITEM_ID,
+      chosenStorage.shelfLifeItemId));
     console.log(selectedStorage);
   };
 
@@ -59,11 +67,11 @@ export default function StorageSelector({
           }}
           defaultValue={selectedStorage ? selectedStorage.storageName : null}
         >
-          {selectedCategory.storageMethods.map((storageMethod, i) => (
+          {selectedCategory.storageMethods.map((storageMethod) => (
             <Select.Item
               label={storageMethod.storageName}
               value={storageMethod.storageName}
-              key={`storage-method-${storageMethod.storageName + i}`}
+              key={reviewItemId + storageMethod.storageName}
             />
           ))}
         </Select>

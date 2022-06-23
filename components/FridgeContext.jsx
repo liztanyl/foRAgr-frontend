@@ -81,12 +81,12 @@ const addReviewItems = (newItems) => {
 
 // --> Takes in index of the review item object to update,
 // the key to update (eg selectedCategory) and its new value
-const editReviewItem = (index, key, value) => {
-  console.log(`review - index to edit (key: value), ${index} (${key}: ${value})`);
+const editReviewItem = (id, key, value) => {
+  console.log(`review - id to edit (key: value), ${id} (${key}: ${value})`);
   return {
     type: ACTIONS.REVIEW_ITEMS.EDIT_ITEM,
     payload: {
-      index,
+      id,
       key,
       value,
     },
@@ -94,11 +94,11 @@ const editReviewItem = (index, key, value) => {
 };
 
 // --> Takes in the index of the review item object to remove
-const removeReviewItem = (indexToRemove) => {
-  console.log('review - id to remove', indexToRemove);
+const removeReviewItem = (idToRemove) => {
+  console.log('review - id to remove', idToRemove);
   return {
     type: ACTIONS.REVIEW_ITEMS.REMOVE_ITEM,
-    payload: indexToRemove,
+    payload: idToRemove,
   };
 };
 
@@ -195,9 +195,10 @@ const reviewItemsReducer = (state, action) => {
     case ACTIONS.REVIEW_ITEMS.EDIT_ITEM: {
       if (state) {
         console.log('reviewItemsReducer-edit state', state);
-        const { index, key, value } = action.payload;
+        const { id, key, value } = action.payload;
         const updatedItems = [...state];
-        updatedItems[index][key] = value;
+        const i = updatedItems.findIndex((item) => item.id === id);
+        updatedItems[i][key] = value;
         AsyncStorage.setItem(STORAGE_KEYS.REVIEW_ITEMS,
           JSON.stringify(updatedItems));
         return updatedItems;
@@ -208,9 +209,9 @@ const reviewItemsReducer = (state, action) => {
     case ACTIONS.REVIEW_ITEMS.REMOVE_ITEM: {
       if (state) {
         console.log('reviewItemsReducer-remove state', state);
-        const indexToRemove = action.payload;
-        const updatedItems = [...state];
-        updatedItems.splice(indexToRemove, 1);
+        const idToRemove = action.payload;
+        const updatedItems = [...state]
+          .filter((item) => item.id !== idToRemove);
         AsyncStorage.setItem(STORAGE_KEYS.REVIEW_ITEMS,
           JSON.stringify(updatedItems));
         return updatedItems;
@@ -237,12 +238,7 @@ const reviewItemsReducer = (state, action) => {
 const fridgeReducer = (state, action) => {
   switch (action.type) {
     case ACTIONS.FRIDGE.RETRIEVE: {
-      const items = action.payload;
-      console.log('fridge reducer-retrieve state', state);
-      if (state) {
-        return [...state, ...items];
-      }
-      return items;
+      return action.payload;
     }
 
     case ACTIONS.FRIDGE.ADD_ITEMS: {
@@ -358,7 +354,6 @@ export function FridgeContextProvider({ children }) {
       .then((response) => {
         fridgeDispatch({ type: ACTIONS.FRIDGE.RETRIEVE, payload: response.data });
       });
-    // getFridgeItemsFromAsyncStorage();
   }, []);
 
   useEffect(() => {

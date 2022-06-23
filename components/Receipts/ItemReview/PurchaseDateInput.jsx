@@ -9,7 +9,7 @@ import { useFridgeContext } from '../../FridgeContext.jsx';
 const PURCHASE_DATE = 'purchaseDate';
 
 export default function PurchaseDateInput({
-  index,
+  reviewItemId,
   purchaseDate,
   setPurchaseDate,
 }) {
@@ -20,11 +20,11 @@ export default function PurchaseDateInput({
 
   const handleChangePurchaseDate = (date) => {
     setPurchaseDate(date);
-    reviewItemsDispatch(editReviewItem(index, PURCHASE_DATE, date));
+    reviewItemsDispatch(editReviewItem(reviewItemId, PURCHASE_DATE, date));
   };
 
   useEffect(() => {
-    reviewItemsDispatch(editReviewItem(index, PURCHASE_DATE, purchaseDate));
+    reviewItemsDispatch(editReviewItem(reviewItemId, PURCHASE_DATE, purchaseDate));
   }, [purchaseDate]);
 
   return (

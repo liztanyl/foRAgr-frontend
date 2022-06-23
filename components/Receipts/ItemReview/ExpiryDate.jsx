@@ -6,7 +6,7 @@ import { useFridgeContext } from '../../FridgeContext';
 const EXPIRY_DATE = 'expiryDate';
 
 export default function ExpiryDate({
-  index,
+  reviewItemId,
   purchaseDate,
   updatedShelfLifeDays,
 }) {
@@ -23,12 +23,12 @@ export default function ExpiryDate({
 
   const handleChangeExpiryDate = (date) => {
     setExpiryDate(date);
-    reviewItemsDispatch(editReviewItem(index, EXPIRY_DATE, date));
+    reviewItemsDispatch(editReviewItem(reviewItemId, EXPIRY_DATE, date));
   };
 
   useEffect(() => {
     setExpiryDate(newExpiryDate);
-    reviewItemsDispatch(editReviewItem(index, EXPIRY_DATE, newExpiryDate));
+    reviewItemsDispatch(editReviewItem(reviewItemId, EXPIRY_DATE, newExpiryDate));
   }, [purchaseDate, updatedShelfLifeDays]);
 
   return (

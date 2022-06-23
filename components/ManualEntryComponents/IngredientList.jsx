@@ -28,9 +28,7 @@ export default function IngredientList({ selected, setSelectedList }) {
         <IconButton
           size="sm"
           onPress={() => handleDelete(x.id)}
-          icon={
-            <CloseIcon color="danger.800" />
-}
+          icon={<CloseIcon color="danger.800" />}
         />
       </HStack>
     </Box>
