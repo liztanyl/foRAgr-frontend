@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable import/prefer-default-export */
-import React, { useReducer, useContext, useEffect, useState } from 'react';
+import React, {
+  useReducer, useContext, useEffect, useState,
+} from 'react';
 import { Platform } from 'react-native';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -41,9 +43,9 @@ export function UserContextProvider({ children }) {
         });
     }
 
-    if (Cookies.get('logged_in_user') && Cookies.get('token')) {
-      setUserDetails(userDataFromCookies());
-    }
+    // if (Cookies.get('logged_in_user') && Cookies.get('token')) {
+    //   setUserDetails(userDataFromCookies());
+    // }
   }, []);
 
   return (

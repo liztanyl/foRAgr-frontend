@@ -12,8 +12,9 @@ import { oAuthExpoClientId } from '../../secret.js';
 WebBrowser.maybeCompleteAuthSession();
 
 export default function Profile() {
-  const { userDetails, setUserDetails, jwtToken, setJwtToken } =
-    useUserContext();
+  const {
+    userDetails, setUserDetails, jwtToken, setJwtToken,
+  } = useUserContext();
   const [accessToken, setAccessToken] = useState();
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId: oAuthExpoClientId,
@@ -23,12 +24,10 @@ export default function Profile() {
    * completes the user login procedure on mobile
    */
   const getUserDataMobile = async () => {
-    const userInfoResponse = await fetch(
-      'https://www.googleapis.com/userinfo/v2/me',
+    const userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me',
       {
         headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    );
+      });
 
     userInfoResponse.json().then((googleResponseData) => {
       console.log(googleResponseData);
@@ -90,7 +89,7 @@ export default function Profile() {
         .catch((err) => {
           console.log(err);
         });
-    } else if (Platform.OS === 'ios') {
+    } else {
       console.log('logging in mobile');
       accessToken ? getUserDataMobile() : promptAsync({ useProxy: true });
     }
@@ -135,7 +134,11 @@ export default function Profile() {
           </Button>
         )}
         {!isEmpty(userDetails) && (
-          <Text>You are logged into: {userDetails.email}</Text>
+          <Text>
+            You are logged into:
+            {' '}
+            {userDetails.email}
+          </Text>
         )}
         {/* {jwtToken && <Text>token: {jwtToken}</Text>} */}
         {!isEmpty(userDetails) && (
