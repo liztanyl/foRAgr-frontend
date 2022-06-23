@@ -12,9 +12,30 @@ export default function SearchDropDown({
     setSearchStatus(false);
   };
 
-  const filteredDisplay = filtered.slice(0, 5).map((x) => <Button minW="200" key={x.id} onPress={() => handleSelect(x)}>{x.name}</Button>);
+  const filteredDisplay = filtered.slice(0, 5).map((x) => (
+    <Button
+      key={x.id}
+      onPress={() => handleSelect(x)}
+      width="100%"
+      mb={1}
+      bg="primary.100"
+      _text={{ color: 'white' }}
+      _pressed={{ bgColor: 'primary.200' }}
+    >
+      {x.name}
+    </Button>
+  ));
 
-  const nothingFoundDisplay = <Button minW="200" isDisabled>No food item found</Button>;
+  const nothingFoundDisplay = (
+    <Button
+      width="100%"
+      bg="primary.100"
+      _text={{ color: 'black' }}
+      isDisabled
+    >
+      No food item found
+    </Button>
+  );
 
   return (
     <>

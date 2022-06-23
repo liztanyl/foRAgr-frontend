@@ -5,7 +5,7 @@ import { useFridgeContext } from '../../FridgeContext.jsx';
 const SHELF_LIFE_DAYS = 'shelfLifeDays';
 
 export default function ShelfLifeDays({
-  index,
+  reviewItemId,
   selectedStorage,
   updatedShelfLifeDays,
   setUpdatedShelfLifeDays,
@@ -19,16 +19,20 @@ export default function ShelfLifeDays({
 
   useEffect(() => {
     setUpdatedShelfLifeDays(shelfLifeDays);
-    reviewItemsDispatch(editReviewItem(index, SHELF_LIFE_DAYS, shelfLifeDays));
+    reviewItemsDispatch(editReviewItem(reviewItemId,
+      SHELF_LIFE_DAYS,
+      shelfLifeDays));
   }, [selectedStorage]);
 
   const handleUpdatedShelfLifeDays = (itemValue) => {
     if (itemValue.match(/^[0-9]+$/)) {
       setUpdatedShelfLifeDays(Number(itemValue));
-      reviewItemsDispatch(editReviewItem(index, SHELF_LIFE_DAYS, Number(itemValue)));
+      reviewItemsDispatch(editReviewItem(reviewItemId,
+        SHELF_LIFE_DAYS,
+        Number(itemValue)));
     } else if (!itemValue) {
       setUpdatedShelfLifeDays(null);
-      reviewItemsDispatch(editReviewItem(index, SHELF_LIFE_DAYS, null));
+      reviewItemsDispatch(editReviewItem(reviewItemId, SHELF_LIFE_DAYS, 0));
     }
     console.log(updatedShelfLifeDays);
   };
