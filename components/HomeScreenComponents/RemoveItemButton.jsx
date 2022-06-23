@@ -1,7 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useState } from 'react';
-import { Popover, Button } from 'native-base';
+import {
+  Popover, Button, Text, VStack,
+} from 'native-base';
 import axios from 'axios';
 import { Platform } from 'react-native';
 
@@ -36,39 +38,40 @@ export default function RemoveItemButton({ itemId }) {
           size="sm"
           py="1"
           my="2"
-          w="25%"
+          w="40%"
           variant="outline"
           onPress={() => setIsOpen(true)}
         >
-          Remove
+          Mark as Consumed
         </Button>
       )}
     >
       <Popover.Content width="48">
         <Popover.Arrow />
         <Popover.CloseButton />
-        <Popover.Header>
-          Are you sure?
-        </Popover.Header>
+        <Popover.Header>Confirmation</Popover.Header>
         <Popover.Body>
-          <Button.Group space={2} justifyContent="space-between">
-            <Button
-              size="sm"
-              colorScheme="coolGray"
-              variant="outline"
-              onPress={() => setIsOpen(!isOpen)}
-            >
-              Cancel
-            </Button>
-            <Button
-              size="sm"
-              colorScheme="danger"
-              onPress={handleDelete}
-              isLoading={isDeleting}
-            >
-              Delete
-            </Button>
-          </Button.Group>
+          <VStack space={4}>
+            <Text>Are you sure you want to remove this item?</Text>
+            <Button.Group space={2} justifyContent="space-between">
+              <Button
+                size="sm"
+                colorScheme="coolGray"
+                variant="outline"
+                onPress={() => setIsOpen(!isOpen)}
+              >
+                Cancel
+              </Button>
+              <Button
+                size="sm"
+                colorScheme="danger"
+                onPress={handleDelete}
+                isLoading={isDeleting}
+              >
+                Remove
+              </Button>
+            </Button.Group>
+          </VStack>
         </Popover.Body>
       </Popover.Content>
     </Popover>

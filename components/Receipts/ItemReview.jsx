@@ -104,7 +104,7 @@ export default function ItemReview({ navigation }) {
       >
         {reviewItems
           && reviewItems.map((item, index) => (
-            <ItemForm item={item} key={item.id} index={index} />
+            <ItemForm item={item} key={item.shelfLifeItemId} index={index} />
           ))}
         {reviewItems && reviewItems.length > 0 && (
           <Button onPress={handleAddToFridge}>Add to Fridge</Button>
