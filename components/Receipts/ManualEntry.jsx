@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { VStack, Input, Button } from 'native-base';
+import {
+  VStack, Input, Button, ScrollView,
+} from 'native-base';
+import { Entypo } from '@expo/vector-icons';
 import axios from 'axios';
 import SearchDropDown from '../ManualEntryComponents/SearchDropdown.jsx';
 import IngredientList from '../ManualEntryComponents/IngredientList.jsx';
@@ -40,7 +43,7 @@ export default function ManualEntry({ navigation }) {
     if (e) {
       setSearchStatus(true);
       const searchText = e.toLowerCase();
-      setSearchInput(searchText);
+      setSearchInput(e);
       const filteredSearch = foodItems.filter((x) => x.name.match(searchText)
           && !selectedList.map((y) => y.name).includes(x.name));
       setFilteredList(filteredSearch);
@@ -52,17 +55,22 @@ export default function ManualEntry({ navigation }) {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <VStack space={3} alignItems="center">
-        <Input
-          size="xl"
-          placeholder="Search"
-          placeholderTextColor="white"
-          onChangeText={handleSearch}
-          value={searchInput}
-          style={styles.searchBar}
-        />
-        {searchStatus && (
+    <View style={{
+      height: '100%', alignItems: 'center', justifyContent: 'center', padding: 10,
+    }}
+    >
+      <ScrollView width="sm">
+        <VStack space={3} width="xs" marginX="auto" alignItems="center">
+          <Input
+            size="xl"
+            placeholder="Search"
+            placeholderTextColor="white"
+            onChangeText={handleSearch}
+            value={searchInput}
+            style={styles.searchBar}
+            marginTop={3}
+          />
+          {searchStatus && (
           <SearchDropDown
             filtered={filteredList}
             setSelectedList={setSelectedList}
@@ -70,15 +78,20 @@ export default function ManualEntry({ navigation }) {
             setFilteredList={setFilteredList}
             setSearchStatus={setSearchStatus}
           />
-        )}
-        {selectedList && (
+          )}
+          {selectedList && (
           <IngredientList
             selected={selectedList}
             setSelectedList={setSelectedList}
           />
-        )}
-        {selectedList.length > 0 && (
+          )}
+          {selectedList.length > 0 && (
           <Button
+            bg="highlight.400"
+            _pressed={{ bgColor: 'secondary.400' }}
+            marginTop={2}
+            alignSelf="flex-end"
+            endIcon={<Entypo name="chevron-small-right" size={24} color="white" />}
             onPress={() => {
               reviewIdsDispatch(addReviewIds(selectedList.map((x) => x.id)));
               setSelectedList([]);
@@ -87,8 +100,9 @@ export default function ManualEntry({ navigation }) {
           >
             Review Items
           </Button>
-        )}
-      </VStack>
+          )}
+        </VStack>
+      </ScrollView>
     </View>
   );
 }
