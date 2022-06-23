@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Select, Center, FormControl,
+  Box, Heading, HStack, VStack,
 } from 'native-base';
-import { StyleSheet } from 'react-native';
 import moment from 'moment';
 import CategorySelector from './CategorySelector.jsx';
 import StorageSelector from './StorageSelector.jsx';
@@ -11,73 +10,61 @@ import PurchaseDateInput from './PurchaseDateInput.jsx';
 import ExpiryDate from './ExpiryDate.jsx';
 import DeleteReviewItem from './DeleteReviewItem.jsx';
 
-export default function ItemForm({ item, index }) {
+export default function ItemForm({ item }) {
   const { name, categories } = item;
   const [selectedCategory, setSelectedCategory] = useState();
   const [selectedStorage, setSelectedStorage] = useState();
   const [purchaseDate, setPurchaseDate] = useState(moment(new Date()).format('DD-MM-YYYY'));
   const [updatedShelfLifeDays, setUpdatedShelfLifeDays] = useState(selectedStorage ? selectedStorage.shelfLifeDays : null);
 
-  console.log(item);
-  const styles = StyleSheet.create({
-    itemContainer: {
-      color: 'black',
-      backgroundColor: 'azure',
-      padding: 10,
-      margin: 10,
-    },
-    itemName: {
-      color: 'black',
-      backgroundColor: 'aliceBlue',
-      padding: 10,
-      margin: 10,
-    },
-  });
-
   useEffect(() => {
-    if (categories.length == 1) {
+    if (categories.length === 1) {
       setSelectedCategory(categories[0]);
     }
   }, [selectedCategory]);
 
   return (
-    <Box style={styles.itemContainer}>
-      <Box style={styles.itemName}>{name}</Box>
-      <DeleteReviewItem index={index} />
-      <CategorySelector
-        index={index}
-        categories={categories}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-      />
-      {selectedCategory && (
+    <Box px={4} pt={2} pb={8} borderBottomWidth={0.5} borderBottomColor="primary.100">
+      <HStack justifyContent="space-between" alignItems="center">
+        <Heading size="md" mb={2}>{name}</Heading>
+        <DeleteReviewItem reviewItemId={item.id} />
+      </HStack>
+      <VStack spcae={4}>
+        <CategorySelector
+          reviewItemId={item.id}
+          categories={categories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
+        {selectedCategory && (
         <StorageSelector
-          index={index}
+          reviewItemId={item.id}
           selectedCategory={selectedCategory}
           selectedStorage={selectedStorage}
           setSelectedStorage={setSelectedStorage}
         />
-      )}
-      {selectedStorage && (
+        )}
+        {selectedStorage && (
         <ShelfLifeDays
-          index={index}
+          reviewItemId={item.id}
           selectedStorage={selectedStorage}
           updatedShelfLifeDays={updatedShelfLifeDays}
           setUpdatedShelfLifeDays={setUpdatedShelfLifeDays}
         />
-      )}
-      <PurchaseDateInput
-        index={index}
-        purchaseDate={purchaseDate}
-        setPurchaseDate={setPurchaseDate}
-      />
-      {selectedStorage && (
+        )}
+        <PurchaseDateInput
+          reviewItemId={item.id}
+          purchaseDate={purchaseDate}
+          setPurchaseDate={setPurchaseDate}
+        />
+        {selectedStorage && (
         <ExpiryDate
-          index={index}
+          reviewItemId={item.id}
           purchaseDate={purchaseDate}
           updatedShelfLifeDays={updatedShelfLifeDays}
         />
-      )}
+        )}
+      </VStack>
     </Box>
   );
 }

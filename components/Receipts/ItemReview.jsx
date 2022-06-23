@@ -1,8 +1,13 @@
 import React, { useEffect } from 'react';
 import { Platform } from 'react-native';
-import { Box, Button, ScrollView } from 'native-base';
+import {
+  Box, Button, ScrollView, Spinner, Center, VStack,
+} from 'native-base';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from 'axios';
 import moment from 'moment';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 import { BACKEND_URL } from '../../store.js';
 import { useFridgeContext } from '../FridgeContext.jsx';
@@ -33,8 +38,14 @@ export default function ItemReview({ navigation }) {
         axios
           .get(`${BACKEND_URL}/reviewItems/${reviewIds}`)
           .then((response) => {
-            console.log(response.data);
-            reviewItemsDispatch(addReviewItems(response.data));
+            const items = response.data;
+            items.forEach((item) => {
+              console.log('HEYHEY', item);
+              item.id = uuidv4();
+              console.log('IT ME', item);
+            });
+            console.log('LOOK FOR ME', items);
+            reviewItemsDispatch(addReviewItems(items));
             reviewIdsDispatch(removeReviewIds());
           })
           .catch((err) => {
@@ -64,14 +75,13 @@ export default function ItemReview({ navigation }) {
     return fieldsFilled;
   };
 
-  const formatReviewItems = (items) =>
-    items.map((item) => ({
-      userId: '',
-      shelfLifeItemId: item.shelfLifeItemId,
-      addedOn: moment(item.purchaseDate, 'DD-MM-YYYY').toDate(),
-      expiry: moment(item.expiryDate, 'DD-MM-YYYY').toDate(),
-      notes: 'add this in later', // TODO: ADD NOTES INPUT COMPONENT
-    }));
+  const formatReviewItems = (items) => items.map((item) => ({
+    userId: '',
+    shelfLifeItemId: item.shelfLifeItemId,
+    addedOn: moment(item.purchaseDate, 'DD-MM-YYYY').toDate(),
+    expiry: moment(item.expiryDate, 'DD-MM-YYYY').toDate(),
+    notes: 'add this in later', // TODO: ADD NOTES INPUT COMPONENT
+  }));
 
   const handleAddToFridge = () => {
     if (areAllFieldsFilled(reviewItems)) {
@@ -88,8 +98,7 @@ export default function ItemReview({ navigation }) {
           const addedItems = response.data;
           reviewItemsDispatch(removeReviewItems());
           fridgeDispatch(addFridgeItems(addedItems));
-          if (Platform.OS !== 'web')
-            addedItems.forEach((item) => setNotification(item));
+          if (Platform.OS !== 'web') { addedItems.forEach((item) => setNotification(item)); }
         })
         .catch((err) => {
           console.log(err);
@@ -102,25 +111,35 @@ export default function ItemReview({ navigation }) {
 
   return (
     <Box style={{ height: '100%' }}>
-      <ScrollView
-        maxW="500"
-        _contentContainerStyle={{
-          px: '20px',
-          mb: '4',
-          minW: '72',
-        }}
-      >
-        {reviewItems &&
-          reviewItems.map((item, index) => (
-            <ItemForm item={item} key={item.shelfLifeItemId} index={index} />
-          ))}
-        {reviewItems && reviewItems.length > 0 && (
-          <Button onPress={handleAddToFridge}>Add to Fridge</Button>
-        )}
-        {(!reviewItems || reviewItems.length === 0) && (
+      {reviewIds && (
+      <Center height="100%" width="100%">
+        <Spinner size="lg" />
+      </Center>
+      )}
+      {!reviewIds && (!reviewItems || reviewItems.length === 0) && (
+        <Center height="100%" width="100%">
           <NoItemsToReview navigation={navigation} />
-        )}
+        </Center>
+      )}
+      {!reviewIds && reviewItems && (
+      <ScrollView padding={4}>
+        <VStack space={5}>
+          {reviewItems.map((item) => (
+            <ItemForm key={item.id} item={item} />
+          ))}
+        </VStack>
+        <Button
+          marginTop={4}
+          marginBottom={10}
+          bg="highlight.400"
+          _pressed={{ bgColor: 'secondary.300' }}
+          onPress={handleAddToFridge}
+          startIcon={<MaterialCommunityIcons name="fridge" size={24} color="white" />}
+        >
+          Add to Fridge
+        </Button>
       </ScrollView>
+      )}
     </Box>
   );
 }

@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Select,
-  Center,
   FormControl,
   WarningOutlineIcon,
 } from 'native-base';
 
-import { useFridgeContext } from '../../FridgeContext';
+import { useFridgeContext } from '../../FridgeContext.jsx';
 
 const CATEGORY = 'category';
 
 export default function CategorySelector({
-  index,
+  reviewItemId,
   categories,
   selectedCategory,
   setSelectedCategory,
@@ -23,15 +22,19 @@ export default function CategorySelector({
   } = useFridgeContext();
 
   const handleValueChange = (itemValue) => {
-    const selectedItem = categories.filter((item) => item.categoryName == itemValue)[0];
+    const selectedItem = categories.filter((item) => item.categoryName === itemValue)[0];
     setSelectedCategory(selectedItem);
-    reviewItemsDispatch(editReviewItem(index, CATEGORY, selectedItem.categoryName));
+    reviewItemsDispatch(editReviewItem(reviewItemId,
+      CATEGORY,
+      selectedItem.categoryName));
   };
 
   useEffect(() => {
-    if (categories.length == 1) {
+    if (categories.length === 1) {
       setSelectedCategory(categories[0]);
-      reviewItemsDispatch(editReviewItem(index, CATEGORY, categories[0].categoryName));
+      reviewItemsDispatch(editReviewItem(reviewItemId,
+        CATEGORY,
+        categories[0].categoryName));
     }
   }, []);
 
@@ -49,10 +52,10 @@ export default function CategorySelector({
             handleValueChange(itemValue);
           }}
           defaultValue={
-            categories.length == 1 ? categories[0].categoryName : null
+            categories.length === 1 ? categories[0].categoryName : null
           }
         >
-          {categories.length == 1 ? (
+          {categories.length === 1 ? (
             // only render the first category if only 1 category
             <Select.Item
               isDisabled
@@ -62,11 +65,11 @@ export default function CategorySelector({
             />
           ) : (
             // otherwise, render all categories
-            categories.map((item, index) => (
+            categories.map((item) => (
               <Select.Item
                 label={item.categoryName}
                 value={item.categoryName}
-                key={item.categoryName + index}
+                key={reviewItemId + item.categoryName}
               />
             ))
           )}

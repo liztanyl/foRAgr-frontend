@@ -85,7 +85,7 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
           </VStack>
         </Box>
       )}
-      keyExtractor={(item) => `${item.id}-${item.expiryDate}`}
+      keyExtractor={(item) => `${item.id}`}
     />
   );
 }

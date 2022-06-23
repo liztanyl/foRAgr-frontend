@@ -28,7 +28,6 @@ export default function RemoveItemButton({ itemId }) {
       .then((response) => {
         if (Platform.OS !== 'web') cancelNotification(response.data);
         fridgeDispatch(removeFridgeItem(itemId));
-        setIsOpen(!isOpen);
       });
   };
 
