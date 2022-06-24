@@ -1,5 +1,9 @@
-import React, { useEffect } from 'react';
-import { Input, FormControl } from 'native-base';
+import React, { useEffect, useRef } from 'react';
+import {
+  Input, FormControl, IconButton, Icon,
+} from 'native-base';
+import moment from 'moment';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFridgeContext } from '../../FridgeContext.jsx';
 
 const SHELF_LIFE_DAYS = 'shelfLifeDays';
@@ -9,9 +13,9 @@ export default function ShelfLifeDays({
   selectedStorage,
   updatedShelfLifeDays,
   setUpdatedShelfLifeDays,
+  expiryDate, purchaseDate,
 }) {
   const { shelfLifeDays } = selectedStorage;
-
   const {
     reviewItemsDispatch,
     dispatchHelpers: { editReviewItem },
@@ -23,6 +27,8 @@ export default function ShelfLifeDays({
       SHELF_LIFE_DAYS,
       shelfLifeDays));
   }, [selectedStorage]);
+
+  const differenceCalculated = moment(expiryDate, 'DD-MM-YYYY').diff(moment(purchaseDate, 'DD-MM-YYYY'), 'days');
 
   const handleUpdatedShelfLifeDays = (itemValue) => {
     if (itemValue.match(/^[0-9]+$/)) {
@@ -41,8 +47,17 @@ export default function ShelfLifeDays({
       <Input
         type="text"
         variant="outline"
+        InputRightElement={(
+          <IconButton
+            onPress={() => setUpdatedShelfLifeDays(shelfLifeDays)}
+            icon={<Icon as={MaterialCommunityIcons} name="restart" />}
+          />
+)}
         placeholder="Enter shelf life length in days"
-        value={updatedShelfLifeDays?.toString()}
+        value={
+          (differenceCalculated === shelfLifeDays
+            ? updatedShelfLifeDays?.toString() : differenceCalculated.toString())
+}
         onChangeText={handleUpdatedShelfLifeDays}
       />
     </FormControl>
