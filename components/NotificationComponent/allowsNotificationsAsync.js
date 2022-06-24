@@ -4,7 +4,6 @@ import { Alert } from 'react-native';
 
 async function allowsNotificationsAsync() {
   const settings = await Notifications.getPermissionsAsync();
-  // console.log(settings);
   let finalStatus = settings.status;
   // if not granted permission
   if (settings.status !== 'granted' && settings.canAskAgain) {
