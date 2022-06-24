@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { Platform } from 'react-native';
-import {
-  Box, Button, ScrollView, Spinner, Center, VStack,
-} from 'native-base';
+import { Box, Button, ScrollView, Spinner, Center, VStack } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from 'axios';
 import moment from 'moment';
@@ -75,13 +73,14 @@ export default function ItemReview({ navigation }) {
     return fieldsFilled;
   };
 
-  const formatReviewItems = (items) => items.map((item) => ({
-    userId: '',
-    shelfLifeItemId: item.shelfLifeItemId,
-    addedOn: moment(item.purchaseDate, 'DD-MM-YYYY').toDate(),
-    expiry: moment(item.expiryDate, 'DD-MM-YYYY').toDate(),
-    notes: 'add this in later', // TODO: ADD NOTES INPUT COMPONENT
-  }));
+  const formatReviewItems = (items) =>
+    items.map((item) => ({
+      userId: '',
+      shelfLifeItemId: item.shelfLifeItemId,
+      addedOn: moment(item.purchaseDate, 'DD-MM-YYYY').toDate(),
+      expiry: moment(item.expiryDate, 'DD-MM-YYYY').toDate(),
+      notes: 'add this in later', // TODO: ADD NOTES INPUT COMPONENT
+    }));
 
   const handleAddToFridge = () => {
     if (areAllFieldsFilled(reviewItems)) {
@@ -98,7 +97,9 @@ export default function ItemReview({ navigation }) {
           const addedItems = response.data;
           reviewItemsDispatch(removeReviewItems());
           fridgeDispatch(addFridgeItems(addedItems));
-          if (Platform.OS !== 'web') { addedItems.forEach((item) => setNotification(item)); }
+          if (Platform.OS !== 'web') {
+            addedItems.forEach((item) => setNotification(item, jwtToken));
+          }
 
           navigation.navigate('Choose Mode');
         })
@@ -114,9 +115,9 @@ export default function ItemReview({ navigation }) {
   return (
     <Box style={{ height: '100%' }}>
       {reviewIds && (
-      <Center height="100%" width="100%">
-        <Spinner size="lg" />
-      </Center>
+        <Center height="100%" width="100%">
+          <Spinner size="lg" />
+        </Center>
       )}
       {!reviewIds && (!reviewItems || reviewItems.length === 0) && (
         <Center height="100%" width="100%">
@@ -124,23 +125,25 @@ export default function ItemReview({ navigation }) {
         </Center>
       )}
       {!reviewIds && reviewItems && (
-      <ScrollView padding={4}>
-        <VStack space={5}>
-          {reviewItems.map((item) => (
-            <ItemForm key={item.id} item={item} />
-          ))}
-        </VStack>
-        <Button
-          marginTop={4}
-          marginBottom={10}
-          bg="highlight.400"
-          _pressed={{ bgColor: 'secondary.300' }}
-          onPress={handleAddToFridge}
-          startIcon={<MaterialCommunityIcons name="fridge" size={24} color="white" />}
-        >
-          Add to Fridge
-        </Button>
-      </ScrollView>
+        <ScrollView padding={4}>
+          <VStack space={5}>
+            {reviewItems.map((item) => (
+              <ItemForm key={item.id} item={item} />
+            ))}
+          </VStack>
+          <Button
+            marginTop={4}
+            marginBottom={10}
+            bg="highlight.400"
+            _pressed={{ bgColor: 'secondary.300' }}
+            onPress={handleAddToFridge}
+            startIcon={
+              <MaterialCommunityIcons name="fridge" size={24} color="white" />
+            }
+          >
+            Add to Fridge
+          </Button>
+        </ScrollView>
       )}
     </Box>
   );
