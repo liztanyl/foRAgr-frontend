@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { View } from 'native-base';
 import { FridgeContextProvider } from './FridgeContext.jsx';
 import NavbarTabs from './NavbarTabs.jsx';
+import Login from './Login.jsx';
 
 import { useUserContext } from './UserContext.jsx';
 
@@ -18,14 +19,14 @@ export default function Main() {
 
   return (
     <View height="100%">
-      {/* {!loggedIn && <Login />} */}
-      {/* {loggedIn && */}
-      <FridgeContextProvider>
-        <NavigationContainer>
-          <NavbarTabs />
-        </NavigationContainer>
-      </FridgeContextProvider>
-      {/* } */}
+      {!loggedIn && <Login />}
+      {loggedIn && (
+        <FridgeContextProvider>
+          <NavigationContainer>
+            <NavbarTabs />
+          </NavigationContainer>
+        </FridgeContextProvider>
+      )}
     </View>
   );
 }
