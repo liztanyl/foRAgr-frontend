@@ -3,6 +3,7 @@ import {
   Box,
   Select,
   FormControl,
+  Text,
   WarningOutlineIcon,
 } from 'native-base';
 
@@ -50,18 +51,21 @@ export default function StorageSelector({
   };
 
   return (
-    <Box w="3/4" maxW="300">
+    <Box w="75%">
       <FormControl isRequired isInvalid={!selectedStorage}>
+        <Text
+          fontSize="xs"
+          textTransform="uppercase"
+          color="primary.800"
+        >
+          Storage Method
+        </Text>
         <Select
           selectedValue={
             storageMethods.length === 1 ? storageMethods[0].storageName : null
           }
           minWidth="200"
           placeholder="Choose a storage method"
-          _selectedItem={{
-            bg: 'teal.600',
-          }}
-          mt={1}
           onValueChange={(itemValue) => {
             handleValueChange(itemValue);
           }}

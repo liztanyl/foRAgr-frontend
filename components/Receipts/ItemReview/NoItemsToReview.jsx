@@ -1,32 +1,33 @@
 import React from 'react';
 import {
-  Text, Button, VStack, HStack,
-} from 'native-base'; import {
-  Ionicons,
-} from '@expo/vector-icons';
+  Text, Button, VStack,
+} from 'native-base';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { View } from 'react-native';
 
 export default function NoItemsToReview({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <VStack space="2xl" alignItems="center">
+      <VStack space="2xl" alignItems="stretch">
         <Text fontSize="lg">There are no items to review.</Text>
         <Button
           alignItems="center"
           size="lg"
-          bg="highlight.400"
-          _pressed={{ bgColor: 'secondary.400' }}
-          startIcon={<Ionicons name="add" size={24} color="white" />}
-          onPress={() => navigation.navigate('Manual Entry')}
+          colorScheme="secondary"
+          _text={{ fontSize: 'lg' }}
+          leftIcon={<MaterialIcons name="add-circle" size={24} color="white" />}
+          onPress={() => navigation.popToTop()}
         >
-          Add items
+          Add more items
         </Button>
         <Button
           size="lg"
-          bg="primary.100"
-          _pressed={{ bgColor: 'primary.200' }}
-          startIcon={<Ionicons name="home" size={24} color="white" />}
-          onPress={() => navigation.navigate('Home')}
+          _text={{ fontSize: 'lg' }}
+          startIcon={<MaterialCommunityIcons name="fridge" size={24} color="white" />}
+          onPress={() => {
+            navigation.popToTop();
+            navigation.navigate('Home');
+          }}
         >
           Back to Home
         </Button>

@@ -6,10 +6,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 function ReciptMainScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <VStack space={3} alignItems="stretch">
+      <VStack space={3} alignItems="stretch" justifyContent="center" width="100%" padding={5}>
         <Button
           size="lg"
-          padding={10}
+          height="40%"
+          colorScheme="primary"
+          _text={{ fontSize: '2xl' }}
           leftIcon={<MaterialIcons name="camera-alt" size={24} color="white" />}
           onPress={() => navigation.navigate('Camera Mode')}
         >
@@ -17,8 +19,9 @@ function ReciptMainScreen({ navigation }) {
         </Button>
         <Button
           size="lg"
-          padding={10}
+          height="40%"
           colorScheme="secondary"
+          _text={{ fontSize: '2xl' }}
           leftIcon={
             <MaterialIcons name="sticky-note-2" size={24} color="white" />
           }

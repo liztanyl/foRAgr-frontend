@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {
-  View, Button,
+  View, Button, Icon,
 } from 'native-base';
 import { Platform } from 'react-native';
 import axios from 'axios';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import WebExpiry from './WebExpiry.jsx';
 import { useUserContext } from '../UserContext.jsx';
 import { BACKEND_URL } from '../../store.js';
@@ -32,7 +33,7 @@ export default function ExtendExpiry({ expiry, itemId }) {
     const dataToBackend = { itemId, userToken: jwtToken, dateChanged };
     axios
       .post(`${BACKEND_URL}/extendShelfLife`, dataToBackend)
-      .then((response) => fridgeDispatch(editFridgeItem(itemId, expiryDate, dateChanged)))
+      .then(() => fridgeDispatch(editFridgeItem(itemId, expiryDate, dateChanged)))
       .catch((error) => console.log(error));
   };
 
@@ -40,7 +41,17 @@ export default function ExtendExpiry({ expiry, itemId }) {
     <View>
       {Platform.OS !== 'web' ? (
         <>
-          <Button onPress={showDate} w="40%" size="sm">Extend expiry</Button>
+          <Button
+            onPress={showDate}
+            size="sm"
+            py="1"
+            my="2"
+            colorScheme="primary"
+            variant="outline"
+            startIcon={<Icon as={MaterialCommunityIcons} name="calendar-plus" />}
+          >
+            Extend Expiry
+          </Button>
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
             mode="date"

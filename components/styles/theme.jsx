@@ -17,11 +17,11 @@ export default function () {
       // Add new color
       primary: {
         50: '#e7e9e8',
-        100: '#F4F6E4',
-        200: '#DEE3DE',
-        300: '#C7D1C8',
-        400: '#B1BEB2',
-        500: '#9BAB9C',
+        100: '#DEE3DE',
+        200: '#D3DAD3',
+        300: '#BCC7BD',
+        400: '#A6B5A7',
+        500: '#90A291',
         600: '#758C76', // primary
         700: '#667A67',
         800: '#546454',
@@ -65,8 +65,8 @@ export default function () {
       },
       warning: {
         50: '#FBF1EF',
-        100: '#F3D6CE',
-        200: '#EFC9BD',
+        100: '#F7E4DE',
+        200: '#F3D6CE',
         300: '#EBBBAD',
         400: '#E3A08C',
         500: '#DB856B',

@@ -18,9 +18,8 @@ export default function SearchDropDown({
       onPress={() => handleSelect(x)}
       width="100%"
       mb={1}
-      bg="primary.100"
-      _text={{ color: 'white' }}
-      _pressed={{ bgColor: 'primary.200' }}
+      colorScheme="primary"
+      variant="solid"
     >
       {x.name}
     </Button>
@@ -29,8 +28,8 @@ export default function SearchDropDown({
   const nothingFoundDisplay = (
     <Button
       width="100%"
-      bg="primary.100"
-      _text={{ color: 'black' }}
+      colorScheme="primary"
+      variant="solid"
       isDisabled
     >
       No food item found

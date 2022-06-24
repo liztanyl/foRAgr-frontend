@@ -67,6 +67,7 @@ export default function EnterReceipt() {
         component={ItemReview}
         options={{
           headerTitle: () => Header('Review Items'),
+          headerBackVisible: false,
         }}
       />
     </Stack.Navigator>

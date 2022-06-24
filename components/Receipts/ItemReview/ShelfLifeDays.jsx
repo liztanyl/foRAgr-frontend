@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import {
-  Input, FormControl, IconButton, Icon,
+  Input, FormControl, IconButton, Icon, Text, HStack,
 } from 'native-base';
 import moment from 'moment';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -42,9 +42,30 @@ export default function ShelfLifeDays({
     }
     console.log(updatedShelfLifeDays);
   };
+
   return (
     <FormControl isRequired>
+      <HStack space={1}>
+        <Text
+          fontSize="xs"
+          textTransform="uppercase"
+          color="primary.800"
+        >
+          Days to Expiry
+        </Text>
+        <Text
+          fontSize="xs"
+          textTransform="uppercase"
+          color="secondary.800"
+        >
+          (Average Shelf Life in Days:
+          {' '}
+          {shelfLifeDays}
+          )
+        </Text>
+      </HStack>
       <Input
+        w="50%"
         type="text"
         variant="outline"
         InputRightElement={(
@@ -52,12 +73,13 @@ export default function ShelfLifeDays({
             onPress={() => setUpdatedShelfLifeDays(shelfLifeDays)}
             icon={<Icon as={MaterialCommunityIcons} name="restart" />}
           />
-)}
+        )}
         placeholder="Enter shelf life length in days"
-        value={
-          (differenceCalculated === shelfLifeDays
-            ? updatedShelfLifeDays?.toString() : differenceCalculated.toString())
-}
+        value={(
+          differenceCalculated === shelfLifeDays
+            ? updatedShelfLifeDays?.toString()
+            : differenceCalculated.toString()
+        )}
         onChangeText={handleUpdatedShelfLifeDays}
       />
     </FormControl>
