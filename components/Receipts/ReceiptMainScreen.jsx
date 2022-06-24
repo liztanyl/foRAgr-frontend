@@ -1,16 +1,16 @@
 import { VStack, Button } from 'native-base';
 import * as React from 'react';
 import { View } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 function ReciptMainScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <VStack space={3} alignItems="center">
+      <VStack space={3} alignItems="stretch">
         <Button
           size="lg"
           padding={10}
-          rightIcon={<FontAwesome name="camera" size={24} color="white" />}
+          leftIcon={<MaterialIcons name="camera-alt" size={24} color="white" />}
           onPress={() => navigation.navigate('Camera Mode')}
         >
           Camera Mode
@@ -19,8 +19,8 @@ function ReciptMainScreen({ navigation }) {
           size="lg"
           padding={10}
           colorScheme="secondary"
-          rightIcon={
-            <FontAwesome name="pencil-square-o" size={24} color="white" />
+          leftIcon={
+            <MaterialIcons name="sticky-note-2" size={24} color="white" />
           }
           onPress={() => navigation.navigate('Manual Entry')}
         >

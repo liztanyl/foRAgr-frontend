@@ -2,19 +2,21 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { Icon, Text } from 'native-base';
+import { Heading, Icon, Text } from 'native-base';
 import EnterReceipt from './TabScreens/EnterReceipt.jsx';
 import HomeScreen from './TabScreens/HomeScreen.jsx';
 import Profile from './TabScreens/Profile.jsx';
 // import Recipes from './TabScreens/Recipes.jsx';
 
-const Tab = createBottomTabNavigator();
+const focusedColor = 'primary.900';
+const unfocusedColor = 'primary.500';
 
-const focusedColor = 'primary.100';
-const unfocusedColor = 'secondary.200';
+function Header(title) {
+  return <Heading>{title}</Heading>;
+}
 
 function Label(text, focused) {
-  return <Text fontSize="sm" marginBottom={1} color={focused ? focusedColor : unfocusedColor}>{text}</Text>;
+  return <Text fontSize="sm" marginBottom={1} color={focused ? focusedColor : unfocusedColor} bold={focused}>{text}</Text>;
 }
 
 function FridgeIcon(focused) {
@@ -32,6 +34,7 @@ function ProfileIcon(focused) {
 }
 
 export default function NavbarTabs() {
+  const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator screenOptions={{
       tabBarHideOnKeyboard: true,
@@ -44,6 +47,7 @@ export default function NavbarTabs() {
         name="Home"
         component={HomeScreen}
         options={{
+          headerTitle: () => Header('Home'),
           tabBarLabel: ({ focused }) => Label('Home', focused),
           tabBarIcon: ({ focused }) => FridgeIcon(focused),
         }}
@@ -61,6 +65,7 @@ export default function NavbarTabs() {
         name="Profile"
         component={Profile}
         options={{
+          headerTitle: () => Header('Profile'),
           tabBarLabel: ({ focused }) => Label('Profile', focused),
           tabBarIcon: ({ focused }) => ProfileIcon(focused),
         }}
