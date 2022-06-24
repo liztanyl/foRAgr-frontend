@@ -17,7 +17,7 @@ export default function NoItemsToReview({ navigation }) {
           bg="highlight.400"
           _pressed={{ bgColor: 'secondary.400' }}
           startIcon={<Ionicons name="add" size={24} color="white" />}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate('Manual Entry')}
         >
           Add items
         </Button>
