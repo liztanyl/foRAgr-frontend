@@ -1,10 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useState } from 'react';
-import { Popover, Button, Text, VStack } from 'native-base';
+import {
+  Popover, Button, Text, VStack, Icon,
+} from 'native-base';
 import axios from 'axios';
 import { Platform } from 'react-native';
-
+import { MaterialIcons } from '@expo/vector-icons';
 import { BACKEND_URL } from '../../store.js';
 import { useFridgeContext } from '../FridgeContext.jsx';
 import { useUserContext } from '../UserContext.jsx';
@@ -39,12 +41,12 @@ export default function RemoveItemButton({ itemId }) {
       trigger={(triggerProps) => (
         <Button
           {...triggerProps}
-          colorScheme="danger"
           size="sm"
           py="1"
           my="2"
-          w="40%"
+          colorScheme="secondary"
           variant="outline"
+          startIcon={<Icon as={MaterialIcons} name="check" />}
           onPress={() => setIsOpen(true)}
         >
           Mark as Consumed

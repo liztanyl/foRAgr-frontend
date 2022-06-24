@@ -4,7 +4,7 @@ import React from 'react';
 import {
   VStack, HStack, Button, Text, Menu,
 } from 'native-base';
-import { STORAGE, SORT } from './helpers';
+import { STORAGE, SORT } from './helpers.js';
 
 export default function StorageNavigation({
   currentStorage, setCurrentStorage, sortBy, setSortBy,
@@ -19,7 +19,9 @@ export default function StorageNavigation({
           .map((value) => (
             <Button
               key={value}
-              isDisabled={currentStorage === value}
+              variant={currentStorage === value
+                ? 'solid'
+                : 'subtle'}
               onPress={() => setCurrentStorage(value)}
             >
               {value}
@@ -33,7 +35,7 @@ export default function StorageNavigation({
     return (
       <Menu
         trigger={(triggerProps) => (
-          <Button {...triggerProps} w="200" pt={2}>
+          <Button {...triggerProps} w="200" py={2} variant="outline">
             {sortBy}
           </Button>
         )}

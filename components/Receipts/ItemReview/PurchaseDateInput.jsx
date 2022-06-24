@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Input, FormControl, Button } from 'native-base';
+import {
+  Box, Text, Input, FormControl, Button,
+} from 'native-base';
 import moment from 'moment';
 import { Platform } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -44,29 +46,45 @@ export default function PurchaseDateInput({
   }, [purchaseDate]);
 
   return (
-    <FormControl isRequired>
+    <Box w="50%">
       {Platform.OS === 'web'
         ? (
-          <Input
-            type="text"
-            variant="outline"
-            placeholder="Enter the date of purchase"
-            value={purchaseDate}
-            onChangeText={handleChangePurchaseDate}
-          />
+          <FormControl isRequired>
+            <Text
+              fontSize="xs"
+              textTransform="uppercase"
+              color="primary.800"
+            >
+              Added on
+            </Text>
+            <Input
+              type="text"
+              variant="outline"
+              placeholder="Enter the date of purchase"
+              value={purchaseDate}
+              onChangeText={handleChangePurchaseDate}
+            />
+          </FormControl>
         )
         : (
-          <>
-            <Button onPress={() => showDate()}>{purchaseDate}</Button>
+          <FormControl isRequired>
+            <Text
+              fontSize="xs"
+              textTransform="uppercase"
+              color="primary.800"
+            >
+              Added on
+            </Text>
+            <Button variant="subtle" onPress={showDate}>{purchaseDate}</Button>
             <DateTimePickerModal
               isVisible={isDatePickerVisible}
               mode="date"
               onConfirm={handleConfirm}
               onCancel={hideDatePicker}
             />
-          </>
+          </FormControl>
         )}
 
-    </FormControl>
+    </Box>
   );
 }

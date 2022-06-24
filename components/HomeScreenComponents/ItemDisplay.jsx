@@ -79,12 +79,22 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
               alignSelf="flex-start"
             >
               Added:
+              {' '}
               {setDays(item.purchaseDate)}
             </Text>
-            <Text>{item.notes}</Text>
+            {item.notes !== ''
+              && (
+                <Text>
+                  Remarks:
+                  {' '}
+                  {item.notes}
+                </Text>
+              )}
+          </VStack>
+          <HStack space={3}>
             <RemoveItemButton itemId={item.id} />
             {(moment(item.expiryDate).diff(new Date(), 'days') < 4) && <ExtendExpiry expiry={item.expiryDate} itemId={item.id} /> }
-          </VStack>
+          </HStack>
         </Box>
       )}
       keyExtractor={(item) => `${item.id}`}

@@ -35,12 +35,12 @@ export default function ItemForm({ item }) {
   }, [selectedStorage]);
 
   return (
-    <Box px={4} pt={2} pb={8} borderBottomWidth={0.5} borderBottomColor="primary.100">
+    <Box px={4} pt={2} pb={8} borderBottomWidth={0.5} borderBottomColor="primary.600">
       <HStack justifyContent="space-between" alignItems="center">
         <Heading size="md" mb={2}>{name}</Heading>
         <DeleteReviewItem reviewItemId={item.id} />
       </HStack>
-      <VStack spcae={4}>
+      <VStack space={4}>
         <CategorySelector
           reviewItemId={item.id}
           categories={categories}

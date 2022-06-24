@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Platform } from 'expo-modules-core';
-import { Input, FormControl, Button } from 'native-base';
+import {
+  Box, Text, Input, FormControl, Button,
+} from 'native-base';
 import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { useFridgeContext } from '../../FridgeContext';
+import { useFridgeContext } from '../../FridgeContext.jsx';
 
 const EXPIRY_DATE = 'expiryDate';
 
@@ -46,27 +48,44 @@ export default function ExpiryDate({
   }, [purchaseDate, updatedShelfLifeDays]);
 
   return (
-    <FormControl isRequired>
-      {Platform.OS === 'web' ? (
-        <Input
-          type="text"
-          variant="outline"
-          placeholder="Enter the expiry date"
-          value={expiryDate}
-          onChangeText={handleChangeExpiryDate}
-        />
-      )
+    <Box w="50%">
+      {Platform.OS === 'web'
+        ? (
+          <FormControl isRequired>
+            <Text
+              fontSize="xs"
+              textTransform="uppercase"
+              color="primary.800"
+            >
+              Expiry date
+            </Text>
+            <Input
+              type="text"
+              variant="outline"
+              placeholder="Enter the expiry date"
+              value={expiryDate}
+              onChangeText={handleChangeExpiryDate}
+            />
+          </FormControl>
+        )
         : (
-          <>
-            <Button onPress={() => showDate()}>{expiryDate}</Button>
+          <FormControl isRequired>
+            <Text
+              fontSize="xs"
+              textTransform="uppercase"
+              color="primary.800"
+            >
+              Expiry date
+            </Text>
+            <Button variant="subtle" onPress={showDate}>{expiryDate}</Button>
             <DateTimePickerModal
               isVisible={isDatePickerVisible}
               mode="date"
               onConfirm={handleConfirm}
               onCancel={hideDatePicker}
             />
-          </>
+          </FormControl>
         )}
-    </FormControl>
+    </Box>
   );
 }

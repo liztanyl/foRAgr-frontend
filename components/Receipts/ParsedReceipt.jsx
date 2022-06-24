@@ -54,12 +54,24 @@ function ParsedReceipt({ route, navigation }) {
       {(foodItemsPhoto.length === 0)
 
       && (
-      <Button onPress={() => {
-        navigation.replace('Manual Entry');
-      }}
-      >
-        Manual Entry
-      </Button>
+      <HStack>
+        <Button onPress={() => {
+          navigation.popToTop();
+          navigation.push('Manual Entry');
+        }}
+        >
+          Manual Entry
+        </Button>
+        <Button onPress={() => {
+          navigation.popToTop();
+          navigation.push('Camera Mode');
+        }}
+        >
+          Take Again
+
+        </Button>
+
+      </HStack>
       )}
       <ScrollView>
         {show && <SuccessfulAlert />}
@@ -92,6 +104,14 @@ function ParsedReceipt({ route, navigation }) {
           }}
         >
           Add to virtual fridge
+        </Button>
+        <Button onPress={() => {
+          navigation.popToTop();
+          navigation.push('Camera Mode');
+        }}
+        >
+          Take Again
+
         </Button>
       </HStack>
       )}

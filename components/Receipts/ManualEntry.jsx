@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import {
   VStack, Input, Button, ScrollView,
 } from 'native-base';
-import { Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from 'axios';
 import SearchDropDown from '../ManualEntryComponents/SearchDropdown.jsx';
 import IngredientList from '../ManualEntryComponents/IngredientList.jsx';
@@ -87,11 +87,13 @@ export default function ManualEntry({ navigation }) {
           )}
           {selectedList.length > 0 && (
           <Button
-            bg="highlight.400"
-            _pressed={{ bgColor: 'secondary.400' }}
             marginTop={2}
             alignSelf="flex-end"
-            endIcon={<Entypo name="chevron-small-right" size={24} color="white" />}
+            colorScheme="primary"
+            _text={{ fontSize: 'md' }}
+            endIcon={
+              <MaterialCommunityIcons name="chevron-right" size={24} color="white" />
+            }
             onPress={() => {
               reviewIdsDispatch(addReviewIds(selectedList.map((x) => x.id)));
               setSelectedList([]);

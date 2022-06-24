@@ -101,8 +101,6 @@ export default function ItemReview({ navigation }) {
           if (Platform.OS !== 'web') {
             addedItems.forEach((item) => setNotification(item, jwtToken));
           }
-
-          navigation.navigate('Choose Mode');
         })
         .catch((err) => {
           console.log(err);
@@ -114,7 +112,10 @@ export default function ItemReview({ navigation }) {
   };
 
   return (
-    <Box style={{ height: '100%' }}>
+    <Box style={{
+      height: '100%', alignItems: 'center', justifyContent: 'center', padding: 10,
+    }}
+    >
       {reviewIds && (
         <Center height="100%" width="100%">
           <Spinner size="lg" />
@@ -126,24 +127,28 @@ export default function ItemReview({ navigation }) {
         </Center>
       )}
       {!reviewIds && reviewItems && (
-        <ScrollView padding={4}>
-          <VStack space={5}>
-            {reviewItems.map((item) => (
-              <ItemForm key={item.id} item={item} />
-            ))}
-          </VStack>
-          <Button
-            marginTop={4}
-            marginBottom={10}
-            bg="highlight.400"
-            _pressed={{ bgColor: 'secondary.300' }}
-            onPress={handleAddToFridge}
-            startIcon={
-              <MaterialCommunityIcons name="fridge" size={24} color="white" />
-            }
-          >
-            Add to Fridge
-          </Button>
+        <ScrollView>
+          <Box width="sm" padding={4}>
+            <VStack space={5}>
+              {reviewItems.map((item) => (
+                <ItemForm key={item.id} item={item} />
+              ))}
+            </VStack>
+            <Button
+              margin={4}
+              paddingLeft={5}
+              paddingRight={5}
+              alignSelf="flex-end"
+              colorScheme="primary"
+              _text={{ fontSize: 'lg' }}
+              onPress={handleAddToFridge}
+              endIcon={
+                <MaterialCommunityIcons name="chevron-right-circle" size={24} color="white" />
+              }
+            >
+              Add to Fridge
+            </Button>
+          </Box>
         </ScrollView>
       )}
     </Box>
