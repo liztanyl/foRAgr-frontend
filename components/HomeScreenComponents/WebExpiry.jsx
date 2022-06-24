@@ -4,12 +4,20 @@ import {
 } from 'native-base';
 import moment from 'moment';
 import axios from 'axios';
+import { useUserContext } from '../UserContext';
+import { BACKEND_URL } from '../../store';
+import { useFridgeContext } from '../FridgeContext.jsx';
 
-export default function WebExpiry({ expiry }) {
+export default function WebExpiry({ expiry, itemId }) {
   const [expiryDays, extendExpiry] = useState('');
   const initialFocusRef = useRef(null);
   console.log(expiry, 'expiry');
   const [dateChanged, changeDate] = useState(moment(expiry));
+  const { jwtToken } = useUserContext();
+  const {
+    fridgeDispatch,
+    dispatchHelpers: { editFridgeItem },
+  } = useFridgeContext();
 
   const handleExtendedDays = (e) => {
     const processedValue = Number(e.target.value);
@@ -25,7 +33,13 @@ export default function WebExpiry({ expiry }) {
   };
 
   const handleSave = () => {
-    axios.post('/extendShelfLife');
+    console.log(dateChanged);
+    const dataToBackend = { itemId, userToken: jwtToken, dateChanged };
+    console.log(dataToBackend);
+    axios
+      .post(`${BACKEND_URL}/extendShelfLife`, dataToBackend)
+      .then((response) => fridgeDispatch(editFridgeItem(itemId, expiryDays, dateChanged)))
+      .catch((error) => console.log(error));
   };
   return (
     <Box h="60%" w="100%" alignItems="start">

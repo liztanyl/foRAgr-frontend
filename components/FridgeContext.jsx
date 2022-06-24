@@ -34,6 +34,7 @@ const ACTIONS = {
     RETRIEVE: 'retrieve items from fridge',
     ADD_ITEMS: 'add items to fridge',
     REMOVE_ITEM: 'remove item from fridge',
+    EDIT_ITEM: 'edit item in fridge',
   },
 };
 
@@ -126,6 +127,18 @@ const removeFridgeItem = (indexToRemove) => {
   return {
     type: ACTIONS.FRIDGE.REMOVE_ITEM,
     payload: indexToRemove,
+  };
+};
+
+const editFridgeItem = (id, key, value) => {
+  console.log('fridge - id to remove', id);
+  return {
+    type: ACTIONS.FRIDGE.EDIT_ITEM,
+    payload: {
+      id,
+      key,
+      value,
+    },
   };
 };
 
@@ -256,6 +269,20 @@ const fridgeReducer = (state, action) => {
         AsyncStorage.setItem(STORAGE_KEYS.FRIDGE,
           JSON.stringify(updatedFridge));
         return updatedFridge;
+      }
+      break;
+    }
+    case ACTIONS.FRIDGE.EDIT_ITEM: {
+      if (state) {
+        console.log('fridge reducer-edit state', state);
+        const { id, key, value } = action.payload;
+        const updatedContent = [...state];
+        const i = updatedContent.findIndex((item) => item.id === id);
+        updatedContent[i][key] = value;
+        console.log(updatedContent);
+        AsyncStorage.setItem(STORAGE_KEYS.FRIDGE,
+          JSON.stringify(updatedContent));
+        return updatedContent;
       }
       break;
     }
@@ -394,6 +421,7 @@ export function FridgeContextProvider({ children }) {
           removeReviewItems,
           addFridgeItems,
           removeFridgeItem,
+          editFridgeItem,
         },
       }}
     >
