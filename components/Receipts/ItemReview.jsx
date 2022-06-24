@@ -98,7 +98,9 @@ export default function ItemReview({ navigation }) {
           const addedItems = response.data;
           reviewItemsDispatch(removeReviewItems());
           fridgeDispatch(addFridgeItems(addedItems));
-          if (Platform.OS !== 'web') { addedItems.forEach((item) => setNotification(item)); }
+          if (Platform.OS !== 'web') {
+            addedItems.forEach((item) => setNotification(item, jwtToken));
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -112,9 +114,9 @@ export default function ItemReview({ navigation }) {
   return (
     <Box style={{ height: '100%' }}>
       {reviewIds && (
-      <Center height="100%" width="100%">
-        <Spinner size="lg" />
-      </Center>
+        <Center height="100%" width="100%">
+          <Spinner size="lg" />
+        </Center>
       )}
       {!reviewIds && (!reviewItems || reviewItems.length === 0) && (
         <Center height="100%" width="100%">
@@ -122,23 +124,25 @@ export default function ItemReview({ navigation }) {
         </Center>
       )}
       {!reviewIds && reviewItems && (
-      <ScrollView padding={4}>
-        <VStack space={5}>
-          {reviewItems.map((item) => (
-            <ItemForm key={item.id} item={item} />
-          ))}
-        </VStack>
-        <Button
-          marginTop={4}
-          marginBottom={10}
-          bg="highlight.400"
-          _pressed={{ bgColor: 'secondary.300' }}
-          onPress={handleAddToFridge}
-          startIcon={<MaterialCommunityIcons name="fridge" size={24} color="white" />}
-        >
-          Add to Fridge
-        </Button>
-      </ScrollView>
+        <ScrollView padding={4}>
+          <VStack space={5}>
+            {reviewItems.map((item) => (
+              <ItemForm key={item.id} item={item} />
+            ))}
+          </VStack>
+          <Button
+            marginTop={4}
+            marginBottom={10}
+            bg="highlight.400"
+            _pressed={{ bgColor: 'secondary.300' }}
+            onPress={handleAddToFridge}
+            startIcon={
+              <MaterialCommunityIcons name="fridge" size={24} color="white" />
+            }
+          >
+            Add to Fridge
+          </Button>
+        </ScrollView>
       )}
     </Box>
   );
