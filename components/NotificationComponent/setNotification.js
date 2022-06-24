@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { BACKEND_URL } from '../../store.js';
 
-const setNotification = (fridgeItem) => {
+const setNotification = (fridgeItem, jwtToken) => {
   const {
     id,
     name: foodItem,
@@ -27,12 +27,14 @@ const setNotification = (fridgeItem) => {
     trigger: {
       seconds: 10,
     },
-  })
-    .then((notificationIdentifier) => {
-      axios
-        .post(`${BACKEND_URL}/fridgeItems/notification/add/${id}`,
-          { notificationIdentifier });
+  }).then((notificationIdentifier) => {
+    console.log('🍔', jwtToken);
+
+    axios.post(`${BACKEND_URL}/fridgeItems/notification/add/${id}`, {
+      notificationIdentifier,
+      userToken: jwtToken,
     });
+  });
 };
 
 export default setNotification;

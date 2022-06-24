@@ -3,6 +3,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useReducer, useContext, useEffect } from 'react';
+import { useUserContext } from './UserContext.jsx';
 import { BACKEND_URL } from '../store.js';
 
 const STORAGE_KEYS = {
@@ -167,7 +168,10 @@ const reviewIdsReducer = (state, action) => {
         console.log('reviewIdsReducer-remove state', state);
         const idToRemove = action.payload;
         const updatedIds = state.filter((id) => id !== idToRemove);
-        AsyncStorage.setItem(STORAGE_KEYS.REVIEW_IDS, JSON.stringify(updatedIds));
+        AsyncStorage.setItem(
+          STORAGE_KEYS.REVIEW_IDS,
+          JSON.stringify(updatedIds)
+        );
         return updatedIds;
       }
       break;
@@ -212,8 +216,10 @@ const reviewItemsReducer = (state, action) => {
         const updatedItems = [...state];
         const i = updatedItems.findIndex((item) => item.id === id);
         updatedItems[i][key] = value;
-        AsyncStorage.setItem(STORAGE_KEYS.REVIEW_ITEMS,
-          JSON.stringify(updatedItems));
+        AsyncStorage.setItem(
+          STORAGE_KEYS.REVIEW_ITEMS,
+          JSON.stringify(updatedItems)
+        );
         return updatedItems;
       }
       break;
@@ -223,10 +229,13 @@ const reviewItemsReducer = (state, action) => {
       if (state) {
         console.log('reviewItemsReducer-remove state', state);
         const idToRemove = action.payload;
-        const updatedItems = [...state]
-          .filter((item) => item.id !== idToRemove);
-        AsyncStorage.setItem(STORAGE_KEYS.REVIEW_ITEMS,
-          JSON.stringify(updatedItems));
+        const updatedItems = [...state].filter(
+          (item) => item.id !== idToRemove
+        );
+        AsyncStorage.setItem(
+          STORAGE_KEYS.REVIEW_ITEMS,
+          JSON.stringify(updatedItems)
+        );
         return updatedItems;
       }
       break;
@@ -266,8 +275,10 @@ const fridgeReducer = (state, action) => {
         console.log('fridge reducer-remove state', state);
         const idToRemove = action.payload;
         const updatedFridge = state.filter((item) => item.id !== idToRemove);
-        AsyncStorage.setItem(STORAGE_KEYS.FRIDGE,
-          JSON.stringify(updatedFridge));
+        AsyncStorage.setItem(
+          STORAGE_KEYS.FRIDGE,
+          JSON.stringify(updatedFridge)
+        );
         return updatedFridge;
       }
       break;
@@ -338,11 +349,14 @@ export function FridgeContextProvider({ children }) {
   const [reviewIds, reviewIdsDispatch] = useReducer(reviewIdsReducer, null);
 
   // reviewItems is an array of review item objects
-  const [reviewItems, reviewItemsDispatch] = useReducer(reviewItemsReducer,
-    null);
+  const [reviewItems, reviewItemsDispatch] = useReducer(
+    reviewItemsReducer,
+    null
+  );
 
   // fridgeItems is an array of fridge item objects
   const [fridgeItems, fridgeDispatch] = useReducer(fridgeReducer, null);
+  const { jwtToken, userDetails } = useUserContext();
 
   const getReviewIdsFromAsyncStorage = () => {
     AsyncStorage.getItem(STORAGE_KEYS.REVIEW_IDS, (err, result) => {
@@ -375,13 +389,22 @@ export function FridgeContextProvider({ children }) {
   };
 
   useEffect(() => {
-    getReviewIdsFromAsyncStorage();
-    getReviewItemsFromAsyncStorage();
-    axios.get(`${BACKEND_URL}/fridgeItems/index`)
-      .then((response) => {
-        fridgeDispatch({ type: ACTIONS.FRIDGE.RETRIEVE, payload: response.data });
-      });
-  }, []);
+    if (Object.keys(userDetails).length > 0) {
+      getReviewIdsFromAsyncStorage();
+      getReviewItemsFromAsyncStorage();
+      console.log('😛', jwtToken);
+      axios
+        .get(`${BACKEND_URL}/fridgeItems/index/${jwtToken}`)
+        .then((response) => {
+          fridgeDispatch({
+            type: ACTIONS.FRIDGE.RETRIEVE,
+            payload: response.data,
+          });
+        });
+      // getFridgeItemsFromAsyncStorage();
+      console.log(fridgeItems);
+    }
+  }, [userDetails]);
 
   useEffect(() => {
     console.log('reviewIds', reviewIds);
