@@ -9,12 +9,16 @@ import { useUserContext } from './UserContext.jsx';
 
 export default function Main() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const { userDetails } = useUserContext();
+  const { userDetails, getUserDataFromAsyncStorage } = useUserContext();
 
   useEffect(() => {
-    Object.keys(userDetails).length > 0
-      ? setLoggedIn(true)
-      : setLoggedIn(false);
+    if (Object.keys(userDetails).length > 0) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+      getUserDataFromAsyncStorage();
+      Object.keys(userDetails).length > 0 && setLoggedIn(true);
+    }
   }, [userDetails]);
 
   return (
