@@ -3,6 +3,7 @@ import * as Notifications from 'expo-notifications';
 import moment from 'moment';
 
 import { BACKEND_URL } from '../../store.js';
+import { useUserContext } from '../UserContext.jsx';
 
 const setNotification = (fridgeItem) => {
   const {
@@ -11,6 +12,7 @@ const setNotification = (fridgeItem) => {
     shelfLifeDays: shelfLife,
     expiryDate: expiry,
   } = fridgeItem;
+  const { jwtToken } = useUserContext();
 
   const daysNotificationBeforeExpiry = Math.floor(0.1 * shelfLife);
   const dateToNotify = moment(expiry, 'DD-MM-YYYY').toDate();
@@ -27,12 +29,12 @@ const setNotification = (fridgeItem) => {
     trigger: {
       seconds: 10,
     },
-  })
-    .then((notificationIdentifier) => {
-      axios
-        .post(`${BACKEND_URL}/fridgeItems/notification/add/${id}`,
-          { notificationIdentifier });
+  }).then((notificationIdentifier) => {
+    axios.post(`${BACKEND_URL}/fridgeItems/notification/add/${id}`, {
+      notificationIdentifier,
+      userToken: jwtToken,
     });
+  });
 };
 
 export default setNotification;

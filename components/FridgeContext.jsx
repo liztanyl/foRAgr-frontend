@@ -4,6 +4,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useReducer, useContext, useEffect } from 'react';
 import { BACKEND_URL } from '../store.js';
+import { useUserContext } from './UserContext.jsx';
 
 const STORAGE_KEYS = {
   REVIEW_IDS: 'review ids',
@@ -82,7 +83,9 @@ const addReviewItems = (newItems) => {
 // --> Takes in index of the review item object to update,
 // the key to update (eg selectedCategory) and its new value
 const editReviewItem = (index, key, value) => {
-  console.log(`review - index to edit (key: value), ${index} (${key}: ${value})`);
+  console.log(
+    `review - index to edit (key: value), ${index} (${key}: ${value})`
+  );
   return {
     type: ACTIONS.REVIEW_ITEMS.EDIT_ITEM,
     payload: {
@@ -154,7 +157,10 @@ const reviewIdsReducer = (state, action) => {
         console.log('reviewIdsReducer-remove state', state);
         const idToRemove = action.payload;
         const updatedIds = state.filter((id) => id !== idToRemove);
-        AsyncStorage.setItem(STORAGE_KEYS.REVIEW_IDS, JSON.stringify(updatedIds));
+        AsyncStorage.setItem(
+          STORAGE_KEYS.REVIEW_IDS,
+          JSON.stringify(updatedIds)
+        );
         return updatedIds;
       }
       break;
@@ -198,8 +204,10 @@ const reviewItemsReducer = (state, action) => {
         const { index, key, value } = action.payload;
         const updatedItems = [...state];
         updatedItems[index][key] = value;
-        AsyncStorage.setItem(STORAGE_KEYS.REVIEW_ITEMS,
-          JSON.stringify(updatedItems));
+        AsyncStorage.setItem(
+          STORAGE_KEYS.REVIEW_ITEMS,
+          JSON.stringify(updatedItems)
+        );
         return updatedItems;
       }
       break;
@@ -211,8 +219,10 @@ const reviewItemsReducer = (state, action) => {
         const indexToRemove = action.payload;
         const updatedItems = [...state];
         updatedItems.splice(indexToRemove, 1);
-        AsyncStorage.setItem(STORAGE_KEYS.REVIEW_ITEMS,
-          JSON.stringify(updatedItems));
+        AsyncStorage.setItem(
+          STORAGE_KEYS.REVIEW_ITEMS,
+          JSON.stringify(updatedItems)
+        );
         return updatedItems;
       }
       break;
@@ -257,8 +267,10 @@ const fridgeReducer = (state, action) => {
         console.log('fridge reducer-remove state', state);
         const idToRemove = action.payload;
         const updatedFridge = state.filter((item) => item.id !== idToRemove);
-        AsyncStorage.setItem(STORAGE_KEYS.FRIDGE,
-          JSON.stringify(updatedFridge));
+        AsyncStorage.setItem(
+          STORAGE_KEYS.FRIDGE,
+          JSON.stringify(updatedFridge)
+        );
         return updatedFridge;
       }
       break;
@@ -315,11 +327,15 @@ export function FridgeContextProvider({ children }) {
   const [reviewIds, reviewIdsDispatch] = useReducer(reviewIdsReducer, null);
 
   // reviewItems is an array of review item objects
-  const [reviewItems, reviewItemsDispatch] = useReducer(reviewItemsReducer,
-    null);
+  const [reviewItems, reviewItemsDispatch] = useReducer(
+    reviewItemsReducer,
+    null
+  );
 
   // fridgeItems is an array of fridge item objects
   const [fridgeItems, fridgeDispatch] = useReducer(fridgeReducer, null);
+
+  const { jwtToken, userDetails } = useUserContext();
 
   const getReviewIdsFromAsyncStorage = () => {
     AsyncStorage.getItem(STORAGE_KEYS.REVIEW_IDS, (err, result) => {
@@ -351,15 +367,26 @@ export function FridgeContextProvider({ children }) {
     });
   };
 
+  const isEmpty = (obj) => {
+    return Object.keys(obj).length === 0;
+  };
+
   useEffect(() => {
-    getReviewIdsFromAsyncStorage();
-    getReviewItemsFromAsyncStorage();
-    axios.get(`${BACKEND_URL}/fridgeItems/index`)
-      .then((response) => {
-        fridgeDispatch({ type: ACTIONS.FRIDGE.RETRIEVE, payload: response.data });
-      });
-    // getFridgeItemsFromAsyncStorage();
-  }, []);
+    if (!isEmpty(userDetails)) {
+      getReviewIdsFromAsyncStorage();
+      getReviewItemsFromAsyncStorage();
+      axios
+        .get(`${BACKEND_URL}/fridgeItems/index/${jwtToken}`)
+        .then((response) => {
+          fridgeDispatch({
+            type: ACTIONS.FRIDGE.RETRIEVE,
+            payload: response.data,
+          });
+        });
+      // getFridgeItemsFromAsyncStorage();
+      console.log(fridgeItems);
+    }
+  }, [userDetails]);
 
   useEffect(() => {
     console.log('reviewIds', reviewIds);
