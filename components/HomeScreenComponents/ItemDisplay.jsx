@@ -81,6 +81,7 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
               Added:
               {setDays(item.purchaseDate)}
             </Text>
+            <Text>{item.notes}</Text>
             <RemoveItemButton itemId={item.id} />
             {(moment(item.expiryDate).diff(new Date(), 'days') < 4) && <ExtendExpiry expiry={item.expiryDate} /> }
           </VStack>

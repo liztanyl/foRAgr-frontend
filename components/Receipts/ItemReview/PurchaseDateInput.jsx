@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Input, FormControl } from 'native-base';
+import { Input, FormControl, Button } from 'native-base';
 import moment from 'moment';
+import { Platform } from 'react-native';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { useFridgeContext } from '../../FridgeContext.jsx';
-// import { Platform } from 'react-native';
-// import { Picker } from 'react-native-web';
-// import DateTimePicker from '@react-native-community/datetimepicker';
 
 const PURCHASE_DATE = 'purchaseDate';
 
@@ -23,29 +22,51 @@ export default function PurchaseDateInput({
     reviewItemsDispatch(editReviewItem(reviewItemId, PURCHASE_DATE, date));
   };
 
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDate = () => {
+    setDatePickerVisibility(true);
+  };
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  // when click confirm date picker
+  const handleConfirm = (date) => {
+    hideDatePicker();
+    console.log(moment(date, 'DD-MM-YYYY').format('DD-MM-YYYY'));
+    setPurchaseDate(moment(date, 'DD-MM-YYYY').format('DD-MM-YYYY'));
+    reviewItemsDispatch(editReviewItem(reviewItemId, PURCHASE_DATE, purchaseDate));
+  };
+
   useEffect(() => {
     reviewItemsDispatch(editReviewItem(reviewItemId, PURCHASE_DATE, purchaseDate));
   }, [purchaseDate]);
 
   return (
     <FormControl isRequired>
-      <Input
-        type="text"
-        variant="outline"
-        placeholder="Enter the date of purchase"
-        value={purchaseDate}
-        onChangeText={handleChangePurchaseDate}
-      />
-      {/* ISSUES WITH INSTALLING REACT NATIVE COMMUNITY DATE PICKER PACKAGES ON EXPO */}
-      {/* {Platform.OS === 'android' && (
-        <DateTimePicker
-          // date={purchaseDate}
-          // purchaseDate={purchaseDate}
-          display="calendar"
-          mode="date"
-        />
-      )} */}
-      {/* {Platform.OS === 'web' && <Picker />} */}
+      {Platform.OS === 'web'
+        ? (
+          <Input
+            type="text"
+            variant="outline"
+            placeholder="Enter the date of purchase"
+            value={purchaseDate}
+            onChangeText={handleChangePurchaseDate}
+          />
+        )
+        : (
+          <>
+            <Button onPress={() => showDate()}>{purchaseDate}</Button>
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
+            />
+          </>
+        )}
+
     </FormControl>
   );
 }

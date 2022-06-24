@@ -80,7 +80,7 @@ export default function ItemReview({ navigation }) {
     shelfLifeItemId: item.shelfLifeItemId,
     addedOn: moment(item.purchaseDate, 'DD-MM-YYYY').toDate(),
     expiry: moment(item.expiryDate, 'DD-MM-YYYY').toDate(),
-    notes: 'add this in later', // TODO: ADD NOTES INPUT COMPONENT
+    notes: item.notes,
   }));
 
   const handleAddToFridge = () => {
