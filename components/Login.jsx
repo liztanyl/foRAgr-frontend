@@ -10,15 +10,10 @@ import { BACKEND_URL } from '../store.js';
 import { useUserContext } from './UserContext.jsx';
 import { oAuthExpoClientId } from '../secret.js';
 
-// import { BACKEND_URL } from '../../store.js';
-// import { useUserContext } from '../UserContext.jsx';
-// import { oAuthExpoClientId } from '../../secret.js';
-
 WebBrowser.maybeCompleteAuthSession();
 
-export default function Profile() {
-  const { userDetails, setUserDetails, jwtToken, setJwtToken } =
-    useUserContext();
+export default function Login() {
+  const { userDetails, userLoginSet } = useUserContext();
   const [accessToken, setAccessToken] = useState();
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId: oAuthExpoClientId,
@@ -36,23 +31,16 @@ export default function Profile() {
     );
 
     userInfoResponse.json().then((googleResponseData) => {
-      console.log(googleResponseData);
-
       axios
         .post(`${BACKEND_URL}/user/loginMobile`, googleResponseData)
         .then((res) => {
-          // console.log(res.data);
           const { userData, token, newUser } = res.data;
-          setUserDetails(userData);
-          // console.log('token');
-          // console.log(token);
-          setJwtToken(token);
+          userLoginSet(userData, token);
 
           if (newUser) {
             console.log('New user registered');
             // account created message snackbar
           }
-          console.log('mobile login complete');
         })
         .catch((err) => {
           console.log(err);
@@ -61,10 +49,8 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    // console.log('checking for response update');
     // CHECKS FOR THE RESPONSE WHICH IS CALLED FROM promptAsync
     if (response?.type === 'success') {
-      // console.log('response success');
       setAccessToken(response.authentication.accessToken);
     }
   }, [response]);
@@ -84,7 +70,6 @@ export default function Profile() {
       axios
         .post(`${BACKEND_URL}/user/getGoogleAuthUrl`)
         .then((res) => {
-          // console.log(res.data);
           const redirectURI = res.data;
           window.location.href = redirectURI;
         })
@@ -92,35 +77,9 @@ export default function Profile() {
           console.log(err);
         });
     } else {
-      console.log('logging in mobile');
       accessToken ? getUserDataMobile() : promptAsync({ useProxy: true });
     }
   };
-
-  // const handleLogout = () => {
-  //   const initialiseStates = () => {
-  //     setAccessToken();
-  //     setUserDetails({});
-  //     setJwtToken();
-  //   };
-
-  //   console.log('logging out');
-  //   if (Platform.OS === 'web') {
-  //     axios
-  //       .post(`${BACKEND_URL}/user/logout`)
-  //       .then((res) => {
-  //         console.log(res.data);
-  //         initialiseStates();
-  //         // SUCCESSFUL LOGOUT WEB
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   } else {
-  //     initialiseStates();
-  //     // SUCCESSFUL LOGOUT WEB
-  //   }
-  // };
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -138,16 +97,6 @@ export default function Profile() {
         {!isEmpty(userDetails) && (
           <Text>You are logged into: {userDetails.email}</Text>
         )}
-        {/* {!isEmpty(userDetails) && (
-          <Button
-            size="lg"
-            padding={10}
-            colorScheme="secondary"
-            onPress={handleLogout}
-          >
-            Logout
-          </Button>
-        )} */}
       </VStack>
     </View>
   );
