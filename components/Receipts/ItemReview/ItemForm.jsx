@@ -9,13 +9,20 @@ import ShelfLifeDays from './ShelfLifeDays.jsx';
 import PurchaseDateInput from './PurchaseDateInput.jsx';
 import ExpiryDate from './ExpiryDate.jsx';
 import DeleteReviewItem from './DeleteReviewItem.jsx';
+import Notes from './Notes.jsx';
 
 export default function ItemForm({ item }) {
   const { name, categories } = item;
   const [selectedCategory, setSelectedCategory] = useState();
   const [selectedStorage, setSelectedStorage] = useState();
-  const [purchaseDate, setPurchaseDate] = useState(moment(new Date()).format('DD-MM-YYYY'));
+  const [purchaseDate, setPurchaseDate] = useState(moment(new Date(), 'DD-MM-YYYY').format('DD-MM-YYYY'));
   const [updatedShelfLifeDays, setUpdatedShelfLifeDays] = useState(0);
+
+  const newExpiryDate = moment(purchaseDate, 'DD-MM-YYYY')
+    .add(updatedShelfLifeDays, 'days')
+    .format('DD-MM-YYYY');
+
+  const [expiryDate, setExpiryDate] = useState(newExpiryDate);
 
   useEffect(() => {
     if (categories.length === 1) {
@@ -54,6 +61,8 @@ export default function ItemForm({ item }) {
           selectedStorage={selectedStorage}
           updatedShelfLifeDays={updatedShelfLifeDays}
           setUpdatedShelfLifeDays={setUpdatedShelfLifeDays}
+          expiryDate={expiryDate}
+          purchaseDate={purchaseDate}
         />
         )}
         <PurchaseDateInput
@@ -66,8 +75,12 @@ export default function ItemForm({ item }) {
           reviewItemId={item.id}
           purchaseDate={purchaseDate}
           updatedShelfLifeDays={updatedShelfLifeDays}
+          setExpiryDate={setExpiryDate}
+          expiryDate={expiryDate}
+          newExpiryDate={newExpiryDate}
         />
         )}
+        <Notes reviewItemId={item.id} />
       </VStack>
     </Box>
   );

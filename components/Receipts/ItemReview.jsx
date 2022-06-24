@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { Platform } from 'react-native';
-import { Box, Button, ScrollView, Spinner, Center, VStack } from 'native-base';
+import {
+  Box, Button, ScrollView, Spinner, Center, VStack,
+} from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from 'axios';
 import moment from 'moment';
@@ -73,14 +75,13 @@ export default function ItemReview({ navigation }) {
     return fieldsFilled;
   };
 
-  const formatReviewItems = (items) =>
-    items.map((item) => ({
-      userId: '',
-      shelfLifeItemId: item.shelfLifeItemId,
-      addedOn: moment(item.purchaseDate, 'DD-MM-YYYY').toDate(),
-      expiry: moment(item.expiryDate, 'DD-MM-YYYY').toDate(),
-      notes: 'add this in later', // TODO: ADD NOTES INPUT COMPONENT
-    }));
+  const formatReviewItems = (items) => items.map((item) => ({
+    userId: '',
+    shelfLifeItemId: item.shelfLifeItemId,
+    addedOn: moment(item.purchaseDate, 'DD-MM-YYYY').toDate(),
+    expiry: moment(item.expiryDate, 'DD-MM-YYYY').toDate(),
+    notes: item.notes,
+  }));
 
   const handleAddToFridge = () => {
     if (areAllFieldsFilled(reviewItems)) {

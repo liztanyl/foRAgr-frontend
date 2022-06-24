@@ -6,7 +6,9 @@ import { UserContextProvider } from './components/UserContext.jsx';
 import Main from './components/Main.jsx';
 import getTheme from './components/styles/theme.jsx';
 
+console.disableYellowBox = true;
 axios.defaults.withCredentials = true;
+
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
