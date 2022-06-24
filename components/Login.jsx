@@ -10,13 +10,14 @@ import { BACKEND_URL } from '../store.js';
 import { useUserContext } from './UserContext.jsx';
 import { oAuthExpoClientId } from '../secret.js';
 
-WebBrowser.maybeCompleteAuthSession();
+Platform.OS !== 'web' && WebBrowser.maybeCompleteAuthSession();
 
 export default function Login() {
   const { userDetails, userLoginSet } = useUserContext();
   const [accessToken, setAccessToken] = useState();
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId: oAuthExpoClientId,
+    webClientId: oAuthExpoClientId,
   });
 
   /**
@@ -68,7 +69,7 @@ export default function Login() {
   const handleLogin = () => {
     if (Platform.OS === 'web') {
       axios
-        .post(`${BACKEND_URL}/user/getGoogleAuthUrl`)
+        .get(`${BACKEND_URL}/user/getGoogleAuthUrl`)
         .then((res) => {
           const redirectURI = res.data;
           window.location.href = redirectURI;
