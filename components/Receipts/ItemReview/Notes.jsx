@@ -5,7 +5,8 @@ import {
 import { useFridgeContext } from '../../FridgeContext';
 
 const NOTES = 'notes';
-export default function Notes({ reviewItemId }) {
+
+export default function Notes({ item, reviewItemId }) {
   const [notesInput, handleNotesInput] = useState('');
   const {
     reviewItemsDispatch,
@@ -14,18 +15,19 @@ export default function Notes({ reviewItemId }) {
 
   const handleInput = (text) => {
     handleNotesInput(text);
+    reviewItemsDispatch(editReviewItem(reviewItemId, NOTES, text));
   };
+
   useEffect(() => {
-    reviewItemsDispatch(editReviewItem(reviewItemId, NOTES, notesInput));
-  }, [notesInput]);
+    if (item.notes) {
+      handleNotesInput(item.notes);
+      reviewItemsDispatch(editReviewItem(reviewItemId, NOTES, notesInput));
+    }
+  }, []);
 
   return (
     <FormControl isRequired>
-      <Text
-        fontSize="xs"
-        textTransform="uppercase"
-        color="primary.800"
-      >
+      <Text fontSize="xs" textTransform="uppercase" color="primary.800">
         Remarks
       </Text>
       <Input
