@@ -5,7 +5,7 @@ import { Text, View, Platform } from 'react-native';
 import axios from 'axios';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
-
+import AppInfo from './AppInfo.jsx';
 import { BACKEND_URL } from '../store.js';
 import { useUserContext } from './UserContext.jsx';
 import { oAuthExpoClientId } from '../secret.js';
@@ -24,12 +24,10 @@ export default function Login() {
    * completes the user login procedure on mobile
    */
   const getUserDataMobile = async () => {
-    const userInfoResponse = await fetch(
-      'https://www.googleapis.com/userinfo/v2/me',
+    const userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me',
       {
         headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    );
+      });
 
     userInfoResponse.json().then((googleResponseData) => {
       axios
@@ -83,20 +81,21 @@ export default function Login() {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <VStack space={3} alignItems="center">
+    <View style={{
+      flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center',
+    }}
+    >
+      <VStack>
         {isEmpty(userDetails) && (
-          <Button
-            size="lg"
-            padding={10}
-            colorScheme="primary"
-            onPress={handleLogin}
-          >
-            Login with Google
-          </Button>
+          <AppInfo handleLogin={handleLogin} />
+
         )}
         {!isEmpty(userDetails) && (
-          <Text>You are logged into: {userDetails.email}</Text>
+          <Text>
+            You are logged into:
+            {' '}
+            {userDetails.email}
+          </Text>
         )}
       </VStack>
     </View>
