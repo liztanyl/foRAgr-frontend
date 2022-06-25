@@ -64,7 +64,7 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
           py="3"
         >
           <HStack space={3} justifyContent="space-between">
-            <Text color="coolGray.800" bold fontSize="md">
+            <Text color="coolGray.800" bold fontSize="md" textTransform="capitalize">
               {item.name}
             </Text>
             <Spacer />

@@ -37,7 +37,7 @@ export default function ItemForm({ item }) {
   return (
     <Box px={4} pt={4} pb={10} borderBottomWidth={1} borderBottomColor="primary.300">
       <HStack justifyContent="space-between" alignItems="center">
-        <Heading size="md" mb={2}>{name}</Heading>
+        <Heading size="md" mb={2} textTransform="uppercase">{name}</Heading>
         <DeleteReviewItem reviewItemId={item.id} />
       </HStack>
       <VStack space={4}>
