@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     height: 60,
   },
   infoText: {
-    fontSize: 20,
+    fontSize: 18,
     textAlign: 'center',
 
   },
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   buttonLogin: {
     marginTop: 50,
     backgroundColor: '#042725',
-    borderRadius: '30%',
+    borderRadius: 20,
     padding: 50,
   },
 });
