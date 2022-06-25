@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     height: 60,
   },
   infoText: {
-    fontSize: 20,
+    fontSize: 18,
     textAlign: 'center',
 
   },
