@@ -4,7 +4,7 @@ import {
   StyleSheet, View, TouchableOpacity, Platform,
 } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
-import { Ionicons, Octicons, Entypo } from '@expo/vector-icons';
+import { Octicons, MaterialIcons } from '@expo/vector-icons';
 import {
   Box, HStack, Text,
 } from 'native-base';
@@ -21,33 +21,13 @@ const styles = StyleSheet.create({
   camera: {
     flex: 1,
   },
-  buttonContainer: {
-    flex: 1,
-    backgroundColor: 'transparent',
-    flexDirection: 'row',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  borderFocus: {
-    width: '70%',
-    height: '80%',
-    backgroundColor: 'transparent',
-    borderColor: 'transparent',
-    borderWidth: 2,
-  },
-  controls: {
-    height: '12%',
-  },
   button: {
     color: 'white',
     justifyContent: 'flex-start',
   },
   loadingView: {
-    display: 'flex',
     flex: 1,
-    marginBottom: 100,
-    alignContent: 'center',
+    alignItems: 'center',
     justifyContent: 'center',
   },
 });
@@ -99,6 +79,7 @@ function CameraScreen({ navigation }) {
         console.log(Object.keys(photoDataResponse.data.responses[0]));
 
         if (Object.keys(photoDataResponse.data.responses[0]).length === 0) {
+          navigation.pop();
           navigation.navigate('No data');
         }
         const detection = photoDataResponse.data?.responses[0]?.textAnnotations[0];
@@ -107,14 +88,14 @@ function CameraScreen({ navigation }) {
         if (photoDataResponse.data.length > 0) {
           setLoader(false);
         }
-
+        navigation.pop();
         navigation.navigate('See Parsed Receipt', { parsedData: backendResponse });
       }
       catch (error) {
         console.log(error);
       }
     };
-    console.log(sendPhotoData());
+
     sendPhotoData();
   };
   // take photo
@@ -161,49 +142,42 @@ function CameraScreen({ navigation }) {
             autoPlay
             ref={animation}
             style={{
-              width: 300,
-              height: 300,
+              width: '50%',
               backgroundColor: 'transparent',
             }}
         // Find more Lottie files at https://lottiefiles.com/featured
             source={require('../../assets/veggieLoader.json')}
           />
-          <Text textAlign="center"> Loading... </Text>
+          <Text textAlign="center" fontSize="md" color="primary.700"> Loading... </Text>
         </View>
       )
         : (
           <>
             <Text p={2} textAlign="center" color="white" bg="black"> To optimize search, please take against a plain background</Text>
-            <Camera style={styles.camera} type={type} ref={cameraRef}>
-              <View style={styles.buttonContainer}>
-                <Box style={styles.borderFocus} />
-              </View>
-              <Box style={styles.controls}>
-                <HStack p={2} justifyContent="space-between" alignItems="center">
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {
-                      setType(type === CameraType.back ? CameraType.front : CameraType.back);
-                    }}
-                  >
-                    <Ionicons name="ios-camera-reverse-sharp" size={30} color="white" />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={async () => {
-                      const r = await takePhoto();
-                    }}
-                  >
-                    <Octicons name="circle" size={50} color="white" />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => uploadPhoto()}
-                  >
-                    <Entypo name="upload" size={30} color="white" />
-                  </TouchableOpacity>
-                </HStack>
-              </Box>
-            </Camera>
+            <Camera style={styles.camera} type={type} ref={cameraRef} />
+            <HStack p={5} justifyContent="space-evenly" alignItems="center" bg="black">
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  setType(type === CameraType.back ? CameraType.front : CameraType.back);
+                }}
+              >
+                <MaterialIcons name="flip-camera-ios" size={30} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={async () => {
+                  const r = await takePhoto();
+                }}
+              >
+                <Octicons name="circle" size={50} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => uploadPhoto()}
+              >
+                <MaterialIcons name="photo" size={30} color="white" />
+              </TouchableOpacity>
+            </HStack>
           </>
         )}
     </View>

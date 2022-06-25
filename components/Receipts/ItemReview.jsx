@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import {
   Box, Button, ScrollView, Spinner, Center, VStack,
@@ -31,6 +31,7 @@ export default function ItemReview({ navigation }) {
     },
   } = useFridgeContext();
   const { jwtToken } = useUserContext();
+  const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
     try {
@@ -40,11 +41,8 @@ export default function ItemReview({ navigation }) {
           .then((response) => {
             const items = response.data;
             items.forEach((item) => {
-              console.log('HEYHEY', item);
               item.id = uuidv4();
-              console.log('IT ME', item);
             });
-            console.log('LOOK FOR ME', items);
             reviewItemsDispatch(addReviewItems(items));
             reviewIdsDispatch(removeReviewIds());
           })
@@ -85,6 +83,7 @@ export default function ItemReview({ navigation }) {
 
   const handleAddToFridge = () => {
     if (areAllFieldsFilled(reviewItems)) {
+      setIsAdding(true);
       console.log('all fields filled');
       const items = formatReviewItems(reviewItems);
       const dataToBackend = {
@@ -101,6 +100,7 @@ export default function ItemReview({ navigation }) {
           if (Platform.OS !== 'web') {
             addedItems.forEach((item) => setNotification(item, jwtToken));
           }
+          setIsAdding(false);
         })
         .catch((err) => {
           console.log(err);
@@ -122,13 +122,11 @@ export default function ItemReview({ navigation }) {
         </Center>
       )}
       {!reviewIds && (!reviewItems || reviewItems.length === 0) && (
-        <Center height="100%" width="100%">
-          <NoItemsToReview navigation={navigation} />
-        </Center>
+      <NoItemsToReview navigation={navigation} />
       )}
       {!reviewIds && reviewItems && (
-        <ScrollView>
-          <Box width="sm" padding={4}>
+        <ScrollView width="100%">
+          <Box padding={2}>
             <VStack space={5}>
               {reviewItems.map((item) => (
                 <ItemForm key={item.id} item={item} />
@@ -136,6 +134,7 @@ export default function ItemReview({ navigation }) {
             </VStack>
             <Button
               margin={4}
+              marginTop={8}
               paddingLeft={5}
               paddingRight={5}
               alignSelf="flex-end"
@@ -145,6 +144,9 @@ export default function ItemReview({ navigation }) {
               endIcon={
                 <MaterialCommunityIcons name="chevron-right-circle" size={24} color="white" />
               }
+              isLoading={isAdding}
+              isLoadingText="Adding to fridge"
+              spinnerPlacement="end"
             >
               Add to Fridge
             </Button>

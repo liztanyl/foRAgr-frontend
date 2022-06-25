@@ -38,7 +38,6 @@ export default function NavbarTabs() {
   return (
     <Tab.Navigator screenOptions={{
       tabBarHideOnKeyboard: true,
-      tabBarStyle: { height: 60 },
       tabBarActiveTintColor: focusedColor,
       tabBarInactiveTintColor: unfocusedColor,
     }}
