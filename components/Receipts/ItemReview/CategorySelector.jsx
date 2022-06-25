@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Select,
@@ -12,6 +12,7 @@ import { useFridgeContext } from '../../FridgeContext.jsx';
 const CATEGORY = 'category';
 
 export default function CategorySelector({
+  item,
   reviewItemId,
   categories,
   selectedCategory,
@@ -22,31 +23,35 @@ export default function CategorySelector({
     dispatchHelpers: { editReviewItem },
   } = useFridgeContext();
 
-  const handleValueChange = (itemValue) => {
-    const selectedItem = categories.filter((item) => item.categoryName === itemValue)[0];
-    setSelectedCategory(selectedItem);
-    reviewItemsDispatch(editReviewItem(reviewItemId,
-      CATEGORY,
-      selectedItem.categoryName));
-  };
-
   useEffect(() => {
-    if (categories.length === 1) {
+    if (item.category) {
+      setSelectedCategory(categories.filter((cat) => cat.categoryName === item.category)[0]);
+    } else if (categories.length === 1) {
       setSelectedCategory(categories[0]);
-      reviewItemsDispatch(editReviewItem(reviewItemId,
-        CATEGORY,
-        categories[0].categoryName));
+      reviewItemsDispatch(editReviewItem(reviewItemId, CATEGORY, categories[0].categoryName));
     }
   }, []);
 
+  const handleValueChange = (itemValue) => {
+    const selectedItem = categories.filter((item) => item.categoryName === itemValue)[0];
+    setSelectedCategory(selectedItem);
+    reviewItemsDispatch(editReviewItem(reviewItemId, CATEGORY, selectedItem.categoryName));
+  };
+
+  const handleDefaultValue = () => {
+    if (categories.length === 1) {
+      return categories[0].categoryName;
+    }
+    if (item.category) {
+      return item.category;
+    }
+    return null;
+  };
+
   return (
     <Box w="75%">
-      <FormControl isRequired isInvalid={!selectedCategory}>
-        <Text
-          fontSize="xs"
-          textTransform="uppercase"
-          color="primary.800"
-        >
+      <FormControl isRequired isInvalid={!selectedCategory && !item.category}>
+        <Text fontSize="xs" textTransform="uppercase" color="primary.800">
           Category
         </Text>
         <Select
@@ -55,9 +60,7 @@ export default function CategorySelector({
           onValueChange={(itemValue) => {
             handleValueChange(itemValue);
           }}
-          defaultValue={
-            categories.length === 1 ? categories[0].categoryName : null
-          }
+          defaultValue={handleDefaultValue}
         >
           {categories.length === 1 ? (
             // only render the first category if only 1 category

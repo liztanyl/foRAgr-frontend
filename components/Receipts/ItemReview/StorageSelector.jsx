@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Select,
@@ -13,6 +13,7 @@ const STORAGE_METHOD = 'storageMethod';
 const SHELF_LIFE_ITEM_ID = 'shelfLifeItemId';
 
 export default function StorageSelector({
+  item,
   reviewItemId,
   selectedCategory,
   selectedStorage,
@@ -25,51 +26,73 @@ export default function StorageSelector({
   } = useFridgeContext();
 
   useEffect(() => {
+    console.log(item.storageMethod);
+
     if (storageMethods.length === 1) {
       const storage = storageMethods[0];
       setSelectedStorage(storage);
-      console.log(storage.storageName);
-      reviewItemsDispatch(editReviewItem(reviewItemId,
-        STORAGE_METHOD,
-        storage.storageName));
-      reviewItemsDispatch(editReviewItem(reviewItemId,
-        SHELF_LIFE_ITEM_ID,
-        storage.shelfLifeItemId));
+      reviewItemsDispatch(
+        editReviewItem(reviewItemId, STORAGE_METHOD, storage.storageName)
+      );
+      reviewItemsDispatch(
+        editReviewItem(
+          reviewItemId,
+          SHELF_LIFE_ITEM_ID,
+          storage.shelfLifeItemId
+        )
+      );
+    } else if (item.storageMethod) {
+      const store = storageMethods.filter(
+        (method) => item.storageMethod === method.storageName
+      )[0];
+      setSelectedStorage(store);
     }
   }, [selectedCategory]);
 
   const handleValueChange = (itemValue) => {
-    const chosenStorage = storageMethods.filter((item) => item.storageName === itemValue)[0];
+    const chosenStorage = storageMethods.filter(
+      (item) => item.storageName === itemValue
+    )[0];
     setSelectedStorage(chosenStorage);
-    reviewItemsDispatch(editReviewItem(reviewItemId,
-      STORAGE_METHOD,
-      chosenStorage.storageName));
-    reviewItemsDispatch(editReviewItem(reviewItemId,
-      SHELF_LIFE_ITEM_ID,
-      chosenStorage.shelfLifeItemId));
-    console.log(selectedStorage);
+    reviewItemsDispatch(
+      editReviewItem(reviewItemId, STORAGE_METHOD, chosenStorage.storageName)
+    );
+    reviewItemsDispatch(
+      editReviewItem(
+        reviewItemId,
+        SHELF_LIFE_ITEM_ID,
+        chosenStorage.shelfLifeItemId
+      )
+    );
+  };
+
+  const handleSelectedValue = () => {
+    if (storageMethods.length === 1) {
+      return storageMethods[0].storageName;
+    }
+    if (item.storageMethod) {
+      return selectedStorage?.storageName;
+    }
+    return null;
   };
 
   return (
     <Box w="75%">
       <FormControl isRequired isInvalid={!selectedStorage}>
-        <Text
-          fontSize="xs"
-          textTransform="uppercase"
-          color="primary.800"
-        >
+        <Text fontSize="xs" textTransform="uppercase" color="primary.800">
           Storage Method
         </Text>
         <Select
-          selectedValue={
-            storageMethods.length === 1 ? storageMethods[0].storageName : null
-          }
+          selectedValue={handleSelectedValue()}
           minWidth="200"
           placeholder="Choose a storage method"
           onValueChange={(itemValue) => {
             handleValueChange(itemValue);
           }}
-          defaultValue={selectedStorage ? selectedStorage.storageName : null}
+          defaultValue={
+            handleSelectedValue()
+            // selectedStorage ? selectedStorage.storageName : null
+          }
         >
           {selectedCategory.storageMethods.map((storageMethod) => (
             <Select.Item
