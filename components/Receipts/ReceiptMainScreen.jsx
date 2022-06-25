@@ -1,5 +1,5 @@
 import {
-  VStack, Button, Pressable, Text, Icon, HStack,
+  VStack, Pressable, Text, Icon, HStack,
 } from 'native-base';
 import * as React from 'react';
 import { View } from 'react-native';

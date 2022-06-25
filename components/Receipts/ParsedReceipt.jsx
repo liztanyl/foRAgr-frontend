@@ -4,6 +4,9 @@ import {
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 import { useFridgeContext } from '../FridgeContext.jsx';
 import NoData from './NoData.jsx';
 
@@ -42,7 +45,17 @@ function ParsedReceipt({ route, navigation }) {
         <ScrollView width="100%" p={3}>
 
           {foodItemsPhoto.map((data) => (
-            <HStack space={2} my={2} justifyContent="space-between" alignItems="center">
+            <HStack
+              key={uuidv4()}
+              space={2}
+              my={2}
+              py={2}
+              px={5}
+              borderRadius={5}
+              justifyContent="space-between"
+              alignItems="center"
+              bgColor="secondary.200"
+            >
               <Text flex={5}>{data.parsedName.toUpperCase()}</Text>
               <Text flex={5} fontWeight="bold">{data.match[0].itemName}</Text>
               <Box flex={1}>
