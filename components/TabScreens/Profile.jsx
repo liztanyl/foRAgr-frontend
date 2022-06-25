@@ -10,6 +10,7 @@ import axios from 'axios';
 import * as WebBrowser from 'expo-web-browser';
 import { BACKEND_URL } from '../../store.js';
 import { useUserContext } from '../UserContext.jsx';
+import UserProfile from '../Profile/UserProfile.jsx';
 import profile from '../../assets/profile1.png';
 
 WebBrowser.maybeCompleteAuthSession();

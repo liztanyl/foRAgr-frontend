@@ -17,6 +17,7 @@ export default function ItemForm({ item }) {
   const [selectedStorage, setSelectedStorage] = useState();
   const [purchaseDate, setPurchaseDate] = useState(moment(new Date(), 'DD-MM-YYYY').format('DD-MM-YYYY'));
   const [updatedShelfLifeDays, setUpdatedShelfLifeDays] = useState(0);
+  const [prevShelfLifeDays, setPrevShelfLifeDays] = useState(null);
 
   const newExpiryDate = moment(purchaseDate, 'DD-MM-YYYY')
     .add(updatedShelfLifeDays, 'days')
@@ -35,52 +36,65 @@ export default function ItemForm({ item }) {
   }, [selectedStorage]);
 
   return (
-    <Box px={4} pt={4} pb={10} borderBottomWidth={1} borderBottomColor="primary.300">
+    <Box
+      px={4}
+      pt={4}
+      pb={10}
+      borderBottomWidth={1}
+      borderBottomColor="primary.300"
+    >
       <HStack justifyContent="space-between" alignItems="center">
         <Heading size="md" mb={2} textTransform="uppercase">{name}</Heading>
         <DeleteReviewItem reviewItemId={item.id} />
       </HStack>
       <VStack space={4}>
         <CategorySelector
+          item={item}
           reviewItemId={item.id}
           categories={categories}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
         {selectedCategory && (
-        <StorageSelector
-          reviewItemId={item.id}
-          selectedCategory={selectedCategory}
-          selectedStorage={selectedStorage}
-          setSelectedStorage={setSelectedStorage}
-        />
+          <StorageSelector
+            item={item}
+            reviewItemId={item.id}
+            selectedCategory={selectedCategory}
+            selectedStorage={selectedStorage}
+            setSelectedStorage={setSelectedStorage}
+          />
         )}
         {selectedStorage && (
-        <ShelfLifeDays
-          reviewItemId={item.id}
-          selectedStorage={selectedStorage}
-          updatedShelfLifeDays={updatedShelfLifeDays}
-          setUpdatedShelfLifeDays={setUpdatedShelfLifeDays}
-          expiryDate={expiryDate}
-          purchaseDate={purchaseDate}
-        />
+          <ShelfLifeDays
+            item={item}
+            reviewItemId={item.id}
+            selectedStorage={selectedStorage}
+            updatedShelfLifeDays={updatedShelfLifeDays}
+            setUpdatedShelfLifeDays={setUpdatedShelfLifeDays}
+            expiryDate={expiryDate}
+            purchaseDate={purchaseDate}
+            prevShelfLifeDays={prevShelfLifeDays}
+            setPrevShelfLifeDays={setPrevShelfLifeDays}
+          />
         )}
         <PurchaseDateInput
+          item={item}
           reviewItemId={item.id}
           purchaseDate={purchaseDate}
           setPurchaseDate={setPurchaseDate}
         />
         {selectedStorage && (
-        <ExpiryDate
-          reviewItemId={item.id}
-          purchaseDate={purchaseDate}
-          updatedShelfLifeDays={updatedShelfLifeDays}
-          setExpiryDate={setExpiryDate}
-          expiryDate={expiryDate}
-          newExpiryDate={newExpiryDate}
-        />
+          <ExpiryDate
+            item={item}
+            reviewItemId={item.id}
+            purchaseDate={purchaseDate}
+            updatedShelfLifeDays={updatedShelfLifeDays}
+            setExpiryDate={setExpiryDate}
+            expiryDate={expiryDate}
+            newExpiryDate={newExpiryDate}
+          />
         )}
-        <Notes reviewItemId={item.id} />
+        <Notes item={item} reviewItemId={item.id} />
       </VStack>
     </Box>
   );
