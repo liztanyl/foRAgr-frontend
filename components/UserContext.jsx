@@ -20,6 +20,7 @@ export function UserContextProvider({ children }) {
   const [userDetails, setUserDetails] = useState({});
   const [jwtToken, setJwtToken] = useState();
   const userDataFromCookies = () => JSON.parse(Cookies.get('logged_in_user'));
+  const userTokenFromCookies = () => Cookies.get('token');
 
   const userLoginSet = (userDetails, token) => {
     setUserDetails(userDetails);
@@ -59,6 +60,10 @@ export function UserContextProvider({ children }) {
   };
 
   useEffect(() => {
+    if (Platform.OS === 'web') {
+      setUserDetails(userDataFromCookies());
+      setJwtToken(userTokenFromCookies());
+    }
     if (Platform.OS === 'web' && window.location.pathname === '/auth/google') {
       const url = new URL(window.location.href);
       const authCode = url.searchParams.get('code');
