@@ -4,6 +4,8 @@ import moment from 'moment';
 
 import { BACKEND_URL } from '../../store.js';
 
+const convertUpperCase = (str) => str.split(' ').map((x) => x.charAt(0).toUpperCase() + x.slice(1)).join(' ');
+
 const setNotification = (fridgeItem, jwtToken) => {
   const {
     id,
@@ -20,7 +22,7 @@ const setNotification = (fridgeItem, jwtToken) => {
   Notifications.scheduleNotificationAsync({
     content: {
       title: 'Food Expiry Warning!',
-      body: `${foodItem} is about to expire! If consumed, open app to mark consumed.`,
+      body: `${convertUpperCase(foodItem)} is about to expire! If consumed, open app to mark consumed.`,
       sound: true,
     },
     // trigger: dateToNotify, // TODO: COMMENT THIS OUT FOR PROD and DELETE below trigger key
