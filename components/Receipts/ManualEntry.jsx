@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import {
   VStack, Input, Button, ScrollView,
 } from 'native-base';
@@ -15,8 +15,12 @@ export default function ManualEntry({ navigation }) {
     reviewIdsDispatch,
     dispatchHelpers: { addReviewIds },
   } = useFridgeContext();
-  const [filteredList, setFilteredList] = useState(null);
+
   const [foodItems, setFoodItems] = useState(null);
+  const [filteredList, setFilteredList] = useState(null);
+  const [searchStatus, setSearchStatus] = useState(false);
+  const [selectedList, setSelectedList] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
 
   useEffect(() => {
     const fetchFoodItems = async () => {
@@ -26,18 +30,6 @@ export default function ManualEntry({ navigation }) {
     };
     fetchFoodItems();
   }, []);
-
-  const styles = StyleSheet.create({
-    searchBar: {
-      color: 'black',
-      backgroundColor: 'grey',
-      padding: 10,
-    },
-  });
-
-  const [searchStatus, setSearchStatus] = useState(false);
-  const [selectedList, setSelectedList] = useState([]);
-  const [searchInput, setSearchInput] = useState('');
 
   const handleSearch = (e) => {
     if (e) {
@@ -64,11 +56,10 @@ export default function ManualEntry({ navigation }) {
           <Input
             size="xl"
             placeholder="Search"
-            placeholderTextColor="white"
-            onChangeText={handleSearch}
-            value={searchInput}
-            style={styles.searchBar}
+            bg="primary.100"
             marginTop={3}
+            value={searchInput}
+            onChangeText={handleSearch}
           />
           {searchStatus && (
           <SearchDropDown
