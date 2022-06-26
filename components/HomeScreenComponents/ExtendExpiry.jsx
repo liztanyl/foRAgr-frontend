@@ -6,6 +6,7 @@ import {
 import { Platform } from 'react-native';
 import axios from 'axios';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import moment from 'moment';
 import WebExpiry from './WebExpiry.jsx';
 import { useUserContext } from '../UserContext.jsx';
 import { BACKEND_URL } from '../../store.js';
@@ -57,6 +58,7 @@ export default function ExtendExpiry({ expiry, itemId }) {
             mode="date"
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
+            minimumDate={new Date(moment(expiry).format('YYYY-MM-DD'))}
           />
         </>
       )

@@ -5,6 +5,7 @@ import {
 } from 'native-base';
 import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+
 import { useFridgeContext } from '../../FridgeContext.jsx';
 
 const EXPIRY_DATE = 'expiryDate';
@@ -41,6 +42,7 @@ export default function ExpiryDate({
     setExpiryDate(date);
     reviewItemsDispatch(editReviewItem(reviewItemId, EXPIRY_DATE, date));
   };
+  console.log((moment(purchaseDate, 'DD-MM-YYYY').format('YYYY-MM-DD')));
 
   useEffect(() => {
     setExpiryDate(newExpiryDate);
@@ -81,6 +83,7 @@ export default function ExpiryDate({
             <DateTimePickerModal
               isVisible={isDatePickerVisible}
               mode="date"
+              minimumDate={new Date(moment(purchaseDate, 'DD-MM-YYYY').format('YYYY-MM-DD'))}
               onConfirm={handleConfirm}
               onCancel={hideDatePicker}
             />

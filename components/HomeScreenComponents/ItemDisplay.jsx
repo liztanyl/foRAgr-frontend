@@ -88,6 +88,7 @@ export default function ItemDisplay({
               <Text
                 color="coolGray.800"
                 alignSelf="flex-start"
+                textTransform="capitalize"
               >
                 Added:
                 {' '}
