@@ -6,6 +6,8 @@ import React, { useReducer, useContext, useEffect } from 'react';
 import { useUserContext } from './UserContext.jsx';
 import { BACKEND_URL } from '../store.js';
 
+AsyncStorage.clear();
+
 const STORAGE_KEYS = {
   REVIEW_IDS: 'review ids',
   REVIEW_ITEMS: 'review items',
