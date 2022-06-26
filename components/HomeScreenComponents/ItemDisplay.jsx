@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Box, Text, VStack, HStack, FlatList, Spacer, Spinner, Center,
-} from 'native-base';
-import moment from 'moment';
+import { Text, Spinner, Center } from 'native-base';
 import { useFridgeContext } from '../FridgeContext.jsx';
-import { SORT, sortItems } from './helpers.js';
-import ExpiryDateBadge, { setDays } from './ExpiryDateBadge.jsx';
-import RemoveItemButton from './RemoveItemButton.jsx';
-import ExtendExpiry from './ExtendExpiry.jsx';
+import { sortItems } from './helpers.js';
+import ItemList from './ItemList.jsx';
 
 export default function ItemDisplay({
   currentStorage, sortBy, isLoading, setIsLoading,
@@ -16,119 +11,28 @@ export default function ItemDisplay({
   const [items, setItems] = useState(null);
 
   useEffect(() => {
-    setIsLoading(false);
-  }, [items]);
-
-  useEffect(() => {
     let newItems = fridgeItems && [...fridgeItems];
     if (currentStorage !== 'All') {
-      newItems = newItems.filter((item) => item.storageMethod === currentStorage);
+      newItems = newItems?.filter((item) => item.storageMethod === currentStorage);
     }
-    newItems?.sort((a, b) => sortItems(a, b, 'expiry', 'asc'));
+    newItems.sort((a, b) => sortItems(a, b, 'expiry', 'asc'));
     setItems(newItems);
   }, [currentStorage, fridgeItems]);
 
   useEffect(() => {
-    const newItems = items && [...items];
-    switch (sortBy) {
-      case SORT.ALPHA_ASC: {
-        newItems?.sort((a, b) => sortItems(a, b, 'alpha', 'asc'));
-        break;
-      }
-      case SORT.ALPHA_DESC: {
-        newItems?.sort((a, b) => sortItems(a, b, 'alpha', 'desc'));
-        break;
-      }
-      case SORT.ADDED_ASC: {
-        newItems?.sort((a, b) => sortItems(a, b, 'added', 'asc'));
-        break;
-      }
-      case SORT.ADDED_DESC: {
-        newItems?.sort((a, b) => sortItems(a, b, 'added', 'desc'));
-        break;
-      }
-      case SORT.EXPIRY_DESC: {
-        newItems?.sort((a, b) => sortItems(a, b, 'expiry', 'desc'));
-        break;
-      }
-      default: {
-        newItems?.sort((a, b) => sortItems(a, b, 'expiry', 'asc'));
-        break;
-      }
-    }
-    setItems(newItems);
     setIsLoading(false);
-  }, [sortBy]);
+  }, [items]);
 
   return (
     <>
       {isLoading && <Spinner size="lg" margin={10} />}
-      {!isLoading && (!items || items.length === 0)
+      {(!isLoading && items && items.length > 0)
+      && <ItemList items={items} setItems={setItems} sortBy={sortBy} />}
+      {(!isLoading && (!items || items.length === 0))
       && (
       <Center flex={1} alignItems="center" justifyContent="center">
         <Text>There's nothing here! Add some items first.</Text>
       </Center>
-      )}
-      {!isLoading && items.length > 0 && (
-      <FlatList
-        data={items}
-        renderItem={({ item }) => (
-          <Box
-            borderBottomWidth="1"
-            borderColor="coolGray.200"
-            pl="4"
-            pr="5"
-            py="3"
-          >
-            <HStack space={3} justifyContent="space-between">
-              <Text color="coolGray.800" bold fontSize="md" textTransform="capitalize">
-                {item.name}
-              </Text>
-              <Spacer />
-              <ExpiryDateBadge expiryDate={item.expiryDate} />
-            </HStack>
-            <VStack>
-              <Text
-                alignSelf="flex-start"
-                fontWeight="light"
-              >
-                Category:
-                {' '}
-                {item.category}
-              </Text>
-              <Text
-                alignSelf="flex-start"
-                fontWeight="light"
-              >
-                Storage:
-                {' '}
-                {item.storageMethod}
-              </Text>
-              <Text
-                alignSelf="flex-start"
-                fontWeight="light"
-              >
-                Added:
-                {' '}
-                {setDays(item.purchaseDate)}
-              </Text>
-              {item.notes !== ''
-              && (
-                <Text>
-                  Remarks:
-                  {' '}
-                  {item.notes}
-                </Text>
-              )}
-            </VStack>
-            <HStack space={3}>
-              <RemoveItemButton itemId={item.id} itemName={item.name} />
-              {(moment(item.expiryDate).diff(new Date(), 'days') < 4) && <ExtendExpiry expiry={item.expiryDate} itemId={item.id} /> }
-            </HStack>
-          </Box>
-        )}
-        keyExtractor={(item) => `${item.id}`}
-      />
       )}
     </>
   );
