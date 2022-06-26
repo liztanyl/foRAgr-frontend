@@ -1,11 +1,18 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { DevSettings } from 'react-native';
-import { View, Text, Button } from 'native-base';
+import {
+  View, Text, Button, VStack,
+} from 'native-base';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const handleRestart = () => {
   console.log('problem');
   DevSettings.reload();
+};
+
+const handleResetAsyncStorage = () => {
+  AsyncStorage.clear();
 };
 
 export default class ErrorBoundary extends React.Component {
@@ -42,15 +49,29 @@ export default class ErrorBoundary extends React.Component {
           }}
         >
           <Text>Oops!!! Something went wrong..</Text>
-          <Button
-            size="lg"
-            p={5}
-            mt={5}
-            onPress={handleRestart}
-            bg="secondary.600"
-          >
-            Restart App
-          </Button>
+          <VStack space={1} alignItems="center">
+
+            <Button
+              size="lg"
+              p={5}
+              mt={5}
+              onPress={handleRestart}
+              bg="secondary.600"
+            >
+              Restart App
+            </Button>
+
+            <Button
+              size="lg"
+              p={5}
+              mt={5}
+              onPress={handleResetAsyncStorage}
+              bg="tertiary.600"
+            >
+              Reset AsyncStorage
+            </Button>
+
+          </VStack>
         </View>
       );
     }
