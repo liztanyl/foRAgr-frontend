@@ -1,6 +1,12 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
-import { View, Text } from 'native-base';
+import { DevSettings } from 'react-native';
+import { View, Text, Button } from 'native-base';
+
+const handleRestart = () => {
+  console.log('problem');
+  DevSettings.reload();
+};
 
 export default class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -17,8 +23,8 @@ export default class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.log('Error: ' + error);
-    console.log('Error Info: ' + errorInfo);
+    console.log(`Error: ${error}`);
+    console.log(`Error Info: ${errorInfo}`);
     this.setState({
       error,
       errorInfo,
@@ -36,6 +42,15 @@ export default class ErrorBoundary extends React.Component {
           }}
         >
           <Text>Oops!!! Something went wrong..</Text>
+          <Button
+            size="lg"
+            p={5}
+            mt={5}
+            onPress={handleRestart}
+            bg="secondary.600"
+          >
+            Restart App
+          </Button>
         </View>
       );
     }
