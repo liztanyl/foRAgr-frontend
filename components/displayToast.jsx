@@ -9,7 +9,7 @@ export default function displayToast(toast, message, status) {
   toast.show({
     placement: 'bottom',
     render: () => (
-      <Alert status={status} variant="left-accent" mb={5}>
+      <Alert status={status} variant="left-accent" mb={15}>
         <HStack space={2} alignItems="center" justifyContent="space-between">
           <Alert.Icon />
           <Text fontSize="xs" textTransform="uppercase">{message}</Text>

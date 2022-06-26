@@ -10,14 +10,14 @@ export default function ExpiryAlert({ num }) {
       <VStack space={2} flexShrink={1} w="100%">
         <HStack space={2} justifyContent="center" alignItems="center">
           <Alert.Icon />
-          <Text fontSize="sm" color="coolGray.800">
+          <Text>
             You have
             {' '}
             {num}
             {' '}
             {num === 1 ? 'item' : 'items'}
             {' '}
-            about to expire in the next 3 days.
+            expiring in the next 3 days.
           </Text>
         </HStack>
       </VStack>
