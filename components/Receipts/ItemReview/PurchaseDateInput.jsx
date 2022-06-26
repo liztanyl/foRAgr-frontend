@@ -36,7 +36,6 @@ export default function PurchaseDateInput({
   // when click confirm date picker
   const handleConfirm = (date) => {
     hideDatePicker();
-    console.log(moment(date, 'DD-MM-YYYY').format('DD-MM-YYYY'));
     setPurchaseDate(moment(date, 'DD-MM-YYYY').format('DD-MM-YYYY'));
     reviewItemsDispatch(editReviewItem(reviewItemId, PURCHASE_DATE, purchaseDate));
   };
@@ -75,7 +74,7 @@ export default function PurchaseDateInput({
             >
               Added on
             </Text>
-            <Button variant="subtle" onPress={showDate}>{purchaseDate}</Button>
+            <Button variant="subtle" onPress={showDate}>{moment(purchaseDate, 'DD-MM-YYYY').format('DD MMM YYYY')}</Button>
             <DateTimePickerModal
               isVisible={isDatePickerVisible}
               mode="date"

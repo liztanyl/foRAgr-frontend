@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import {
-  View, Button, Image, Box, Text,
+  View, Button, Box, Text,
 } from 'native-base';
 import {
   StyleSheet, ScrollView, Animated,

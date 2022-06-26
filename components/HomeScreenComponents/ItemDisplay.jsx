@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Text, VStack, HStack, FlatList, Spacer, Spinner,
+  Box, Text, VStack, HStack, FlatList, Spacer, Spinner, Center,
 } from 'native-base';
 import moment from 'moment';
 import { useFridgeContext } from '../FridgeContext.jsx';
@@ -63,7 +63,13 @@ export default function ItemDisplay({
   return (
     <>
       {isLoading && <Spinner size="lg" margin={10} />}
-      {!isLoading && (
+      {!isLoading && (!items || items.length === 0)
+      && (
+      <Center flex={1} alignItems="center" justifyContent="center">
+        <Text>There's nothing here! Add some items first.</Text>
+      </Center>
+      )}
+      {!isLoading && items.length > 0 && (
       <FlatList
         data={items}
         renderItem={({ item }) => (
@@ -82,12 +88,25 @@ export default function ItemDisplay({
               <ExpiryDateBadge expiryDate={item.expiryDate} />
             </HStack>
             <VStack>
-              <Text color="coolGray.800" alignSelf="flex-start">
+              <Text
+                alignSelf="flex-start"
+                fontWeight="light"
+              >
+                Category:
+                {' '}
                 {item.category}
               </Text>
               <Text
-                color="coolGray.800"
                 alignSelf="flex-start"
+                fontWeight="light"
+              >
+                Storage:
+                {' '}
+                {item.storageMethod}
+              </Text>
+              <Text
+                alignSelf="flex-start"
+                fontWeight="light"
               >
                 Added:
                 {' '}

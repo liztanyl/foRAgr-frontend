@@ -20,6 +20,7 @@ export default function SearchDropDown({
       mb={1}
       colorScheme="primary"
       variant="solid"
+      _text={{ textTransform: 'capitalize' }}
     >
       {x.name}
     </Button>

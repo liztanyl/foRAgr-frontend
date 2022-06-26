@@ -77,7 +77,7 @@ export default function ExpiryDate({
             >
               Expiry date
             </Text>
-            <Button variant="subtle" onPress={showDate}>{expiryDate}</Button>
+            <Button variant="subtle" onPress={showDate}>{moment(expiryDate, 'DD-MM-YYYY').format('DD MMM YYYY')}</Button>
             <DateTimePickerModal
               isVisible={isDatePickerVisible}
               mode="date"
