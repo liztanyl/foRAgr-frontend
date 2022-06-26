@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useState } from 'react';
 import {
-  Popover, Button, Text, VStack, Icon,
+  Popover, Button, Text, VStack, Icon, useToast,
 } from 'native-base';
 import axios from 'axios';
 import { Platform } from 'react-native';
@@ -11,8 +11,9 @@ import { BACKEND_URL } from '../../store.js';
 import { useFridgeContext } from '../FridgeContext.jsx';
 import { useUserContext } from '../UserContext.jsx';
 import cancelNotification from '../NotificationComponent/cancelNotification.js';
+import displayToast from '../displayToast.jsx';
 
-export default function RemoveItemButton({ itemId }) {
+export default function RemoveItemButton({ itemId, itemName }) {
   const {
     fridgeDispatch,
     dispatchHelpers: { removeFridgeItem },
@@ -20,6 +21,7 @@ export default function RemoveItemButton({ itemId }) {
   const { jwtToken } = useUserContext();
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const toast = useToast();
 
   const handleDelete = () => {
     setIsDeleting(true);
@@ -30,6 +32,7 @@ export default function RemoveItemButton({ itemId }) {
       .then((response) => {
         if (Platform.OS !== 'web') cancelNotification(response.data);
         fridgeDispatch(removeFridgeItem(itemId));
+        displayToast(toast, `Removed ${itemName.toUpperCase()} from your fridge`, 'secondary.600');
       });
   };
 

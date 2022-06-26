@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Platform } from 'react-native';
 import {
-  Box, Button, ScrollView, Center, VStack, Text,
+  Box, Button, ScrollView, Center, VStack, useToast,
 } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -17,6 +17,7 @@ import { useUserContext } from '../UserContext.jsx';
 import ItemForm from './ItemReview/ItemForm.jsx';
 import NoItemsToReview from './ItemReview/NoItemsToReview.jsx';
 import setNotification from '../NotificationComponent/setNotification.js';
+import displayToast from '../displayToast.jsx';
 
 export default function ItemReview({ navigation }) {
   const {
@@ -34,6 +35,7 @@ export default function ItemReview({ navigation }) {
   } = useFridgeContext();
   const { jwtToken } = useUserContext();
   const [isAdding, setIsAdding] = useState(false);
+  const toast = useToast();
 
   const animation = useRef(null);
 
@@ -105,13 +107,13 @@ export default function ItemReview({ navigation }) {
             addedItems.forEach((item) => setNotification(item, jwtToken));
           }
           setIsAdding(false);
+          displayToast(toast, 'Your fridge has been restocked!', 'secondary.600');
         })
         .catch((err) => {
           console.log(err);
         });
     } else {
-      console.log('fields not filled');
-      // SNACKBAR TO INDICATE EMPTY FIELD?
+      displayToast(toast, 'Fill in all highlighted fields to proceed', 'tertiary.600');
     }
   };
 
