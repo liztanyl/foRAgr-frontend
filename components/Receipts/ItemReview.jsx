@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Platform } from 'react-native';
 import {
-  Box, Button, ScrollView, Spinner, Center, VStack,
+  Box, Button, ScrollView, Center, VStack, Text,
 } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+import LottieView from 'lottie-react-native';
 import axios from 'axios';
 import moment from 'moment';
 import 'react-native-get-random-values';
@@ -32,6 +34,8 @@ export default function ItemReview({ navigation }) {
   } = useFridgeContext();
   const { jwtToken } = useUserContext();
   const [isAdding, setIsAdding] = useState(false);
+
+  const animation = useRef(null);
 
   useEffect(() => {
     try {
@@ -118,7 +122,17 @@ export default function ItemReview({ navigation }) {
     >
       {reviewIds && (
         <Center height="100%" width="100%">
-          <Spinner size="lg" />
+          <LottieView
+            autoPlay
+            ref={animation}
+            style={{
+              width: '50%',
+              backgroundColor: 'transparent',
+            }}
+        // Find more Lottie files at https://lottiefiles.com/featured
+            source={require('../../assets/dairyLoader.json')}
+          />
+          <Text textAlign="center" fontSize="md" color="secondary.800"> Loading... </Text>
         </Center>
       )}
       {!reviewIds && (!reviewItems || reviewItems.length === 0) && (

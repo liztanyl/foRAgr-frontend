@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Heading, HStack, VStack,
+  Box, Heading, HStack, Spinner, VStack,
 } from 'native-base';
 import moment from 'moment';
 import CategorySelector from './CategorySelector.jsx';
@@ -18,6 +18,7 @@ export default function ItemForm({ item }) {
   const [purchaseDate, setPurchaseDate] = useState(moment(new Date(), 'DD-MM-YYYY').format('DD-MM-YYYY'));
   const [updatedShelfLifeDays, setUpdatedShelfLifeDays] = useState(0);
   const [prevShelfLifeDays, setPrevShelfLifeDays] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const newExpiryDate = moment(purchaseDate, 'DD-MM-YYYY')
     .add(updatedShelfLifeDays, 'days')
@@ -29,10 +30,13 @@ export default function ItemForm({ item }) {
     if (categories.length === 1) {
       setSelectedCategory(categories[0]);
     }
+    setIsLoading(false);
   }, [selectedCategory]);
 
   useEffect(() => {
     if (selectedStorage) setUpdatedShelfLifeDays(selectedStorage.shelfLifeDays);
+
+    setIsLoading(false);
   }, [selectedStorage]);
 
   return (
@@ -47,6 +51,9 @@ export default function ItemForm({ item }) {
         <Heading size="md" mb={2} textTransform="uppercase">{name}</Heading>
         <DeleteReviewItem reviewItemId={item.id} />
       </HStack>
+      {isLoading && <Spinner />}
+      {!isLoading
+      && (
       <VStack space={4}>
         <CategorySelector
           item={item}
@@ -54,28 +61,30 @@ export default function ItemForm({ item }) {
           categories={categories}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
+          setIsLoading={setIsLoading}
         />
         {selectedCategory && (
-          <StorageSelector
-            item={item}
-            reviewItemId={item.id}
-            selectedCategory={selectedCategory}
-            selectedStorage={selectedStorage}
-            setSelectedStorage={setSelectedStorage}
-          />
+        <StorageSelector
+          item={item}
+          reviewItemId={item.id}
+          selectedCategory={selectedCategory}
+          selectedStorage={selectedStorage}
+          setSelectedStorage={setSelectedStorage}
+          setIsLoading={setIsLoading}
+        />
         )}
         {selectedStorage && (
-          <ShelfLifeDays
-            item={item}
-            reviewItemId={item.id}
-            selectedStorage={selectedStorage}
-            updatedShelfLifeDays={updatedShelfLifeDays}
-            setUpdatedShelfLifeDays={setUpdatedShelfLifeDays}
-            expiryDate={expiryDate}
-            purchaseDate={purchaseDate}
-            prevShelfLifeDays={prevShelfLifeDays}
-            setPrevShelfLifeDays={setPrevShelfLifeDays}
-          />
+        <ShelfLifeDays
+          item={item}
+          reviewItemId={item.id}
+          selectedStorage={selectedStorage}
+          updatedShelfLifeDays={updatedShelfLifeDays}
+          setUpdatedShelfLifeDays={setUpdatedShelfLifeDays}
+          expiryDate={expiryDate}
+          purchaseDate={purchaseDate}
+          prevShelfLifeDays={prevShelfLifeDays}
+          setPrevShelfLifeDays={setPrevShelfLifeDays}
+        />
         )}
         <PurchaseDateInput
           item={item}
@@ -84,18 +93,19 @@ export default function ItemForm({ item }) {
           setPurchaseDate={setPurchaseDate}
         />
         {selectedStorage && (
-          <ExpiryDate
-            item={item}
-            reviewItemId={item.id}
-            purchaseDate={purchaseDate}
-            updatedShelfLifeDays={updatedShelfLifeDays}
-            setExpiryDate={setExpiryDate}
-            expiryDate={expiryDate}
-            newExpiryDate={newExpiryDate}
-          />
+        <ExpiryDate
+          item={item}
+          reviewItemId={item.id}
+          purchaseDate={purchaseDate}
+          updatedShelfLifeDays={updatedShelfLifeDays}
+          setExpiryDate={setExpiryDate}
+          expiryDate={expiryDate}
+          newExpiryDate={newExpiryDate}
+        />
         )}
         <Notes item={item} reviewItemId={item.id} />
       </VStack>
+      )}
     </Box>
   );
 }

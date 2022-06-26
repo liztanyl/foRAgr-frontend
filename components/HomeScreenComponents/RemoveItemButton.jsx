@@ -65,7 +65,7 @@ export default function RemoveItemButton({ itemId }) {
                 size="sm"
                 colorScheme="coolGray"
                 variant="outline"
-                onPress={() => setIsOpen(false)}
+                onPress={() => { setIsOpen(false); setIsDeleting(false); }}
               >
                 Cancel
               </Button>
