@@ -92,7 +92,7 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
               )}
           </VStack>
           <HStack space={3}>
-            <RemoveItemButton itemId={item.id} />
+            <RemoveItemButton itemId={item.id} itemName={item.name} />
             {(moment(item.expiryDate).diff(new Date(), 'days') < 4) && <ExtendExpiry expiry={item.expiryDate} itemId={item.id} /> }
           </HStack>
         </Box>

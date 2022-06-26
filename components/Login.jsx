@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import React, { useEffect, useState } from 'react';
-import { VStack, Button } from 'native-base';
+import { VStack, Button, useToast } from 'native-base';
 import { Text, View, Platform } from 'react-native';
 import axios from 'axios';
 import * as Google from 'expo-auth-session/providers/google';
@@ -9,6 +9,7 @@ import AppInfo from './AppInfo.jsx';
 import { BACKEND_URL } from '../store.js';
 import { useUserContext } from './UserContext.jsx';
 import { oAuthExpoClientId } from '../secret.js';
+import displayToast from './displayToast.jsx';
 
 Platform.OS !== 'web' && WebBrowser.maybeCompleteAuthSession();
 
@@ -19,7 +20,7 @@ export default function Login() {
     expoClientId: oAuthExpoClientId,
     webClientId: oAuthExpoClientId,
   });
-
+  const toast = useToast();
   /**
    * completes the user login procedure on mobile
    */
@@ -39,7 +40,9 @@ export default function Login() {
           if (newUser) {
             console.log('New user registered');
             // account created message snackbar
+            displayToast(toast, "Your account has been registered with FoRAg'r!", 'primary.600');
           }
+          displayToast(toast, `Opening ${userData.givenName}'s fridge...`, 'secondary.600');
         })
         .catch((err) => {
           console.log(err);
