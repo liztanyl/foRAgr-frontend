@@ -45,7 +45,7 @@ export default function ItemForm({ item }) {
     >
       <HStack justifyContent="space-between" alignItems="center">
         <Heading size="md" mb={2} textTransform="uppercase">{name}</Heading>
-        <DeleteReviewItem reviewItemId={item.id} />
+        <DeleteReviewItem reviewItemId={item.id} reviewItemName={name} />
       </HStack>
       <VStack space={4}>
         <CategorySelector
