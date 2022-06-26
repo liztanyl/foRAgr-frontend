@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { View } from 'react-native';
-import { Heading } from 'native-base';
+import { Center, Heading, Text } from 'native-base';
 import { useFridgeContext } from '../FridgeContext.jsx';
 import StorageNavigation from '../HomeScreenComponents/StorageNavigation.jsx';
 import ItemDisplay from '../HomeScreenComponents/ItemDisplay.jsx';
@@ -20,8 +20,7 @@ export default function HomeScreen() {
   allowsNotificationsAsync();
   useEffect(() => {
     if (fridgeItems && fridgeItems.length > 0) {
-      const expiring = fridgeItems?.filter((item) => (moment(item.expiryDate).diff(new Date(), 'days') < 3));
-      console.log(expiring);
+      const expiring = fridgeItems?.filter((item) => (moment(item.expiryDate).diff(new Date(), 'days') < 4));
       if (expiring.length > 0) setNumExpiringItems(expiring.length);
       else setNumExpiringItems(null);
     }
@@ -38,12 +37,15 @@ export default function HomeScreen() {
         setIsLoading={setIsLoading}
       />
       <Heading px="4" fontWeight="700" fontSize="2xl">{currentStorage}</Heading>
-      <ItemDisplay
-        currentStorage={currentStorage}
-        sortBy={sortBy}
-        isLoading={isLoading}
-        setIsLoading={setIsLoading}
-      />
+      {fridgeItems
+        && (
+        <ItemDisplay
+          currentStorage={currentStorage}
+          sortBy={sortBy}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
+        )}
     </View>
   );
 }

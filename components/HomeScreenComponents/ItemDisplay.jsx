@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Box, Text, VStack, HStack, FlatList, Spacer, Spinner,
-} from 'native-base';
-import moment from 'moment';
+import { Text, Spinner, Center } from 'native-base';
 import { useFridgeContext } from '../FridgeContext.jsx';
-import { SORT, sortItems } from './helpers.js';
-import ExpiryDateBadge, { setDays } from './ExpiryDateBadge.jsx';
-import RemoveItemButton from './RemoveItemButton.jsx';
-import ExtendExpiry from './ExtendExpiry.jsx';
+import { sortItems } from './helpers.js';
+import ItemList from './ItemList.jsx';
 
 export default function ItemDisplay({
   currentStorage, sortBy, isLoading, setIsLoading,
@@ -16,53 +11,22 @@ export default function ItemDisplay({
   const [items, setItems] = useState(null);
 
   useEffect(() => {
-    setIsLoading(false);
-  }, [items]);
-
-  useEffect(() => {
     let newItems = fridgeItems && [...fridgeItems];
     if (currentStorage !== 'All') {
-      newItems = newItems.filter((item) => item.storageMethod === currentStorage);
+      newItems = newItems?.filter((item) => item.storageMethod === currentStorage);
     }
-    newItems?.sort((a, b) => sortItems(a, b, 'expiry', 'asc'));
+    newItems.sort((a, b) => sortItems(a, b, 'expiry', 'asc'));
     setItems(newItems);
   }, [currentStorage, fridgeItems]);
 
   useEffect(() => {
-    const newItems = items && [...items];
-    switch (sortBy) {
-      case SORT.ALPHA_ASC: {
-        newItems?.sort((a, b) => sortItems(a, b, 'alpha', 'asc'));
-        break;
-      }
-      case SORT.ALPHA_DESC: {
-        newItems?.sort((a, b) => sortItems(a, b, 'alpha', 'desc'));
-        break;
-      }
-      case SORT.ADDED_ASC: {
-        newItems?.sort((a, b) => sortItems(a, b, 'added', 'asc'));
-        break;
-      }
-      case SORT.ADDED_DESC: {
-        newItems?.sort((a, b) => sortItems(a, b, 'added', 'desc'));
-        break;
-      }
-      case SORT.EXPIRY_DESC: {
-        newItems?.sort((a, b) => sortItems(a, b, 'expiry', 'desc'));
-        break;
-      }
-      default: {
-        newItems?.sort((a, b) => sortItems(a, b, 'expiry', 'asc'));
-        break;
-      }
-    }
-    setItems(newItems);
     setIsLoading(false);
-  }, [sortBy]);
+  }, [sortBy, items]);
 
   return (
     <>
       {isLoading && <Spinner size="lg" margin={10} />}
+<<<<<<< HEAD
       {!isLoading && (
       <FlatList
         data={items}
@@ -111,6 +75,15 @@ export default function ItemDisplay({
         )}
         keyExtractor={(item) => `${item.id}`}
       />
+=======
+      {(!isLoading && items && items.length > 0)
+      && <ItemList items={items} setItems={setItems} sortBy={sortBy} />}
+      {(!isLoading && (!items || items.length === 0))
+      && (
+      <Center flex={1} alignItems="center" justifyContent="center">
+        <Text>There's nothing here! Add some items first.</Text>
+      </Center>
+>>>>>>> main
       )}
     </>
   );

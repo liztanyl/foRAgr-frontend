@@ -24,7 +24,7 @@ export default function IngredientList({ selected, setSelectedList }) {
       bg="secondary.200"
     >
       <HStack paddingLeft={2} alignItems="center" justifyContent="space-between">
-        <Text bold>{x.name}</Text>
+        <Text bold textTransform="capitalize">{x.name}</Text>
         <IconButton
           size="sm"
           onPress={() => handleDelete(x.id)}
