@@ -47,8 +47,8 @@ export default function ItemForm({ item }) {
       borderBottomWidth={1}
       borderBottomColor="primary.300"
     >
-      <HStack justifyContent="space-between" alignItems="center">
-        <Heading size="md" mb={2} textTransform="uppercase">{name}</Heading>
+      <HStack justifyContent="space-between" alignItems="center" mb={2}>
+        <Heading size="md" textTransform="capitalize">{name}</Heading>
         <DeleteReviewItem reviewItemId={item.id} reviewItemName={name} />
       </HStack>
       {isLoading && <Spinner />}

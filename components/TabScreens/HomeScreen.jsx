@@ -13,7 +13,10 @@ export default function HomeScreen() {
   const [currentStorage, setCurrentStorage] = useState(STORAGE.ALL);
   const [sortBy, setSortBy] = useState(SORT.EXPIRY_ASC);
   const [numExpiringItems, setNumExpiringItems] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const { fridgeItems } = useFridgeContext();
+
   allowsNotificationsAsync();
   useEffect(() => {
     if (fridgeItems && fridgeItems.length > 0) {
@@ -32,11 +35,14 @@ export default function HomeScreen() {
         setCurrentStorage={setCurrentStorage}
         sortBy={sortBy}
         setSortBy={setSortBy}
+        setIsLoading={setIsLoading}
       />
       <Heading px="4" fontWeight="700" fontSize="2xl">{currentStorage}</Heading>
       <ItemDisplay
         currentStorage={currentStorage}
         sortBy={sortBy}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
       />
     </View>
   );

@@ -67,8 +67,8 @@ const styles = StyleSheet.create({
   },
   buttonLogin: {
     marginTop: 50,
-    backgroundColor: '#042725',
-    borderRadius: 20,
+    // backgroundColor: '#042725',
+    // borderRadius: 20,
     padding: 50,
   },
 });
@@ -81,16 +81,16 @@ function AppInfo({ handleLogin }) {
   const imagesInfo = [
     {
       img: anim0,
-      text: 'Go digital, reduce food wastage',
+      text: 'Keep track of what\'s in your fridge to reduce food wastage',
     },
 
     {
       img: anim1,
-      text: 'Snap a photo of your receipt and add groceries to your virtual fridge ',
+      text: 'Snap a photo of your receipt and add groceries to your virtual fridge',
     },
     {
       img: anim2,
-      text: 'Easy search on common groceries',
+      text: 'Easily search for common groceries',
     },
     {
       img: anim3,
@@ -159,6 +159,7 @@ function AppInfo({ handleLogin }) {
         </View>
         <Box>
           <Button
+            colorScheme="primary"
             style={styles.buttonLogin}
             size="lg"
             onPress={handleLogin}

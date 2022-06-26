@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Platform } from 'react-native';
 import {
-  Box, Button, ScrollView, Center, VStack, useToast,
+  Box, Button, ScrollView, Center, VStack, useToast, Text,
 } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -107,13 +107,13 @@ export default function ItemReview({ navigation }) {
             addedItems.forEach((item) => setNotification(item, jwtToken));
           }
           setIsAdding(false);
-          displayToast(toast, 'Your fridge has been restocked!', 'secondary.600');
+          displayToast(toast, 'Your fridge has been updated!', 'success');
         })
         .catch((err) => {
           console.log(err);
         });
     } else {
-      displayToast(toast, 'Fill in all highlighted fields to proceed', 'tertiary.600');
+      displayToast(toast, 'Ensure that all fields have been filled', 'warning');
     }
   };
 
