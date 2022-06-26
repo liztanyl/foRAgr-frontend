@@ -2,10 +2,12 @@
 import { useFonts, Jost_400Regular } from '@expo-google-fonts/jost';
 // eslint-disable-next-line camelcase
 import { LexendDeca_300Light, LexendDeca_400Regular, LexendDeca_700Bold } from '@expo-google-fonts/lexend-deca';
+// eslint-disable-next-line camelcase
+import { Roboto_400Regular } from '@expo-google-fonts/roboto';
 
 export default function () {
   const [fontsLoaded] = useFonts({
-    Jost_400Regular, LexendDeca_300Light, LexendDeca_400Regular, LexendDeca_700Bold,
+    Jost_400Regular, LexendDeca_300Light, LexendDeca_400Regular, LexendDeca_700Bold, Roboto_400Regular,
   });
 
   if (!fontsLoaded) {
@@ -132,11 +134,17 @@ export default function () {
           normal: 'LexendDeca_700Bold',
         },
       },
+      Roboto: {
+        400: {
+          normal: 'Roboto_400Regular',
+        },
+      },
     },
     fonts: {
       heading: 'Jost',
       body: 'LexendDeca',
       mono: 'LexendDeca',
+      google: 'Roboto',
     },
     config: {
       // Changing initialColorMode to 'dark'
