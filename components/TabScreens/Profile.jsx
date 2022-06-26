@@ -92,7 +92,7 @@ export default function Profile() {
             <Text fontSize="xl" bold>{name}</Text>
             <Text fontSize="lg">{email}</Text>
             <Text fontSize="md">
-              {'FoRAg\'ing since '}
+              {'foRAg\'ing since '}
               {moment(createdAt).format('D MMMM YYYY')}
             </Text>
           </VStack>

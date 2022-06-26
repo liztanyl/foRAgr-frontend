@@ -45,25 +45,23 @@ export default function ShelfLifeDays({
 
   return (
     <FormControl isRequired>
-      <HStack space={1}>
-        <Text
-          fontSize="xs"
-          textTransform="uppercase"
-          color="primary.800"
-        >
-          Days to Expiry
-        </Text>
-        <Text
-          fontSize="xs"
-          textTransform="uppercase"
-          color="secondary.800"
-        >
-          (Average Shelf Life in Days:
-          {' '}
-          {shelfLifeDays}
-          )
-        </Text>
-      </HStack>
+      <Text
+        fontSize="xs"
+        textTransform="uppercase"
+        color="primary.800"
+      >
+        Days to Expiry
+      </Text>
+      <Text
+        fontSize="xs"
+        textTransform="uppercase"
+        color="secondary.800"
+      >
+        (Average Shelf Life in Days:
+        {' '}
+        {shelfLifeDays}
+        )
+      </Text>
       <Input
         w="50%"
         type="text"
