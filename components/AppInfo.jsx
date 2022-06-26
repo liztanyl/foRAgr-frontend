@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import {
-  View, Button, Image, Box, Text,
+  View, Button, Box, Text, Stack, Image, HStack,
 } from 'native-base';
 import {
   StyleSheet, ScrollView, Animated,
@@ -12,6 +12,7 @@ import anim1 from '../assets/ani1.png';
 import anim2 from '../assets/ani2.png';
 import anim3 from '../assets/ani3.png';
 import anim0 from '../assets/mainLogo.png';
+import googleIcon from '../assets/google_normal_icon.png';
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -66,10 +67,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonLogin: {
-    marginTop: 50,
-    // backgroundColor: '#042725',
-    // borderRadius: 20,
-    padding: 50,
+    marginTop: 30,
+    color: '#15181f',
+    display: 'flex',
+    backgroundColor: '#fff',
+
+    padding: 0,
+    margin: 0,
+  },
+  googleImg: {
+    width: 50,
+    height: 50,
+  },
+  buttonText: {
+    fontFamily: 'Roboto',
+    backgroundColor: '#fff',
+    fontSize: 14,
   },
 });
 
@@ -157,16 +170,30 @@ function AppInfo({ handleLogin }) {
             })}
           </View>
         </View>
-        <Box>
-          <Button
-            colorScheme="primary"
-            style={styles.buttonLogin}
-            size="lg"
-            onPress={handleLogin}
-          >
-            Login with Google
+        <Button.Group
+          style={styles.buttonLogin}
+          shadow={2}
+          isAttached
+          mx={{
+            base: 'auto',
+            md: 0,
+          }}
+          size="sm"
+        >
+          <Button p={0} bg="transparent" borderLeftColor="transparent">
+            <Image
+              style={styles.googleImg}
+              source={googleIcon}
+            />
           </Button>
-        </Box>
+          <Button
+            style={styles.buttonText}
+            onPress={handleLogin}
+            _text={{ color: '#1F2937' }}
+          >
+            Sign in with Google
+          </Button>
+        </Button.Group>
       </SafeAreaView>
     </View>
   );
