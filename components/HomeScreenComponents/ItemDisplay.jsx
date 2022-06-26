@@ -21,7 +21,7 @@ export default function ItemDisplay({
 
   useEffect(() => {
     setIsLoading(false);
-  }, [items]);
+  }, [sortBy, items]);
 
   return (
     <>
