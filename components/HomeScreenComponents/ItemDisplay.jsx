@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Text, VStack, HStack, FlatList, Spacer,
+  Box, Text, VStack, HStack, FlatList, Spacer, Spinner,
 } from 'native-base';
 import moment from 'moment';
 import { useFridgeContext } from '../FridgeContext.jsx';
@@ -9,9 +9,16 @@ import ExpiryDateBadge, { setDays } from './ExpiryDateBadge.jsx';
 import RemoveItemButton from './RemoveItemButton.jsx';
 import ExtendExpiry from './ExtendExpiry.jsx';
 
-export default function ItemDisplay({ currentStorage, sortBy }) {
+export default function ItemDisplay({
+  currentStorage, sortBy, isLoading, setIsLoading,
+}) {
   const { fridgeItems } = useFridgeContext();
   const [items, setItems] = useState(null);
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [items]);
+
   useEffect(() => {
     let newItems = fridgeItems && [...fridgeItems];
     if (currentStorage !== 'All') {
@@ -50,39 +57,43 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
       }
     }
     setItems(newItems);
+    setIsLoading(false);
   }, [sortBy]);
 
   return (
-    <FlatList
-      data={items}
-      renderItem={({ item }) => (
-        <Box
-          borderBottomWidth="1"
-          borderColor="coolGray.200"
-          pl="4"
-          pr="5"
-          py="3"
-        >
-          <HStack space={3} justifyContent="space-between">
-            <Text color="coolGray.800" bold fontSize="md" textTransform="capitalize">
-              {item.name}
-            </Text>
-            <Spacer />
-            <ExpiryDateBadge expiryDate={item.expiryDate} />
-          </HStack>
-          <VStack>
-            <Text color="coolGray.800" alignSelf="flex-start">
-              {item.category}
-            </Text>
-            <Text
-              color="coolGray.800"
-              alignSelf="flex-start"
-            >
-              Added:
-              {' '}
-              {setDays(item.purchaseDate)}
-            </Text>
-            {item.notes !== ''
+    <>
+      {isLoading && <Spinner size="lg" margin={10} />}
+      {!isLoading && (
+      <FlatList
+        data={items}
+        renderItem={({ item }) => (
+          <Box
+            borderBottomWidth="1"
+            borderColor="coolGray.200"
+            pl="4"
+            pr="5"
+            py="3"
+          >
+            <HStack space={3} justifyContent="space-between">
+              <Text color="coolGray.800" bold fontSize="md" textTransform="capitalize">
+                {item.name}
+              </Text>
+              <Spacer />
+              <ExpiryDateBadge expiryDate={item.expiryDate} />
+            </HStack>
+            <VStack>
+              <Text color="coolGray.800" alignSelf="flex-start">
+                {item.category}
+              </Text>
+              <Text
+                color="coolGray.800"
+                alignSelf="flex-start"
+              >
+                Added:
+                {' '}
+                {setDays(item.purchaseDate)}
+              </Text>
+              {item.notes !== ''
               && (
                 <Text>
                   Remarks:
@@ -90,14 +101,16 @@ export default function ItemDisplay({ currentStorage, sortBy }) {
                   {item.notes}
                 </Text>
               )}
-          </VStack>
-          <HStack space={3}>
-            <RemoveItemButton itemId={item.id} itemName={item.name} />
-            {(moment(item.expiryDate).diff(new Date(), 'days') < 4) && <ExtendExpiry expiry={item.expiryDate} itemId={item.id} /> }
-          </HStack>
-        </Box>
+            </VStack>
+            <HStack space={3}>
+              <RemoveItemButton itemId={item.id} itemName={item.name} />
+              {(moment(item.expiryDate).diff(new Date(), 'days') < 4) && <ExtendExpiry expiry={item.expiryDate} itemId={item.id} /> }
+            </HStack>
+          </Box>
+        )}
+        keyExtractor={(item) => `${item.id}`}
+      />
       )}
-      keyExtractor={(item) => `${item.id}`}
-    />
+    </>
   );
 }

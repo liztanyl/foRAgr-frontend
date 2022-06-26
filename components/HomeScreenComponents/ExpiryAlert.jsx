@@ -8,8 +8,8 @@ export default function ExpiryAlert({ num }) {
   return (
     <Alert w="100%" status="warning" textAlign="center">
       <VStack space={2} flexShrink={1} w="100%">
-        <HStack space={2} justifyContent="center">
-          <Alert.Icon mt="1" />
+        <HStack space={2} justifyContent="center" alignItems="center">
+          <Alert.Icon />
           <Text fontSize="sm" color="coolGray.800">
             You have
             {' '}

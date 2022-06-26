@@ -7,7 +7,7 @@ import {
 import { STORAGE, SORT } from './helpers.js';
 
 export default function StorageNavigation({
-  currentStorage, setCurrentStorage, sortBy, setSortBy,
+  currentStorage, setCurrentStorage, sortBy, setSortBy, setIsLoading,
 }) {
   function StorageButtons() {
     return (
@@ -22,7 +22,10 @@ export default function StorageNavigation({
               variant={currentStorage === value
                 ? 'solid'
                 : 'subtle'}
-              onPress={() => setCurrentStorage(value)}
+              onPress={() => {
+                setCurrentStorage(value);
+                setIsLoading(true);
+              }}
             >
               {value}
             </Button>
@@ -42,7 +45,13 @@ export default function StorageNavigation({
       >
         {Object.entries(SORT)
           .map(([key, value]) => (
-            <Menu.Item key={value} onPress={() => setSortBy(SORT[key])}>
+            <Menu.Item
+              key={value}
+              onPress={() => {
+                setSortBy(SORT[key]);
+                setIsLoading(true);
+              }}
+            >
               {value}
             </Menu.Item>
           ))}

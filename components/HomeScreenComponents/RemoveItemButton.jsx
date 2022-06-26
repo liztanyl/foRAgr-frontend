@@ -32,7 +32,7 @@ export default function RemoveItemButton({ itemId, itemName }) {
       .then((response) => {
         if (Platform.OS !== 'web') cancelNotification(response.data);
         fridgeDispatch(removeFridgeItem(itemId));
-        displayToast(toast, `Removed ${itemName.toUpperCase()} from your fridge`, 'secondary.600');
+        displayToast(toast, `Removed '${itemName}' from fridge`, 'success');
       });
   };
 
@@ -68,7 +68,7 @@ export default function RemoveItemButton({ itemId, itemName }) {
                 size="sm"
                 colorScheme="coolGray"
                 variant="outline"
-                onPress={() => setIsOpen(false)}
+                onPress={() => { setIsOpen(false); setIsDeleting(false); }}
               >
                 Cancel
               </Button>

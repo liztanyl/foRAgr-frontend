@@ -2,7 +2,7 @@ import React from 'react';
 import {
   IconButton, Icon, useToast,
 } from 'native-base';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import { useFridgeContext } from '../../FridgeContext.jsx';
 import displayToast from '../../displayToast.jsx';
@@ -16,13 +16,14 @@ export default function DeleteReviewItem({ reviewItemId, reviewItemName }) {
 
   const handleDeleteReviewItem = () => {
     reviewItemsDispatch(removeReviewItem(reviewItemId));
-    displayToast(toast, `${reviewItemName.toUpperCase()} was removed from item review`, 'secondary.600');
+    displayToast(toast, `Removed '${reviewItemName}' from review`, 'success');
   };
 
   return (
     <IconButton
-      size="sm"
-      icon={<Icon as={Ionicons} name="trash-sharp" color="danger.700" />}
+      size="md"
+      colorScheme="danger"
+      icon={<Icon as={MaterialIcons} name="delete" />}
       onPress={handleDeleteReviewItem}
     />
   );
