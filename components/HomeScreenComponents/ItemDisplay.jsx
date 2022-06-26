@@ -27,7 +27,7 @@ export default function ItemDisplay({
     <>
       {isLoading && <Spinner size="lg" margin={10} />}
       {(!isLoading && items && items.length > 0)
-      && <ItemList items={items} setItems={setItems} sortBy={sortBy} />}
+      && <ItemList items={items} setItems={setItems} sortBy={sortBy} setIsLoading={setIsLoading} />}
       {(!isLoading && (!items || items.length === 0))
       && (
       <Center flex={1} alignItems="center" justifyContent="center">

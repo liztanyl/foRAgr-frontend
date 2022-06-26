@@ -24,7 +24,7 @@ export default function StorageNavigation({
                 : 'subtle'}
               onPress={() => {
                 setCurrentStorage(value);
-                setIsLoading(true);
+                if (currentStorage !== value) setIsLoading(true);
               }}
             >
               {value}
@@ -49,7 +49,7 @@ export default function StorageNavigation({
               key={value}
               onPress={() => {
                 setSortBy(SORT[key]);
-                setIsLoading(true);
+                if (sortBy !== value) setIsLoading(true);
               }}
             >
               {value}

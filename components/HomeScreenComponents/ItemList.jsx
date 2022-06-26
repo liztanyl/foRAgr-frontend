@@ -9,7 +9,7 @@ import ExtendExpiry from './ExtendExpiry.jsx';
 import { SORT, sortItems } from './helpers.js';
 
 export default function ItemList({
-  items, setItems, sortBy,
+  items, setItems, sortBy, setIsLoading,
 }) {
   useEffect(() => {
     const newItems = items ? [...items] : [];
@@ -40,6 +40,7 @@ export default function ItemList({
       }
     }
     setItems(newItems);
+    setIsLoading(false);
   }, [sortBy]);
 
   return (
