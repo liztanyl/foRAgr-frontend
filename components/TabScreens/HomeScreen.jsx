@@ -37,12 +37,6 @@ export default function HomeScreen() {
         setIsLoading={setIsLoading}
       />
       <Heading px="4" fontWeight="700" fontSize="2xl">{currentStorage}</Heading>
-      {(!fridgeItems || (fridgeItems.length === 0))
-      && (
-      <Center flex={1} alignItems="center" justifyContent="center">
-        <Text>There's nothing here! Add some items first.</Text>
-      </Center>
-      )}
       {fridgeItems
         && (
         <ItemDisplay
