@@ -40,9 +40,11 @@ export default function Login() {
           if (newUser) {
             console.log('New user registered');
             // account created message snackbar
-            displayToast(toast, "Your account has been registered with FoRAg'r!", 'primary.600');
+            displayToast(toast, "Your account has been registered with FoRAg'r! Now opening your fridge...", 'primary.600');
           }
-          displayToast(toast, `Opening ${userData.givenName}'s fridge...`, 'secondary.600');
+          else {
+            displayToast(toast, `Opening ${userData.givenName}'s fridge...`, 'secondary.600');
+          }
         })
         .catch((err) => {
           console.log(err);
