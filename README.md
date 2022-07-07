@@ -18,8 +18,8 @@ For the project to run locally on your machine:
 
 <h4> 1. User login </h4>
 Informative login page with a preview of features available 
-<img src="../assets/forReadme/login_screen.gif?raw=true" alt='login screen gif' width="300" />
-<img src="../assets/forReadme/login_oauth.gif?raw=true" alt='login with OAuth gif' width="300" />
+<img src="./assets/forReadme/login_screen.gif?raw=true" alt='login screen gif' width="300" />
+<img src="./assets/forReadme/login_oauth.gif?raw=true" alt='login with OAuth gif' width="300" />
 
 <h4> 2. Home page </h4>
 <p> An overview of food items present in user's fridge </p>
@@ -27,8 +27,8 @@ Informative login page with a preview of features available
 
 <h4> 3. Camera Mode </h4>
 <p> User can choose to take photo of receipt/upload photo of receipt to automatically add food items to fridge  </p>
-<img src="../assets/forReadme/ocr_camera.gif?raw=true" alt='OCR with camera gif' width="300" />
-<img src="../assets/forReadme/existing_photo.gif?raw=true" alt='OCR with existing image gif' width="300" />
+<img src="./assets/forReadme/ocr_camera.gif?raw=true" alt='OCR with camera gif' width="300" />
+<img src="./assets/forReadme/existing_photo.gif?raw=true" alt='OCR with existing image gif' width="300" />
 
 <h4> 4. Manual entry Mode </h4>
 <p> Users can search food items by keywords  </p>
@@ -36,7 +36,7 @@ Informative login page with a preview of features available
 
 <h4> 5. Review mode </h4>
 <p> Users can search food items by keywords  </p>
-<img src="../assets/forReadme/review_items.gif?raw=true" alt='review items gif' width="300" />
+<img src="./assets/forReadme/review_items.gif?raw=true" alt='review items gif' width="300" />
 
 <h4> 6. Notifcation </h4>
 <p> When food is near expiry, native notifications will appear even when phone screen is locked </p>
