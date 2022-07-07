@@ -18,8 +18,10 @@ For the project to run locally on your machine:
 
 <h4> 1. User login </h4>
 Informative login page with a preview of features available 
-<img src="./assets/forReadme/login_screen.gif?raw=true" alt='login screen gif' width="300" />
-<img src="./assets/forReadme/login_oauth.gif?raw=true" alt='login with OAuth gif' width="300" />
+<p float="left">
+  <img src="./assets/forReadme/login_screen.gif?raw=true" alt='login screen gif' width="300" />
+  <img src="./assets/forReadme/login_oauth.gif?raw=true" alt='login with OAuth gif' width="300" />
+</p>
 
 <h4> 2. Home page </h4>
 <p> An overview of food items present in user's fridge </p>
