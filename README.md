@@ -19,30 +19,32 @@ For the project to run locally on your machine:
 <h4> 1. User login </h4>
 Informative login page with a preview of features available 
 <p float="left">
-  <img src="./assets/forReadme/login_screen.gif?raw=true" alt='login screen gif' width="300" />
-  <img src="./assets/forReadme/login_oauth.gif?raw=true" alt='login with OAuth gif' width="300" />
+  <img src="./assets/forReadme/login_screen.gif?raw=true" alt='login screen gif' width="250" />
+  <img src="./assets/forReadme/login_oauth.gif?raw=true" alt='login with OAuth gif' width="250" />
 </p>
 
 <h4> 2. Home page </h4>
 <p> An overview of food items present in user's fridge </p>
-<img src='https://user-images.githubusercontent.com/94110588/177002812-e2f43a74-ba40-405e-b1eb-f54c7f95c49d.PNG' alt='home page' width='300'/>
+<img src='https://user-images.githubusercontent.com/94110588/177002812-e2f43a74-ba40-405e-b1eb-f54c7f95c49d.PNG' alt='home page' width='250'/>
 
 <h4> 3. Camera Mode </h4>
 <p> User can choose to take photo of receipt/upload photo of receipt to automatically add food items to fridge  </p>
-<img src="./assets/forReadme/ocr_camera.gif?raw=true" alt='OCR with camera gif' width="300" />
-<img src="./assets/forReadme/existing_photo.gif?raw=true" alt='OCR with existing image gif' width="300" />
+<p float="left">
+  <img src="./assets/forReadme/ocr_camera.gif?raw=true" alt='OCR with camera gif' width="250" />
+  <img src="./assets/forReadme/existing_photo.gif?raw=true" alt='OCR with existing image gif' width="250" />
+</p>
 
 <h4> 4. Manual entry Mode </h4>
 <p> Users can search food items by keywords  </p>
-<img src='https://user-images.githubusercontent.com/94110588/177002942-5c12dd86-1e49-4dcc-a52a-b90cc7d6d5a9.jpeg' alt='manual entry image' width='300'/>
+<img src='https://user-images.githubusercontent.com/94110588/177002942-5c12dd86-1e49-4dcc-a52a-b90cc7d6d5a9.jpeg' alt='manual entry image' width='250'/>
 
 <h4> 5. Review mode </h4>
 <p> Users can search food items by keywords  </p>
-<img src="./assets/forReadme/review_items.gif?raw=true" alt='review items gif' width="300" />
+<img src="./assets/forReadme/review_items.gif?raw=true" alt='review items gif' width="250" />
 
 <h4> 6. Notifcation </h4>
 <p> When food is near expiry, native notifications will appear even when phone screen is locked </p>
-<img src='https://user-images.githubusercontent.com/94110588/177003132-4b2f7b85-6bc6-4c9c-9cd5-2993eb88e7ee.PNG' alt='notification image' width='300'/>
+<img src='https://user-images.githubusercontent.com/94110588/177003132-4b2f7b85-6bc6-4c9c-9cd5-2993eb88e7ee.PNG' alt='notification image' width='250'/>
 
 ## Built with
 
