@@ -65,7 +65,7 @@ Informative login page with a preview of features available
 
 ## Installation
 
-> The backend is already hosted on Heroku and no setup is necessary. However, there are frontend environment variables that are not tracked in this repo. **Please contact the developers if you would like to run this project locally on your machine.**
+> The backend is already hosted on Heroku and no setup is necessary. However, there are frontend environment variables that are not tracked in this repo. **Please contact the developers if you would like to run this project locally on your machine.** We will also require an email address that's tied to your Google Account in order to set up the OAuth Login for you.
 
 **Requirements**
 
@@ -76,8 +76,9 @@ Informative login page with a preview of features available
 
 1. Clone this repo
 2. Install dependencies: `npm i`
-3. Run the app: `expo start`
-4. Scan the generated QR code with your phone to view the app on your mobile device
+3. The devs will share a secret file with you; save this to the main folder
+4. Run the app: `expo start`
+5. Scan the generated QR code with your phone to view the app on your mobile device
 
 ## Contributors
 
