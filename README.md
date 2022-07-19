@@ -1,77 +1,90 @@
-<h1><img src='https://user-images.githubusercontent.com/94110588/177002458-e6edbb95-16f0-4cef-9322-14e2bf2ffb47.png' width='100' alt='logo'/> foRAg'r </h1>
+# foRAg'r
 
-## About
+<img src='https://user-images.githubusercontent.com/94110588/177002458-e6edbb95-16f0-4cef-9322-14e2bf2ffb47.png' width='100' alt='logo'/>
 
 foRAg'r is a mobile app that helps user keep track of food items in their fridge. Features include parsing receipt, searching food by keywords and sending notifications when food is near expiry.
 
 The app is best viewed on iPhone or Android devices.
 
-## Installation
-
-For the project to run locally on your machine:
-
-1. <code>npm install</code> to install necessary packages
-2. <code>npm start/expo start </code> to initiate the app
-3. Scan the QR code and download Expo Go on your phone to view the app on your mobile device
-
 ## Walkthrough
 
-<h4> 1. User login </h4>
-Informative login page with a preview of features available 
+### 1. User login
+
+Informative login page with a preview of features available
+
 <p float="left">
   <img src="./assets/forReadme/login_screen.gif?raw=true" alt='login screen gif' width="250" />
   <img src="./assets/forReadme/login_oauth.gif?raw=true" alt='login with OAuth gif' width="250" />
 </p>
 
-<h4> 2. Home page </h4>
+### 2. Home page
+
 <p> An overview of food items present in user's fridge </p>
 <img src='https://user-images.githubusercontent.com/94110588/177002812-e2f43a74-ba40-405e-b1eb-f54c7f95c49d.PNG' alt='home page' width='250'/>
 
-<h4> 3. Camera Mode </h4>
+### 3. Camera Mode
+
 <p> User can choose to take photo of receipt/upload photo of receipt to automatically add food items to fridge  </p>
 <p float="left">
   <img src="./assets/forReadme/ocr_camera.gif?raw=true" alt='OCR with camera gif' width="250" />
-  <img src="./assets/forReadme/existing_photo.gif?raw=true" alt='OCR with existing image gif' width="250" />
+  <img src="./assets/forReadme/ocr_existing_photo.gif?raw=true" alt='OCR with existing image gif' width="250" />
 </p>
 
-<h4> 4. Manual entry Mode </h4>
+### 4. Manual entry Mode
+
 <p> Users can search food items by keywords  </p>
 <img src='https://user-images.githubusercontent.com/94110588/177002942-5c12dd86-1e49-4dcc-a52a-b90cc7d6d5a9.jpeg' alt='manual entry image' width='250'/>
 
-<h4> 5. Review mode </h4>
+### 5. Review mode
+
 <p> Users can search food items by keywords  </p>
 <img src="./assets/forReadme/review_items.gif?raw=true" alt='review items gif' width="250" />
 
-<h4> 6. Notifcation </h4>
+### 6. Notifcation
+
 <p> When food is near expiry, native notifications will appear even when phone screen is locked </p>
 <img src='https://user-images.githubusercontent.com/94110588/177003132-4b2f7b85-6bc6-4c9c-9cd5-2993eb88e7ee.PNG' alt='notification image' width='250'/>
 
 ## Built with
 
-#### Frontend
-
-- ReactNative
-
-#### Backend
-
-- NodeJs
-- ExpressJs
-- Sequelize/Postgres
-
-#### Functionalities
-
-- JWT (authentication)
-
-#### Styling
-
-- Nativebase
-- Lottie (Animations)
+|                   | Tech                                                                 | Purpose                |
+| ----------------- | -------------------------------------------------------------------- | ---------------------- |
+| **Frontend**      | [React Native](https://github.com/facebook/react-native)             | User interface         |
+|                   | [Expo](https://github.com/expo/expo)                                 | React Native framework |
+|                   | [NativeBase](https://github.com/GeekyAnts/nativebase)                | Component library      |
+|                   | [Lottie](https://github.com/lottie-react-native/lottie-react-native) | Animated loaders       |
+| **Backend**       | [Node.js](https://github.com/nodejs/node)                            | Server                 |
+|                   | [Express](https://github.com/expressjs/express)                      | Server                 |
+|                   | [PostgreSQL](https://www.postgresql.org/)                            | Database               |
+|                   | [Sequelize](https://sequelize.org/)                                  | Database               |
+| **Functionality** | [JWT](https://jwt.io/)                                               | Authentication         |
 
 ## ERD
 
-<p> https://lucid.app/lucidchart/ca2e1c9a-da17-417d-aa19-27f4cb090d33/edit?invitationId=inv_820a5236-f333-4330-a353-3739526b5702&page=0_0# </p>
 <img src='https://user-images.githubusercontent.com/94110588/177003298-c0c751c9-f7f7-4b34-a993-4d2f32c7f509.png' alt='library' width='500'/>
+
+## Installation
+
+> The backend is already hosted on Heroku and no setup is necessary. However, there are frontend environment variables that are not tracked in this repo. **Please contact the developers if you would like to run this project locally on your machine.**
+
+**Requirements**
+
+1. **npm:** `npm install npm@latest -g`
+2. **Expo Go:** Install Expo Go on your mobile device from the App Store ('Expo') or Play Store ('Expo Go').
+
+**To run the app**
+
+1. Clone this repo
+2. Install dependencies: `npm i`
+3. Run the app: `expo start`
+4. Scan the generated QR code with your phone to view the app on your mobile device
 
 ## Contributors
 
-Developed by Elizabeth, Gerald, Tabithan and Cheena
+**Cheena Eng** | [GitHub](https://github.com/cheenaeng) • [LinkedIn](https://www.linkedin.com/in/cheena-eng-001/) • [Email](mailto:cheena94sing@gmail.com)
+
+**Elizabeth Tan** | [GitHub](https://github.com/liztanyl/) • [LinkedIn](https://www.linkedin.com/in/elizabethtanyulin/) • [Email](mailto:elizabeth.tanyulin@gmail.com)
+
+**Gerald Khor** | [GitHub](https://github.com/gcskhor/) • [LinkedIn](https://www.linkedin.com/in/gerald-khor/) • [Email](mailto:gcskhor@yahoo.com.sg)
+
+**Tabithan Ho** | [GitHub](https://github.com/tabbiho) • [LinkedIn](https://www.linkedin.com/in/tabithan-ho-45a196226/) • [Email](mailto:tabbiho@gmail.com)
