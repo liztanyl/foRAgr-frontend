@@ -6,6 +6,8 @@ foRAg'r is a mobile app that helps user keep track of food items in their fridge
 
 The app is best viewed on iPhone or Android devices.
 
+> **Note: This is the frontend repo. The backend repo can be viewed [here](https://github.com/gcskhor/project6-backend).**
+
 ## Walkthrough
 
 ### 1. User login
