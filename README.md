@@ -2,7 +2,7 @@
 
 <img src='https://user-images.githubusercontent.com/94110588/177002458-e6edbb95-16f0-4cef-9322-14e2bf2ffb47.png' width='100' alt='logo'/>
 
-foRAg'r is a mobile app that helps user keep track of food items in their fridge. Features include parsing receipt, searching food by keywords and sending notifications when food is near expiry.
+foRAg'r is a mobile app that helps users keep track of food items in their fridge. Features include parsing receipt, searching food by keywords and sending notifications when food is near expiry.
 
 The app is best viewed on iPhone or Android devices.
 
